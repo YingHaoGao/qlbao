@@ -1,4 +1,5 @@
 export default {
+	// 检测运行环境
 	getFacility () {
 		var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
     var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
@@ -50,5 +51,27 @@ export default {
     if (isWeiXin) {
     	return "Weixin"
     }
+	},
+	// 验证 
+	detection (t, val, fn) {
+		let is = false;
+		switch(t) {
+			// 手机号
+			case 0:
+				is = /^1[3456789]\d{9}$/.test(val);
+				break;
+			// 仅中文
+			case 1:
+				is = !val.mack(/[^\u4E00-\u9FA5]/g);
+				break;
+			// 仅字母
+			case 2:
+				is = !val.mack(/[^a-z]|[^A-Z]/g);
+				break;
+		}
+
+		if (is && fn) fn();
+		
+		return is;
 	}
 }
