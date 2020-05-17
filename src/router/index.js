@@ -31,7 +31,7 @@ export default new Router({
       name: 'Account',
       component: Account,
       meta: {
-        title: '结算页面'
+        title: '我的号码'
       }
     },
     {
@@ -39,7 +39,7 @@ export default new Router({
       name: 'Payment',
       component: Payment,
       meta: {
-        title: '付款完成页面'
+        title: '我的号码'
       }
     },
     {
