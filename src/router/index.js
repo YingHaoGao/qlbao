@@ -1,17 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import HelloWorld from '@/components/HelloWorld'
 
 import Sign from '../views/sign.vue'
 import Account from '../views/account.vue'
 import Pay from '../views/pay.vue'
 import Payment from '../views/payment.vue'
 import Share from '../views/share.vue'
-// const Sign =resolve => require(['@/view/sign'], resolve);
-// const Account =resolve => require(['@/view/account'], resolve);
-// const Pay =resolve => require(['@/view/pay'], resolve);
-// const Payment =resolve => require(['@/view/payment'], resolve);
-// const Share =resolve => require(['@/view/share'], resolve);
+import SignHtml from '../views/signHtml.vue'
 
 Vue.use(Router)
 
@@ -22,6 +17,14 @@ export default new Router({
       path: '/',
       name: 'Sign',
       component: Sign,
+      meta: {
+        title: '注册页面'
+      }
+    },
+    {
+      path: '/sign',
+      name: 'SignHtml',
+      component: SignHtml,
       meta: {
         title: '注册页面'
       }
