@@ -40,7 +40,7 @@ export default {
 	methods: {
 		// 返回
 		toBack () {
-
+			this.$router.go(-1);
 		},
 		// 关闭
 		toClose () {
