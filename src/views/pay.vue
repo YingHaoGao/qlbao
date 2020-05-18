@@ -45,14 +45,22 @@ export default {
   	onWeiXin () {
       this.duigong = false;
 
+      this.confirm()
   	},
   	onAliPay () {
       this.duigong = false;
 
+      this.confirm()
   	},
   	onDuiGong () {
       this.duigong = !this.duigong;
-  	}
+  	},
+    confirm (s) {
+      var r=confirm('模拟进入支付完成页')
+      if (r==true) {
+          this.$router.push({path: '/payment'});
+        }
+    }
   }
 }
 </script>
