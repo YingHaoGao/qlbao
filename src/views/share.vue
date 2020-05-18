@@ -4,24 +4,27 @@
   		二维码分享给员工填写号码
   	</div>
   	<div class="img">
-  		<img :src="code">
+      <div id="qrcode" ref="qrcode"></div>
   	</div>
   	<div class="buttons">
   		<el-button type="primary" @click="onShare" round>分享微信好友</el-button>
-  		<el-button type="primary" @click="onSave" round>长按保存</el-button>
   	</div>
   </div>
 </template>
 
 <script>
-import code from '../assets/logo.png'
+import QRCode from "qrcodejs2";
+import CONFIG from "../config.js";
+
 export default {
   name: 'share',
   props: {
     
   },
-  created () {
-  	this.getCode();
+  mounted() {
+    this.$nextTick(() => {
+      this.qrcode();
+    });
   },
   data () {
   	return {
@@ -29,18 +32,55 @@ export default {
   	}
   },
   methods: {
-  	// 获取二维码
-  	getCode () {
-  		this.code = code
-  	},
   	// 长按保存
   	onSave () {
 
   	},
   	// 分享微信好友
   	onShare () {
+      var shares;
+        mui.plusReady(function() {
+          plus.share.getServices(function(list) {
+            for(var i = 0; i < list.length; i++) {
+              if(list[i].authenticated) {
+                shares = list[i];
+              }
+            }
+            
+            if(shares != undefined) {
+              var msg = {
+                type: 'image',
+                pictures: ["_www/logo.png"],//这里的pictures是要分享的图片 该图片放在项目根目录下
+                extra: {
+                  scene: "WXSceneSession"
+                }
+              };
+              shares.send(msg, function(success) {
+                mui.toast("转发成功!");
+              }, function(error) {
+                //mui.toast("转发失败"+JSON.stringify(error));
+                console.log(JSON.stringify(error))
+              });
+            }
+          }, function(e) {
+            alert("获取分享服务列表失败：" + e.message);
+          });
+ 
+        });
+  	},
+    // 生成二维码参数
+    qrcode () {
+      let that = this;
+      let clientWidth = document.body.clientWidth,
+          width = clientWidth * 0.8;
 
-  	}
+      let qrcode = new QRCode("qrcode", {
+          width: width, // 二维码宽度，单位像素
+          height: width, // 二维码高度，单位像素
+          text: CONFIG.HTTP + "/sign.html?distributorId=" + this.$distributorId
+        });
+      console.log('分享链接： ' + CONFIG.HTTP + "/sign.html?distributorId=" + this.$distributorId)
+    }
   }
 }
 </script>
@@ -61,7 +101,7 @@ export default {
   	height: 60%;
   	width: 100%;
 
-  	img {
+  	#qrcode {
   		position: absolute;
   		width: 100%;
   		top: 50%;

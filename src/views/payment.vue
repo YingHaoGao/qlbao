@@ -1,12 +1,12 @@
 <template>
   <div id="payment">
   	<div class="buttons">
-  		<el-button type="primary" @click="onDredge">拟开通号码</el-button>
+  		<el-button type="primary" @click="onNewPhone">添加新号码</el-button>
   		<el-button @click="onCreate">生成我的邀请卡</el-button>
   	</div>
   	<div class="names">
   		<div class="name" v-for="(item, idx) in list" :key="idx">
-  			{{item.name}} {{item.phone}} {{item.operator}}
+  			{{item.name}} {{item.phone}} {{item.operator}} {{typeToNc(item.type)}}
   		</div>
   	</div>
   	<div class="type">
@@ -34,6 +34,15 @@ export default {
   			case 0:
   				typeNC = '未提交';
   				break;
+        case 1:
+          typeNC = '审核中';
+          break;
+        case 2:
+          typeNC = '审核失败';
+          break;
+        case 3:
+          typeNC = '审核成功';
+          break;
   			default:
   				typeNC = '获取失败';
   		}
@@ -43,23 +52,7 @@ export default {
   },
   data () {
   	return {
-  		list: [
-  			{
-  				name: 'dasdas',
-  				phone: '18600408534',
-  				operator: '中国联通'
-  			},
-  			{
-  				name: 'dasdas',
-  				phone: '18600408534',
-  				operator: '中国联通'
-  			},
-  			{
-  				name: 'dasdas',
-  				phone: '18600408534',
-  				operator: '中国联通'
-  			},
-  		],
+  		list: [],
   		type: '',
   		typeNC: ''
   	}
@@ -67,24 +60,39 @@ export default {
   methods: {
   	// 获取信息
   	getInfo () {
-  		// this.$axios.get('',{
-    //     params:{
-            
-    //     }
-	   //  }).then(function(res){
-    //     this.list = res.data;
-	   //  }).catch(function (error) {
-    //     console.log(error);
-	   //  });
-  	},
-  	// 拟开通号码
-  	onDredge () {
+      let that = this,
+          params = {
+            distributorId: that.$distributorId
+          };
 
+  		this.$axios.get('/api/getType',{params})
+        .then(function(res){
+          that.list = res.data.list;
+          that.type = res.data.type;
+  	    });
+  	},
+  	// 添加新号码
+  	onNewPhone () {
+      this.$router.push({path: '/account', query: {type: 1}});
   	},
   	// 生成我的邀请卡
   	onCreate () {
+      this.$router.push({path: '/share'});
+  	},
+    // 联系人状态转换
+    typeToNc (t) {
+      let typeNC = ''
+      switch(t) {
+        case 0:
+          typeNC = '已登记';
+          break;
+        case 1:
+          typeNC = '未登记';
+          break;
+      }
 
-  	}
+      return typeNC
+    }
   }
 }
 </script>

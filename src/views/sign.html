@@ -28,8 +28,12 @@
     		margin-bottom: 2rem;
     		padding: 1rem 0rem;
     		text-align: center;
-    		border: solid 0.1rem rgba(0,0,0,.5);
+    		border: solid 0.05rem rgba(0,0,0,.5);
     	}
+        .box .btns .btn.active {
+            background: rgba(43,95,195);
+            color: #fff;
+        }
     	.box .btns .btn:first-child {
     		margin-right: 2%;
     	}
@@ -46,6 +50,7 @@
     	}
     	.box .inputs .item {
     		text-align: center;
+            height: 1.5rem;
     		margin-bottom: 0.4rem;
     	}
     	.box .inputs .label {
@@ -58,6 +63,30 @@
     		font-size: 1rem;
     		box-sizing: border-box;
     	}
+        .box .inputs .codeInput {
+            width: 64%;
+            height: 1.5rem;
+            display: inline-block;
+            overflow: hidden;
+        }
+        .box .inputs .codeInput input {
+            width: 64%;
+            height: 100%;
+            float: left;
+        }
+        .box .inputs .sendCode {
+            width: 36%;
+            float: left;
+            height: 100%;
+            line-height: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            font-size: .6rem;
+            background: rgba(43,95,195);
+        }
+        .box .inputs .sendCode.hide {
+            display: none;
+        }
     	.box .footer {
     		width: 100%;
     		position: fixed;
@@ -81,29 +110,175 @@
 <body>
 <div class="box">
 	<div class="btns">
-		<div class="btn">移动</div>
-		<div class="btn">联通</div>
-		<div class="btn">电信</div>
+		<div class="btn" name="移动">移动</div>
+		<div class="btn" name="联通">联通</div>
+		<div class="btn" name="电信">电信</div>
 	</div>
 	<div class="inputs">
 		<div class="item">
 			<span class="label">姓名</span>
-			<input type="text" placeholder="请输入联系人信息">
+			<input id="name" type="text" placeholder="请输入联系人信息">
 		</div>
 		<div class="item">
 			<span class="label">电话号码</span>
-			<input type="text" placeholder="请输入联系人手机号码">
+			<input id="phone" type="text" placeholder="请输入联系人手机号码">
 		</div>
+        <div class="item">
+            <span class="label" style="transform: translate(0,-35%);">验证码</span>
+            <div class="codeInput">
+            <input id="code" type="text" placeholder="请输入验证码">
+            <div class="sendCode send">发送验证码</div>
+            <div class="sendCode hide time" data-time="60">60s</div>
+            </div>
+        </div>
 	</div>
 	<div class="footer">
-		<div class="text">注意：开通号码数量大于500，请联系客服010-5112344</div>
-		<div class="button">提交</div>
+		<div class="button submit">提交</div>
 	</div>
 </div>
 </body>
 </html>
-<script>
+<script type="text/javascript">
 $(function() {
+    // 服务器地址
+    const HTTP = '';
 
+    var codeInterval;
+
+    var code = '',
+        operator = '';
+
+    // 选择运营商
+    $('.btn').on('click', function() {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+
+        operator = $(this).attr('name');
+    });
+
+    // 姓名验证
+    $('#name').on('change', function() {
+        let val = $(this).val();
+        let newVal = val.replace(/[^\u4E00-\u9FA5]/g, '');
+
+        if (newVal.length > 8) {
+            alert('姓名不可超过8个字符')
+            return
+        }
+
+        $(this).val(newVal);
+    });
+
+    // 手机号验证
+    $('#phone').on('change', function() {
+        let val = $(this).val();
+        let is = detection(0, val);
+
+        if (!is) {
+            alert('请重新输入手机号')
+        }
+    });
+
+    // 发送验证码
+    $('.sendCode.send').on('click', function() {
+        let isPhone = detection(0, $('#phone').val());
+
+        if (!isPhone) {
+            alert('请重新输入手机号');
+            return
+        }
+
+        $.ajax({
+            type: 'get',
+            url: HTTP + '/api/getCode',
+            success(res) {
+                code = res.data.code;
+                $('.sendCode.time').removeClass('hide');
+                $('.sendCode.send').addClass('hide');
+
+                codeInterval = setInterval(function() {
+                    let time = $('.sendCode.time').data('time');
+
+                    if (time < 0) {
+                        clearInterval(codeInterval);
+                        $('.sendCode.send').removeClass('hide');
+                        $('.sendCode.time').addClass('hide');
+                    }
+                    else {
+                        $('.sendCode.time').attr("data-time", time - 1).text(time - 1);
+                    }
+                }, 1000)
+
+                alert('验证码已发送')
+            }
+        })
+    });
+
+    // 提交
+    $('.submit').on('click', function() {
+        var data = {
+            name: $('#name').val(),
+            phone: $('#phone').val(),
+            code: $('#code').val(),
+            operator: operator,
+            distributorId: getUrlParam('distributorId')
+        };
+
+        if (operator == "") {
+            alert('请选择运营商')
+            return
+        }
+        if (!detection(1, data.name) || data.name.length > 8) {
+            alert('请重新输入姓名')
+            return
+        }
+        if (!detection(0, data.phone)) {
+            alert('请重新输入手机号')
+            return
+        }
+        if (code == '' || data.code != code) {
+            alert('验证码有误')
+            return
+        }
+
+        alert('已提交')
+        $.ajax({
+            type: 'get',
+            url: HTTP + '/api/sign',
+            data: data,
+            success(res) {
+                
+            }
+        })
+    })
+
+    // 验证 
+    function detection (t, val, fn) {
+        let is = false;
+        switch(t) {
+            // 手机号
+            case 0:
+                is = /^1[3456789]\d{9}$/.test(val);
+                break;
+            // 仅中文
+            case 1:
+                is = !(/[^\u4E00-\u9FA5]/g.test(val));
+                break;
+            // 仅字母
+            case 2:
+                is = !(/[^a-z]|[^A-Z]/g.test(val));
+                break;
+        }
+
+        if (is && fn) fn();
+        
+        return is;
+    }
+    //获取url中的参数
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
 })
 </script>

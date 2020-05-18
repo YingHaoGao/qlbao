@@ -29,6 +29,11 @@
           <el-button slot="append" @click="getGraphics">{{graphics}}</el-button>
         </el-input>
       </el-form-item>
+      <el-form-item label="">
+        <el-checkbox-group v-model="form.ringtone">
+          <el-checkbox label="是否开通视频彩铃" name="type"></el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
     </el-form>
     <div class="footer">
       <el-checkbox v-model="form.deal">
@@ -62,6 +67,7 @@ export default {
         phone: '',
         code: '',
         graphics: '',
+        ringtone: [],
         deal: false
       },
       graphics: '',
@@ -113,6 +119,7 @@ export default {
     // 提交
     onSubmit() {
       let form = this.form;
+      let distributorId = this.$distributorId;
       console.log(form)
 
       // 企业名称
@@ -149,9 +156,12 @@ export default {
         if (this.messageEvent) this.messageEvent.close();
       }
 
+      form.distributorId = distributorId;
+      form.isRingtone = form.ringtone.length > 0;
+
       this.$axios.post('/api/sign', form)
         .then(res => {
-          console.log(res.data)
+          this.$router.push({path: '/account'});
           this.$message({
             message: '提交成功！',
             type: 'success'
