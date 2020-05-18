@@ -10,7 +10,7 @@
   	</div>
   	<div class="title">{{title}}</div>
   	<div class="right">
-  		<div v-if="!isShare" class="share" @click="toShare">
+  		<div v-if="isShare" class="share" @click="toShare">
 	  		<i class="iconfont" v-html="'&#xe639;'"></i>
 	  	</div>
   	</div>
@@ -20,19 +20,21 @@
 <script>
 export default {
   name: 'tabHead',
-  props: {
-    isShare: Boolean
+  created() {
+  	this.isShare = this.$route.meta.isShare;
   },
   data () {
   	var title = this.$route.meta.title
   	return {
-  		title: title
+  		title: title,
+  		isShare: false
   	}
   },
   watch: {
 	  $route: {
 	    handler: function(val, oldVal){
-	      this.title = val.meta.title
+	      this.title = val.meta.title;
+	      this.isShare = this.$route.meta.isShare;
 	    },
 	    deep: true
 	  }

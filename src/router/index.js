@@ -42,7 +42,8 @@ export default new Router({
       name: 'Payment',
       component: Payment,
       meta: {
-        title: '我的号码'
+        title: '我的号码',
+        isShare: true
       }
     },
     {
@@ -58,7 +59,8 @@ export default new Router({
       name: 'Share',
       component: Share,
       meta: {
-        title: '我的邀请卡'
+        title: '我的邀请卡',
+        isShare: true
       }
     }
   ]
