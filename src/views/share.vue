@@ -4,7 +4,9 @@
   		二维码分享给员工填写号码
   	</div>
   	<div class="img">
-      <div id="qrcode" ref="qrcode"></div>
+      <a href="">
+        <div id="qrcode" ref="qrcode"></div>
+      </a>
   	</div>
   	<div class="buttons">
   		<el-button type="primary" @click="onShare" round>分享微信好友</el-button>
