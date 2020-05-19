@@ -7,6 +7,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- iconfont -->
+    <style type="text/css">
+        @font-face {font-family: "iconfont";
+          src: url('//at.alicdn.com/t/font_1824105_xvsqm2ad8pk.eot?t=1589695726976'); /* IE9 */
+          src: url('//at.alicdn.com/t/font_1824105_xvsqm2ad8pk.eot?t=1589695726976#iefix') format('embedded-opentype'), /* IE6-IE8 */
+          url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAOgAAsAAAAAB7wAAANRAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDHAqCeIJIATYCJAMQCwoABCAFhG0HRRu3BsiuMYUxdrXIBuMwA0Um98hW9MI3P5yLePh3v/K+JDOb/bNEBUILpKtWllizqgRS5Cp7KjQJTYodO9L/R/+qzELMkvh4yWTH+VkA10mVUDVmNd2huy7ggqsGG3B5kMEg9Dcm4xmHzE/W0bf5xyLr3OOrmz7LzaIMOGa6FM9b8JyikiJCIwEHNh1YJ65BBryBPJD/cjjzKjy6zhNoLJRJt7+5cxC5Kci0QFxkVEJuKZNSUxiq0C1ZW8QDqOlmeob7/u/jt63hRtLJyNxDp5tUVPstwj6Qt9otugTi8RwQN5GxHlKIs6Wu4xzD6HqOGn2wk52QqkqM1VNmH2hbLNmLqlKVvv94iegi+QNgO8Qy3yJsUawuA4MA9QDkSfBCNDXMuQh5gGjm+x+QhFg11zXx+vl76He7X7w7ueoPu/H648jth9sPPE7e977f8Tfvb//Au4+zDx+MN+efbd0P9hw8f/nKbc/T6RGUOvj0oU534/niyUqoIVSjl7ZDQi52kEocnqDzFQwqT/CFCaWgCK3arzju1gb66Pbnrv1j825u/j11wpHN/y021SGfpQsSfHrPlS/ypTIkXwwUt5RHX624iP0+ec3w3Vfx0fGvRv9/mofH0JM/V/yCfN+7Q/HE17SCh3bkYXoBLUfFl+LiHsgDsvUaD9JIQGwPGUQl1/JDCEIrP/2H9DT9gnzS4et/+hsHD39vOOJb+b9awAf7/3xvq9BP9LLFrcV/RdyypRhSYi5Fk9ki01Ps6T0lodHgXyQZ82MMzWTrfEI1GSPpswBZtZxYqOvR0bMdXdUuNNZp2dwzjnMUpR9r7SOEEU+RDHmNbMRzYqF+R8eU3+gaCUc0ZiNwz56VwTwaOEgCVCwvY6ZYzIRZhUdQ2A903ijxpNSnDQPXWADnZedmEy1gBj7GAm2B5gtBMOEWE25Gl4HRaMFWbpkDRWTrhbCW5+SQsjdlKxYT8rAPByQCUGGyZRijsDAjbnfBI/f9foCaZyThNRV1/mGA07D+sTzZclsQW1TmVhXXco1mAZVPEAiM4CxMsGbkAEYatcCs5aPmAIWQTd8jbFUuB3cibVXZ82tMD1Ao1kD2LJEiR4mO/tNgXmKSmea5EHeofp650HnJLDOEAAAAAA==') format('woff2'),
+          url('//at.alicdn.com/t/font_1824105_xvsqm2ad8pk.woff?t=1589695726976') format('woff'),
+          url('//at.alicdn.com/t/font_1824105_xvsqm2ad8pk.ttf?t=1589695726976') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+          url('//at.alicdn.com/t/font_1824105_xvsqm2ad8pk.svg?t=1589695726976#iconfont') format('svg'); /* iOS 4.1- */
+        }
+
+        .iconfont {
+          font-family: "iconfont" !important;
+          font-size: 1rem;
+          font-style: normal;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+        .iconfenxiang1:before {
+          content: "\e639";
+        }
+
+        .iconfanhui:before {
+          content: "\e653";
+        }
+
+        .iconguanbi:before {
+          content: "\e61a";
+        }
+    </style>
     <style type="text/css">
     	* {
     		padding: 0px;
@@ -15,20 +46,59 @@
     	html {
     		font-size: 20px;
     	}
+
+        #tabHead {
+            height: 2rem;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 0.25rem 0rem;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            line-height: 1.5rem; 
+        }
+        #tabHead .left,#tabHead .right {
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            z-index: 1;
+        }
+        #tabHead .left {
+            left: 0rem;
+        }
+        #tabHead .right {
+            right: 0rem;
+        }
+        #tabHead .back,#tabHead .close,#tabHead .share {
+            display: inline-block;
+            padding: 0rem 0.25rem 0rem 0.5rem;
+            cursor: pointer;
+            transform: all 300ms;
+        }
+        #tabHead .share{
+            padding: 0rem 0.5rem 0rem 0.25rem;
+        }
+        #tabHead .title {
+            width: 100%;
+            text-align: center;
+        }
     	.box {
-    		width: 100%;
+    		width: 90%;
+            margin: auto;
+            margin-top: 2rem;
     	}
     	.box .btns {
     		width: 100%;
     		text-align: center;
     	}
     	.box .btns .btn {
-    		width: 28%;
+    		width: 25%;
+            font-size: 0.8rem;
     		display: inline-block;
     		margin-bottom: 2rem;
-    		padding: 1rem 0rem;
+    		padding: 0.6rem 0rem;
     		text-align: center;
-    		border: solid 0.05rem rgba(0,0,0,.5);
+    		border: solid 0.05rem rgba(0,0,0,.2);
     	}
         .box .btns .btn.active {
             background: rgba(43,95,195);
@@ -54,13 +124,15 @@
     		margin-bottom: 0.4rem;
     	}
     	.box .inputs .label {
+            font-size: 0.8rem;
     		text-align: left;
     		display: inline-block;
     		width: 30%;
     	}
     	.box .inputs input {
     		width: 64%;
-    		font-size: 1rem;
+            font-size: 0.8rem;
+            padding: 0.1rem;
     		box-sizing: border-box;
     	}
         .box .inputs .codeInput {
@@ -99,15 +171,29 @@
     		font-size: .6rem;
     	}
     	.box .footer .button {
-    		width: 100%;
+    		width: 80%;
+            margin: auto;
+            border-radius: 2.6rem;
     		text-align: center;
     		background: #2B5FC3;
     		color: #fff;
-    		padding: .6rem;
+    		padding: .4rem;
+            font-size: 0.8rem;
     	}
     </style>
 </head>
 <body>
+<div id="tabHead">
+    <div class="left">
+        <div class="back">
+            <i class="iconfont">&#xe653;</i>
+        </div>
+        <div class="close">
+            <i class="iconfont">&#xe61a;</i>
+        </div>
+    </div>
+    <div class="title">注册页面</div>
+</div>
 <div class="box">
 	<div class="btns">
 		<div class="btn" name="移动">移动</div>
@@ -148,6 +234,16 @@ $(function() {
     var code = '',
         operator = '';
 
+    // 返回
+    $('#tabHead .back').on('click', function() {
+        window.history.back(-1);
+    });
+
+    // 关闭
+    $('#tabHead .close').on('click', function() {
+        window.open("about:blank","_self").close();
+    });
+
     // 选择运营商
     $('.btn').on('click', function() {
         $(this).siblings().removeClass('active');
@@ -159,14 +255,15 @@ $(function() {
     // 姓名验证
     $('#name').on('change', function() {
         let val = $(this).val();
-        let newVal = val.replace(/[^\u4E00-\u9FA5]/g, '');
 
-        if (newVal.length > 8) {
+        if (val.length > 8) {
             alert('姓名不可超过8个字符')
             return
         }
-
-        $(this).val(newVal);
+        if (!detection(1, val)) {
+            alert('姓名只可输入中文')
+            return
+        }
     });
 
     // 手机号验证
