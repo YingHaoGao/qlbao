@@ -27,6 +27,9 @@ export default {
   created () {
   	this.getInfo();
   },
+  mounted () {
+    this.$alert('公司管理员可登陆 www.weuq.com 网页统一添加号码', '提示');
+  },
   watch: {
   	type(val) {
   		let typeNC = ''

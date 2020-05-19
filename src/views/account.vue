@@ -47,6 +47,13 @@ export default {
     num(val) {
       var num = isNaN(val) ? 0 : val;
       this.money = num * this.radio * 10
+
+      if (val >= 200) {
+        this.messageErr('提示：请联系VIP专属客服 010-54123456');
+      }
+      else {
+        if (this.messageEvent) this.messageEvent.close();
+      }
     }
   },
   methods: {

@@ -67,7 +67,7 @@ export default {
         phone: '',
         code: '',
         graphics: '',
-        ringtone: [],
+        ringtone: ['是否开通视频彩铃'],
         deal: false
       },
       graphics: '',
@@ -209,10 +209,10 @@ export default {
 
   .footer {
     width: 14rem;
-    position: fixed;
-    left: 50%;
-    bottom: 2rem;
-    transform: translate(-50%, 0);
+    // position: fixed;
+    // left: 50%;
+    // bottom: 2rem;
+    // transform: translate(-50%, 0);
 
     button {
       margin-top: 0.5rem;

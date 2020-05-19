@@ -15,6 +15,7 @@
 <script>
 import QRCode from "qrcodejs2";
 import CONFIG from "../config.js";
+import TOOL from '../tools.js'
 
 export default {
   name: 'share',
@@ -32,41 +33,9 @@ export default {
   	}
   },
   methods: {
-  	// 长按保存
-  	onSave () {
-
-  	},
   	// 分享微信好友
   	onShare () {
-      var shares;
-        mui.plusReady(function() {
-          plus.share.getServices(function(list) {
-            for(var i = 0; i < list.length; i++) {
-              if(list[i].authenticated) {
-                shares = list[i];
-              }
-            }
-            
-            if(shares != undefined) {
-              var msg = {
-                type: 'image',
-                pictures: ["_www/logo.png"],//这里的pictures是要分享的图片 该图片放在项目根目录下
-                extra: {
-                  scene: "WXSceneSession"
-                }
-              };
-              shares.send(msg, function(success) {
-                mui.toast("转发成功!");
-              }, function(error) {
-                //mui.toast("转发失败"+JSON.stringify(error));
-                console.log(JSON.stringify(error))
-              });
-            }
-          }, function(e) {
-            alert("获取分享服务列表失败：" + e.message);
-          });
- 
-        });
+      TOOL.share();
   	},
     // 生成二维码参数
     qrcode () {

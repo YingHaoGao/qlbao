@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import TOOL from '../tools.js'
+
 export default {
   name: 'tabHead',
   created() {
@@ -50,7 +52,7 @@ export default {
 		},
 		// 分享
 		toShare () {
-
+			TOOL.share();
 		}
 	}
 }
