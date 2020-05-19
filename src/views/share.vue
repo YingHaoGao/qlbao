@@ -4,9 +4,10 @@
   		二维码分享给员工填写号码
   	</div>
   	<div class="img">
-      <a href="">
+      <a href="javascript:void(0);" v-if="isIOS">
         <div id="qrcode" ref="qrcode"></div>
       </a>
+      <div id="qrcode" ref="qrcode" v-else></div>
   	</div>
   	<div class="buttons">
   		<el-button type="primary" @click="onShare" round>分享微信好友</el-button>
@@ -24,6 +25,11 @@ export default {
   props: {
     
   },
+  created() {
+    if (navigator.userAgent.match(/Android/i)) {
+      this.isIOS = false;
+    }
+  },
   mounted() {
     this.$nextTick(() => {
       this.qrcode();
@@ -31,7 +37,8 @@ export default {
   },
   data () {
   	return {
-  		code: ''
+  		code: '',
+      isIOS: true
   	}
   },
   methods: {
