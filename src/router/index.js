@@ -11,7 +11,7 @@ import SignHtml from '../views/signHtml.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '/',
