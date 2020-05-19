@@ -55,6 +55,9 @@ export default {
 	// 验证 
 	detection (t, val, fn) {
 		let is = false;
+
+        val = val || '';
+
 		switch(t) {
 			// 手机号
 			case 0:
@@ -62,11 +65,11 @@ export default {
 				break;
 			// 仅中文
 			case 1:
-				is = !val.mack(/[^\u4E00-\u9FA5]/g);
+				is = !(/[^\u4E00-\u9FA5]/g.test(val));
 				break;
 			// 仅字母
 			case 2:
-				is = !val.mack(/[^a-z]|[^A-Z]/g);
+				is = !(/[^a-z]|[^A-Z]/g.test(val));
 				break;
 		}
 

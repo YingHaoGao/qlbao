@@ -174,7 +174,10 @@ export default {
     },
     // 验证只输入中文
     checkNC() {
-      this.form.contacts = this.form.contacts.replace(/[^\u4E00-\u9FA5]/g, '')
+      let form = this.form;
+      if (form.contacts == '' || !form.contacts || !TOOL.detection(1, form.contacts) || form.contacts.length > 8) {
+        this.messageErr('请重新输入联系人')
+      }
     },
     // 验证数字
     checkPhone(e, fn) {

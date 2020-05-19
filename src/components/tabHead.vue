@@ -46,7 +46,7 @@ export default {
 		},
 		// 关闭
 		toClose () {
-
+			window.open("about:blank","_self").close()
 		},
 		// 分享
 		toShare () {
