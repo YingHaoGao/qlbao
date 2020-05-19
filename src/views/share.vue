@@ -26,7 +26,9 @@ export default {
     
   },
   created() {
-    if (navigator.userAgent.match(/Android/i)) {
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+    alert(isAndroid)
+    if (isAndroid) {
       this.isIOS = false;
     }
   },
@@ -69,6 +71,10 @@ export default {
   padding: 1rem 1rem 0rem 1rem;
   width: 100%;
   height: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 
   .text {
   	text-align: center;
