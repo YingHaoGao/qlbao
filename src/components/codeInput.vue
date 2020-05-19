@@ -50,12 +50,12 @@ export default {
 			}
 			if(location<1){
 				location=1
-			}else if(location>4){
-				location=4
+			}else if(location>3){
+				location=3
 			}
 			let code = this.smsCode.slice(0, 4);
 			this.$emit('change', code)
-			document.getElementById(this.codeId[location-1]).focus()
+			document.getElementById(this.codeId[location]).focus()
 		}
 	}
 }
