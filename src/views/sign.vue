@@ -36,7 +36,7 @@
       </el-form-item>
     </el-form>
     <div class="footer">
-      <el-checkbox v-model="form.deal">
+      <el-checkbox v-model="form.deal" class="check">
         请勾选
         <el-link type="primary">《云美摄直客协议》</el-link>
         ，否则无法提交
@@ -208,11 +208,12 @@ export default {
   padding: 3rem 1rem 0rem 1rem;
 
   .footer {
-    width: 14rem;
-    // position: fixed;
-    // left: 50%;
-    // bottom: 2rem;
-    // transform: translate(-50%, 0);
+    width: 100%;
+    text-align: center;
+    
+    .check {
+      font-size: .6rem;
+    }
 
     button {
       margin-top: 0.5rem;

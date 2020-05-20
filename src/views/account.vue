@@ -138,6 +138,7 @@ export default {
   }
   .footer {
     width: 14rem;
+    margin: auto;
     margin-top: 2rem;
 
     button {
