@@ -138,10 +138,7 @@ export default {
   }
   .footer {
     width: 14rem;
-    position: fixed;
-    left: 50%;
-    bottom: 2rem;
-    transform: translate(-50%, 0);
+    margin-top: 2rem;
 
     button {
       margin-top: 0.5rem;

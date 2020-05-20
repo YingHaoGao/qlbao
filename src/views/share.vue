@@ -7,7 +7,7 @@
       <a href="javascript:void(0);" v-if="isIOS">
         <div id="qrcode" ref="qrcode"></div>
       </a>
-      <div id="img">
+      <div id="img" v-if="!isIOS">
         <img :src="img" style="width: 100%;">
       </div>
   	</div>
@@ -59,7 +59,7 @@ export default {
       let clientWidth = document.body.clientWidth,
           width = clientWidth * 0.8;
 
-      let qrcode = new QRCode("qrcode1", {
+      let qrcode = new QRCode("qrcode", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
           text: CONFIG.HTTP + "/sign.html?distributorId=" + this.$distributorId
@@ -91,11 +91,8 @@ export default {
   	width: 100%;
 
   	#qrcode,#img {
-  		position: absolute;
   		width: 100%;
-  		top: 50%;
-  		left: 0;
-  		transform: translate(0,-50%);
+      margin-top: 1rem;
   	}
   }
   .buttons {

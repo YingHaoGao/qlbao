@@ -69,6 +69,10 @@ export default {
 	position: relative;
 	overflow: hidden;
 	line-height: 1.5rem;
+	-webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 
 	.left,.right {
 		position: absolute;
