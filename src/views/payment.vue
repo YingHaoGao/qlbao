@@ -87,10 +87,10 @@ export default {
       let typeNC = ''
       switch(t) {
         case 0:
-          typeNC = '已登记';
+          typeNC = '未提交';
           break;
         case 1:
-          typeNC = '未登记';
+          typeNC = '已提交';
           break;
       }
 

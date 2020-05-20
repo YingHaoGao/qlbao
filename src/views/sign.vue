@@ -3,12 +3,13 @@
   	<el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="企业名称">
         <el-input placeholder="请输入企业名称" v-model="form.name"
+          @blur="checkName"
           maxlength="16"
           show-word-limit></el-input>
       </el-form-item>
       <el-form-item label="联系人">
         <el-input placeholder="请输入联系人信息" v-model="form.contacts"
-          @blur="checkNC"
+          @blur="checkContacts"
           maxlength="8"
           show-word-limit></el-input>
       </el-form-item>
@@ -172,11 +173,22 @@ export default {
     codeChange(val) {
       this.form.code = val;
     },
-    // 验证只输入中文
-    checkNC() {
+    // 验证企业名称
+    checkName() {
+      let form = this.form;
+      if (form.name == '' || !form.name || !TOOL.detection(1, form.name) || form.name.length > 16) {
+        this.messageErr('请重新输入企业名称')
+      } else {
+        if (this.messageEvent) this.messageEvent.close();
+      }
+    },
+    // 验证联系人
+    checkContacts() {
       let form = this.form;
       if (form.contacts == '' || !form.contacts || !TOOL.detection(1, form.contacts) || form.contacts.length > 8) {
         this.messageErr('请重新输入联系人')
+      } else {
+        if (this.messageEvent) this.messageEvent.close();
       }
     },
     // 验证数字
@@ -210,7 +222,7 @@ export default {
   .footer {
     width: 100%;
     text-align: center;
-    
+
     .check {
       font-size: .6rem;
     }

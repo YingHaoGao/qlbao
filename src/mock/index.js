@@ -66,7 +66,7 @@ Mock.mock('/api/getType', (req, res) => {
 	    		name: '张三',
 	    		phone: '18600408533',
 	    		operator: '联通',
-	    		type: 0
+	    		type: 1
 	    	},
 	    	{
 	    		name: '张三',
@@ -75,7 +75,7 @@ Mock.mock('/api/getType', (req, res) => {
 	    		type: 1
 	    	},
 	    ],
-	    type: 0
+	    type: 1
     }
 })
 
