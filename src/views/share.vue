@@ -7,7 +7,9 @@
       <a href="javascript:void(0);" v-if="isIOS">
         <div id="qrcode" ref="qrcode"></div>
       </a>
-      <div id="qrcode" ref="qrcode" v-else></div>
+      <div id="img">
+        <img :src="img" style="width: 100%;">
+      </div>
   	</div>
   	<div class="buttons">
   		<el-button type="primary" @click="onShare" round>分享微信好友</el-button>
@@ -19,6 +21,7 @@
 import QRCode from "qrcodejs2";
 import CONFIG from "../config.js";
 import TOOL from '../tools.js'
+import IMG from '../../public/code.jpg'
 
 export default {
   name: 'share',
@@ -28,7 +31,7 @@ export default {
   created() {
     var u = navigator.userAgent;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
-    alert(isAndroid)
+
     if (isAndroid) {
       this.isIOS = false;
     }
@@ -40,6 +43,7 @@ export default {
   },
   data () {
   	return {
+      img: IMG,
   		code: '',
       isIOS: true
   	}
@@ -55,7 +59,7 @@ export default {
       let clientWidth = document.body.clientWidth,
           width = clientWidth * 0.8;
 
-      let qrcode = new QRCode("qrcode", {
+      let qrcode = new QRCode("qrcode1", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
           text: CONFIG.HTTP + "/sign.html?distributorId=" + this.$distributorId
@@ -86,7 +90,7 @@ export default {
   	height: 60%;
   	width: 100%;
 
-  	#qrcode {
+  	#qrcode,#img {
   		position: absolute;
   		width: 100%;
   		top: 50%;
