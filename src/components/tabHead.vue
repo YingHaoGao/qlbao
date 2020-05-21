@@ -2,10 +2,10 @@
   <div id="tabHead">
   	<div class="left">
   		<div class="back" @click="toBack">
-	  		<i class="iconfont" v-html="'&#xe653;'"></i>
+	  		<img :src="ICONback"/>
 	  	</div>
 	  	<div class="close" @click="toClose">
-	  		<i class="iconfont" v-html="'&#xe61a;'"></i>
+	  		<img :src="ICONcha"/>
 	  	</div>
   	</div>
   	<div class="title">{{title}}</div>
@@ -19,6 +19,8 @@
 
 <script>
 import TOOL from '../tools.js'
+import ICONback from '../../static/icon/back.png'
+import ICONcha from '../../static/icon/cha.png'
 
 export default {
   name: 'tabHead',
@@ -29,7 +31,9 @@ export default {
   	var title = this.$route.meta.title
   	return {
   		title: title,
-  		isShare: false
+  		isShare: false,
+  		ICONback: ICONback,
+  		ICONcha: ICONcha
   	}
   },
   watch: {
@@ -73,12 +77,14 @@ export default {
   -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
+  border-bottom: solid 0.05rem #F2F2F2;
 
 	.left,.right {
 		position: absolute;
 		top: 50%;
 		transform: translate(0, -50%);
 		z-index: 1;
+		height: 100%;
 	}
 	.left {
 		left: 0rem;
@@ -88,7 +94,7 @@ export default {
 	}
 	.back,.close,.share {
 		display: inline-block;
-		padding: 0rem 0.25rem 0rem 0.5rem;
+		padding: 0rem 0.2rem 0rem 0.2rem;
 		cursor: pointer;
 		transform: all 300ms;
 
@@ -96,8 +102,10 @@ export default {
 			// background-color: rgba(173,225,245,.6);
 		}
 
-		.iconfont {
-			font-size: 1rem;
+		img {
+			width: 1.3rem;
+			height: 1.3rem;
+			margin-top: 0.4rem;
 		}
 	}
 	.share{
@@ -105,6 +113,7 @@ export default {
 	}
 	.title {
 		width: 100%;
+		font-size: 0.9rem;
 		text-align: center;
 	}
 }

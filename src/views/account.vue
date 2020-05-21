@@ -1,22 +1,25 @@
 <template>
   <div id="account">
-  	<div class="radio">
-  		<el-radio-group v-model="radio">
-        <el-radio-button v-for="item in prices" :label="item.id" :key="item.id">{{item.name}}</el-radio-button>
-	    </el-radio-group>
-  	</div>
-    <div class="input">
-    	<el-input v-model="num" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通号码数量"></el-input>
-    </div>
-    <div class="text">
-    	计费说明：10元/人/月
+    <div class="box">
+      <div class="input">
+        <span class="tag gray">请输入开通号码数量</span>
+        <el-input v-model="num" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通号码数量">
+          <span slot="suffix" class="suffix">个</span>
+        </el-input>
+      </div>
+      <div class="tag">
+        计费说明：10元/人/月
+      </div>
+      <div class="radio">
+        <el-radio v-model="radio" v-for="item in prices" :label="item.id" :key="item.id" border>{{item.name}}</el-radio>
+      </div>
     </div>
     <div class="footer">
       <div class="money">
       	订单金额：
       	<span>￥{{money}}</span>
       </div>
-      <el-button type="primary" @click="onSubmit" round>立即付款</el-button>
+      <el-button type="primary" @click="onSubmit">立即付款</el-button>
     </div>
   </div>
 </template>
@@ -34,7 +37,7 @@ export default {
   	return {
   		money: 0,
   		radio: 0,
-  		num: '',
+  		num: 0,
       prices: [],
       messageEvent: false
   	}
@@ -117,32 +120,48 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 #account {
-  box-sizing: border-box;
-  padding: 2rem 1rem 0rem 1rem;
 
-  .radio {
-  	text-align: center;
-  	margin-bottom: 2rem;
-  }
-  .input {
-  	margin-bottom: 1rem;
-  }
-  .text {
-  	font-size: 0.8rem;
-  	color: rgba(0,0,0,.5)
+  .box {
+    padding: 0.75rem 0rem 1rem;
+    border-bottom: solid 0.05rem #F2F2F2;
+
+    .radio {
+    	text-align: center;
+    }
+    .input {
+    	margin-bottom: 0.5rem;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      color: rgba(0,0,0,.5);
+      margin-bottom: 0.5rem;
+
+      &.gray {
+        color: #999999;
+      }
+    }
+    .suffix {
+      line-height: 2rem;
+      padding-right: 0.5rem;
+      color: #333333;
+    }
   }
   .money {
   	span {
+      font-weight: 600;
+      font-size: 1rem;
   		color: red;
   	}
   }
   .footer {
-    width: 14rem;
+    font-size: 0.7rem;
+    width: 100%;
     margin: auto;
-    margin-top: 2rem;
+    margin-top: 1rem;
 
     button {
-      margin-top: 0.5rem;
+      margin-top: 0.75rem;
       width: 100%;
     }
   }

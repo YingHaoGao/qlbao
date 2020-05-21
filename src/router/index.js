@@ -18,7 +18,7 @@ export default new Router({
       name: 'Sign',
       component: Sign,
       meta: {
-        title: '注册页面'
+        title: '注册'
       }
     },
     {

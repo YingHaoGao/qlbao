@@ -17,32 +17,34 @@
         <el-input placeholder="请输入联系人手机" v-model="form.phone"
           @blur="checkPhone"
           maxlength="11"
-          show-word-limit>
-          <el-button v-show="!coded" slot="append" @click="getCode">获取验证码</el-button>
-          <el-button v-show="coded" slot="append">{{codeTime}}s</el-button>
-        </el-input>
+          show-word-limit></el-input>
       </el-form-item>
       <el-form-item label="验证码">
-        <CodeInput @change="codeChange"/>
-      </el-form-item>
-      <el-form-item label="图形验证">
-        <el-input placeholder="请输入验证码" v-model="form.graphics">
-          <el-button slot="append" @click="getGraphics">{{graphics}}</el-button>
+        <el-input placeholder="请输入验证码" v-model="form.code">
+          <template slot="suffix">
+            <el-button type="text" v-show="!coded" @click="getCode">获取验证码</el-button>
+            <el-button type="text" v-show="coded" style="color: #999999;" disabled>{{codeTime}}s</el-button>
+          </template>    
         </el-input>
       </el-form-item>
-      <el-form-item label="">
-        <el-checkbox-group v-model="form.ringtone">
-          <el-checkbox label="是否开通视频彩铃" name="type"></el-checkbox>
-        </el-checkbox-group>
+      <el-form-item label="图形验证">
+        <el-input placeholder="请输入图形验证码" v-model="form.graphics">
+          <span slot="suffix" class="graphics" @click="getGraphics">{{graphics}}</span>
+        </el-input>
       </el-form-item>
     </el-form>
+    <div class="el-form-item ringtone">
+      <el-checkbox-group v-model="form.ringtone">
+        <el-checkbox label="是否为联系人自动开通" name="type"></el-checkbox>
+      </el-checkbox-group>
+    </div>
     <div class="footer">
       <el-checkbox v-model="form.deal" class="check">
         请勾选
         <el-link type="primary">《云美摄直客协议》</el-link>
         ，否则无法提交
       </el-checkbox>
-      <el-button type="primary" @click="onSubmit" round>提交</el-button>
+      <el-button type="primary" @click="onSubmit">提交</el-button>
     </div>
   </div>
 </template>
@@ -56,7 +58,7 @@ export default {
   props: {
     
   },
-  components:{ CodeInput },
+  // components:{ CodeInput },
   created() {
     this.getGraphics();
   },
@@ -169,10 +171,6 @@ export default {
           });
         })
     },
-    // 获取输入的验证码
-    codeChange(val) {
-      this.form.code = val;
-    },
     // 验证企业名称
     checkName() {
       let form = this.form;
@@ -216,12 +214,34 @@ export default {
 
 <style lang="scss" scoped>
 #sign {
-  box-sizing: border-box;
-  padding: 3rem 1rem 0rem 1rem;
+  position: relative;
 
+  .el-form-item {
+    height: 2.5rem;
+    box-sizing: border-box;
+    padding-top: 0.25rem;
+    font-size: 0.7rem;
+    margin-bottom: 0rem;
+    border-bottom: solid 0.05rem #F2F2F2;
+
+    input {
+      border: none;
+    }
+  }
+  .graphics {
+    padding: 0.25rem 0.5rem;
+    background: #F2F2F2;
+  }
+  .ringtone {
+    line-height: 2rem;
+    border-bottom: none;
+  }
   .footer {
-    width: 100%;
-    text-align: center;
+    width: 90%;
+    position: absolute;
+    bottom: 0.75rem;
+    left: 50%;
+    transform: translate(-50%, 0);
 
     .check {
       font-size: .6rem;
