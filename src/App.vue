@@ -57,9 +57,9 @@ html{
 
   #sign {
     .el-form-item__label {
-      width: 3rem !important;
       padding: 0rem;
       text-align: left;
+      font-size: 0.7rem;
       letter-spacing: 0.02rem;
     }
     .el-checkbox__inner {
