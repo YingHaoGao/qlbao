@@ -44,7 +44,7 @@
         <el-link type="primary">《云美摄直客协议》</el-link>
         ，否则无法提交
       </el-checkbox>
-      <el-button type="primary" @click="onSubmit">提交</el-button>
+      <el-button type="primary" @click="onSubmit" :disabled="disabled">提交</el-button>
     </div>
   </div>
 </template>
@@ -73,6 +73,7 @@ export default {
         ringtone: ['是否开通视频彩铃'],
         deal: false
       },
+      disabled: true,
       graphics: '',
       checkInterval: '',
       codeTime: 60,
@@ -88,6 +89,76 @@ export default {
         this.coded = false;
         clearInterval(this.codeInterval);
         this.codeTime = 60;
+      }
+    },
+    'form.name'(val) {
+      let form = this.form;
+      if (
+        val != '' && val &&
+        form.contacts != '' && form.contacts &&
+        form.phone != '' && form.phone &&
+        form.code != '' && form.code &&
+        form.graphics != '' && form.graphics
+        ) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
+    },
+    'form.contacts'(val) {
+      let form = this.form;
+      if (
+        val != '' && val &&
+        form.name != '' && form.name &&
+        form.phone != '' && form.phone &&
+        form.code != '' && form.code &&
+        form.graphics != '' && form.graphics
+        ) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
+    },
+    'form.phone'(val) {
+      let form = this.form;
+      if (
+        val != '' && val &&
+        form.contacts != '' && form.contacts &&
+        form.name != '' && form.name &&
+        form.code != '' && form.code &&
+        form.graphics != '' && form.graphics
+        ) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
+    },
+    'form.code'(val) {
+      let form = this.form;
+      if (
+        val != '' && val &&
+        form.contacts != '' && form.contacts &&
+        form.phone != '' && form.phone &&
+        form.name != '' && form.name &&
+        form.graphics != '' && form.graphics
+        ) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
+    },
+    'form.graphics'(val) {
+      let form = this.form;
+      if (
+        val != '' && val &&
+        form.contacts != '' && form.contacts &&
+        form.phone != '' && form.phone &&
+        form.code != '' && form.code &&
+        form.graphics != '' && form.graphics
+        ) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
       }
     }
   },
