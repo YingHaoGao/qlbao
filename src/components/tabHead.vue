@@ -11,7 +11,7 @@
   	<div class="title">{{title}}</div>
   	<div class="right">
   		<div v-if="isShare" class="share" @click="toShare">
-	  		<i class="iconfont" v-html="'&#xe639;'"></i>
+	  		<img :src="ICONshare">
 	  	</div>
   	</div>
   </div>
@@ -21,6 +21,7 @@
 import TOOL from '../tools.js'
 import ICONback from '../../static/icon/back.png'
 import ICONcha from '../../static/icon/cha.png'
+import ICONshare from '../../static/icon/share.png'
 
 export default {
   name: 'tabHead',
@@ -33,7 +34,8 @@ export default {
   		title: title,
   		isShare: false,
   		ICONback: ICONback,
-  		ICONcha: ICONcha
+  		ICONcha: ICONcha,
+  		ICONshare: ICONshare
   	}
   },
   watch: {

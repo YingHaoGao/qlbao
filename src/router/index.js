@@ -51,7 +51,7 @@ export default new Router({
       name: 'Pay',
       component: Pay,
       meta: {
-        title: '支付页面'
+        title: '支付'
       }
     },
     {

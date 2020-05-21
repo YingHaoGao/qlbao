@@ -38,7 +38,7 @@
         <el-checkbox label="是否为联系人自动开通" name="type"></el-checkbox>
       </el-checkbox-group>
     </div>
-    <div class="footer">
+    <div class="footer" v-show="showBtn">
       <el-checkbox v-model="form.deal" class="check">
         请勾选
         <el-link type="primary">《云美摄直客协议》</el-link>
@@ -61,6 +61,23 @@ export default {
   // components:{ CodeInput },
   created() {
     this.getGraphics();
+
+    var that = this;
+    var olbHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    //navigator.userAgent.indexOf用来判断浏览器类型
+    var isAndroid = navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1;
+    // if (isAndroid){//如果是安卓手机的浏览器
+    if (true){//如果是安卓手机的浏览器
+      window.addEventListener("resize", function() {
+        var newHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        console.log('resize', olbHeight, newHeight, olbHeight > newHeight)
+        if ( olbHeight > newHeight ){
+          that.showBtn = false;
+        }else{
+           that.showBtn = true;
+        }
+      });
+    }
   },
   data () {
     return {
@@ -70,7 +87,7 @@ export default {
         phone: '',
         code: '',
         graphics: '',
-        ringtone: ['是否开通视频彩铃'],
+        ringtone: ['是否为联系人自动开通'],
         deal: false
       },
       disabled: true,
@@ -80,7 +97,8 @@ export default {
       coded: false,
       codeVal: '',
       codeInterval: '',
-      messageEvent: false
+      messageEvent: false,
+      showBtn: true
     }
   },
   watch: {
@@ -160,6 +178,9 @@ export default {
       } else {
         this.disabled = true;
       }
+    },
+    showBtn(val) {
+      console.log('showBtn', val)
     }
   },
   methods: {
