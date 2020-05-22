@@ -193,16 +193,21 @@ export default {
         that.$http.fetch('/sms/send',{
           phone: that.form.phone,
           type: 1
-        })
+        }, that)
         .then(res => {
           console.log(res)
-          that.codeVal = res.data.code;
-          that.coded = true;
-          that.codeInterval = setInterval(() => {
-            that.codeTime -= 1
-          }, 1000)
-        }).catch(() => {
-          this.loading = false;
+          if (res.errNo == 0) {
+            this.$message({
+              message: '验证码已发送',
+              type: 'success'
+            });
+
+            that.codeVal = res.data.code;
+            that.coded = true;
+            that.codeInterval = setInterval(() => {
+              that.codeTime -= 1
+            }, 1000)
+          }
         })
       })
     },
@@ -216,6 +221,7 @@ export default {
     },
     // 提交
     onSubmit() {
+      let that = this;
       let form = this.form;
       let distributorId = this.$distributorId;
       console.log(form)
@@ -258,19 +264,21 @@ export default {
       form.isRingtone = form.ringtone.length > 0;
 
       this.$http.post('/company/register', {
-        contact_telephone: form.phone,
-        verification_code: form.code,
+        contact_telephone: Number(form.phone),
+        verification_code: Number(form.code),
         company_name: form.name,
         contact_name: form.contacts,
         open_user: form.isRingtone ? 1 : 0,
         company_pid: distributorId
-      })
+      }, that)
         .then(res => {
-          this.$router.push({path: '/account'});
-          this.$message({
-            message: '提交成功！',
-            type: 'success'
-          });
+          if (res.errNo == 0) {
+            this.$message({
+              message: '提交成功！',
+              type: 'success'
+            });
+            this.$router.push({path: '/account'});
+          }
         })
     },
     // 验证企业名称

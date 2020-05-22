@@ -31,19 +31,28 @@ Mock.mock('/api/sign', (req, res) => {
  * 结算页
  */
 // 查询价格档位
-Mock.mock('/api/getPrices', (req, res) => {
+Mock.mock('http://testapi.cailing.meisheapp.com/api/getPrices', (req, res) => {
     return [
     	{
-    		name: '3个月',
-    		id: 3
+    		level_name: '3个月',
+            type: '',
+    		id: 3,
+            seller_id: 3,
+            price: 3
     	},
     	{
-    		name: '6个月',
-    		id: 6
+    		level_name: '6个月',
+            type: '',
+            id: 6,
+            seller_id: 6,
+            price: 6
     	},
     	{
-    		name: '12个月',
-    		id: 12
+    		level_name: '12个月',
+            type: '',
+            id: 6,
+            seller_id: 6,
+            price: 6
     	},
     ]
 })

@@ -16,6 +16,7 @@ Vue.use(ElementUI);
 
 Vue.prototype.$http = http;
 Vue.prototype.$config = CONFIG;
+Vue.prototype.$distributorId = 23;
 
 new Vue({
   router,

@@ -91,8 +91,10 @@ html{
     .el-radio.is-bordered {
       width: 32%;
       margin: 0rem;
+      margin-bottom: 0.5rem;
       height: 2.8rem;
       line-height: 1.5rem;
+      float: left;
 
       &:not(:last-child) {
         margin-right: 1%;

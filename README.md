@@ -19,6 +19,7 @@ npm run build
 ## 注意
 
 	1、分销商ID存为全局变量 vue.prototype.$distributorId
+	2、$http.fetch('',{}, that) $http请求传入最后一个参数传入 this 表示关闭loading
 
 ## 配置
 

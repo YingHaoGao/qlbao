@@ -1,6 +1,8 @@
 import axios from 'axios';
 import CONFIG from '../config';
 
+import {Message} from 'element-ui'
+
 const api = {
   sign: '',
   app_key: ''
@@ -12,7 +14,6 @@ axios.defaults.baseURL = CONFIG.HTTP;
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
-    config.data = JSON.stringify(config.data);
     return config;
   },
   error => {
@@ -22,7 +23,12 @@ axios.interceptors.request.use(
 
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {
-    return response
+  console.log(response)
+  if (response.data && response.data.errNo == 400) {
+    Message({message: response.data.message, type: "error"})
+  }
+
+  return response
 }, err => {
     if (err && err.response) {
       switch (err.response.status) {
@@ -71,7 +77,6 @@ axios.interceptors.response.use(response => {
     return Promise.resolve(err.response)
 })
 
-
 /**
  * 封装get方法
  * @param url
@@ -79,7 +84,7 @@ axios.interceptors.response.use(response => {
  * @returns {Promise}
  */
 
-export function fetch(url,params={}){
+export function fetch(url,params={}, that){
   var timestamp=new Date().getTime(),
       { sign, app_key } = api;
 
@@ -93,9 +98,11 @@ export function fetch(url,params={}){
       }
     })
     .then(response => {
+      if (that)  that.loading = false;
       resolve(response.data);
     })
     .catch(err => {
+      if (that)  that.loading = false;
       reject(err)
     })
   })
@@ -110,8 +117,22 @@ export function fetch(url,params={}){
  */
 
  export function post(url,data = {}){
+  var timestamp=new Date().getTime(),
+      { sign, app_key } = api;
+
+  let form = new FormData();
+  let newData = {
+      ...data,
+      timestamp,
+      sign,
+      app_key
+     };
+  Object.keys(newData).forEach(key => {
+    form.append(key, newData[key]);
+  })
+
    return new Promise((resolve,reject) => {
-     axios.post(url,data)
+     axios.post(url, form)
           .then(response => {
             resolve(response.data);
           },err => {

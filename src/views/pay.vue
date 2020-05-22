@@ -3,26 +3,26 @@
     <div class="text">请选择支付方式</div>
   	<div class="footer">
       <div class="item">
-        <div class="payBtn weixinColor" :class="active == 'wx' ? 'active' : ''" @click="onWeiXin">
+        <div class="payBtn weixinColor" :class="form.pay_mode == 2 ? 'active' : ''" @click="onWeiXin">
           <i class="iconfont">&#xe607;</i>
           <span>微信支付</span>
         </div>
       </div>
       <div class="item">
-        <div class="payBtn alipayColor" :class="active == 'ap' ? 'active' : ''" @click="onAliPay">
+        <div class="payBtn alipayColor" :class="form.pay_mode == 1 ? 'active' : ''" @click="onAliPay">
           <i class="iconfont">&#xe629;</i>
           <span>支付宝</span>
         </div>
       </div>
       <div class="item">
-        <div class="payBtn duifongColor" :class="active == 'dg' ? 'active' : ''" @click="onDuiGong">
+        <div class="payBtn duifongColor" :class="form.pay_mode == 3 ? 'active' : ''" @click="onDuiGong">
           <img :src="ICONdg"/>
           <span>对公转账</span>
         </div>
       </div>
     </div>
     <div class="infoBox">
-      <div class="duigong" v-show="active == 'dg'">
+      <div class="duigong" v-show="pay_mode == 3">
         <p>开户行：中国工商银行股份有限公司北京紫竹桥支行</p>
         <p>账  号：0200 2355 0920 1067 897</p>
         <p>名  称：北京云摄美网络科技有限公司</p>
@@ -47,23 +47,54 @@ export default {
     return {
       money: 0,
       ICONdg: ICONdg,
-      active: ''
+      active: 0,
+      form: {
+        user_id: '',
+        price_id: '',
+        level_name: '',
+        price: '',
+        user_number: '',
+        total_price: '',
+        pay_mode: '',
+        tmp_uid: '',
+      }
     }
   },
   methods: {
   	onWeiXin () {
-      this.active = 'wx';
+      this.form.pay_mode = 1;
 
-      this.confirm()
+      this.createOrder()
   	},
   	onAliPay () {
-      this.active = 'ap';
+      this.form.pay_mode = 2;
 
-      this.confirm()
+      this.createOrder()
   	},
   	onDuiGong () {
-      this.active = 'dg';
+      this.form.pay_mode = 3;
+      
+      // this.createOrder()
   	},
+    // 创建订单
+    createOrder () {
+      let distributorId = this.$distributorId;
+      let form = this.form;
+
+      this.$http.post('/Order/create', {
+        ...form,
+        company_pid: distributorId
+      }, that)
+        .then(res => {
+          if (res.errNo == 0) {
+            this.$message({
+              message: '提交成功！',
+              type: 'success'
+            });
+            this.$router.push({path: '/account'});
+          }
+        })
+    },
     confirm (s) {
       var r=confirm('模拟进入支付完成页')
       if (r==true) {
