@@ -1,5 +1,5 @@
 <template>
-  <div id="sign">
+  <div id="sign" v-loading="loading">
   	<el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="企业名称">
         <el-input placeholder="请输入企业名称" v-model="form.name"
@@ -27,11 +27,11 @@
           </template>    
         </el-input>
       </el-form-item>
-      <el-form-item label="图形验证">
+      <!-- <el-form-item label="图形验证">
         <el-input placeholder="请输入图形验证码" v-model="form.graphics">
           <span slot="suffix" class="graphics" @click="getGraphics">{{graphics}}</span>
         </el-input>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div class="el-form-item ringtone">
       <el-checkbox-group v-model="form.ringtone">
@@ -50,17 +50,16 @@
 </template>
 
 <script>
-import CodeInput from '../components/codeInput'
 import TOOL from '../tools.js'
+import $ from 'jquery'
 
 export default {
   name: 'sign',
   props: {
     
   },
-  // components:{ CodeInput },
   created() {
-    this.getGraphics();
+    // this.getGraphics();
 
     var that = this;
     var olbHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -86,19 +85,20 @@ export default {
         contacts: '',
         phone: '',
         code: '',
-        graphics: '',
+        // graphics: '',
         ringtone: ['是否为联系人自动开通'],
         deal: false
       },
       disabled: true,
-      graphics: '',
+      // graphics: '',
       checkInterval: '',
       codeTime: 60,
       coded: false,
       codeVal: '',
       codeInterval: '',
       messageEvent: false,
-      showBtn: true
+      showBtn: true,
+      loading: false
     }
   },
   watch: {
@@ -115,8 +115,8 @@ export default {
         val != '' && val &&
         form.contacts != '' && form.contacts &&
         form.phone != '' && form.phone &&
-        form.code != '' && form.code &&
-        form.graphics != '' && form.graphics
+        form.code != '' && form.code 
+        // && form.graphics != '' && form.graphics
         ) {
         this.disabled = false;
       } else {
@@ -129,8 +129,8 @@ export default {
         val != '' && val &&
         form.name != '' && form.name &&
         form.phone != '' && form.phone &&
-        form.code != '' && form.code &&
-        form.graphics != '' && form.graphics
+        form.code != '' && form.code 
+        // && form.graphics != '' && form.graphics
         ) {
         this.disabled = false;
       } else {
@@ -143,8 +143,8 @@ export default {
         val != '' && val &&
         form.contacts != '' && form.contacts &&
         form.name != '' && form.name &&
-        form.code != '' && form.code &&
-        form.graphics != '' && form.graphics
+        form.code != '' && form.code 
+        // && form.graphics != '' && form.graphics
         ) {
         this.disabled = false;
       } else {
@@ -157,8 +157,8 @@ export default {
         val != '' && val &&
         form.contacts != '' && form.contacts &&
         form.phone != '' && form.phone &&
-        form.name != '' && form.name &&
-        form.graphics != '' && form.graphics
+        form.name != '' && form.name 
+        // && form.graphics != '' && form.graphics
         ) {
         this.disabled = false;
       } else {
@@ -188,10 +188,11 @@ export default {
     getCode() {
       let that = this;
       this.checkPhone(false, () => {
-        that.$axios.get('/api/getCode',{
-          params:{
-              phone: that.phone
-          }
+        this.loading = true;
+
+        that.$http.fetch('/sms/send',{
+          phone: that.form.phone,
+          type: 1
         })
         .then(res => {
           console.log(res)
@@ -200,13 +201,15 @@ export default {
           that.codeInterval = setInterval(() => {
             that.codeTime -= 1
           }, 1000)
+        }).catch(() => {
+          this.loading = false;
         })
       })
     },
     // 获取图形码
     getGraphics() {
       let that = this;
-      this.$axios.get('/api/getGraphics')
+      that.$http.fetch('/api/getGraphics')
         .then(res => {
           that.graphics = res.data.graphics
         })
@@ -233,15 +236,15 @@ export default {
         return
       }
       // 验证码
-      else if (this.codeVal == '' || form.code != this.codeVal) {
+      else if (form.code == '') {
         this.messageErr('请重新输入验证码')
         return
       }
-      // 图形码
-      else if (this.graphics == '' || form.graphics.toLocaleLowerCase() != this.graphics.toLocaleLowerCase()) {
-        this.messageErr('请重新输入图形码')
-        return
-      }
+      // // 图形码
+      // else if (this.graphics == '' || form.graphics.toLocaleLowerCase() != this.graphics.toLocaleLowerCase()) {
+      //   this.messageErr('请重新输入图形码')
+      //   return
+      // }
       // 协议
       else if (!form.deal) {
         this.messageErr('请查阅并勾选《云美摄直客协议》')
@@ -254,7 +257,14 @@ export default {
       form.distributorId = distributorId;
       form.isRingtone = form.ringtone.length > 0;
 
-      this.$axios.post('/api/sign', form)
+      this.$http.post('/company/register', {
+        contact_telephone: form.phone,
+        verification_code: form.code,
+        company_name: form.name,
+        contact_name: form.contacts,
+        open_user: form.isRingtone ? 1 : 0,
+        company_pid: distributorId
+      })
         .then(res => {
           this.$router.push({path: '/account'});
           this.$message({

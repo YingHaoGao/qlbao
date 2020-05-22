@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 import ElementUI from 'element-ui';
+import { http } from './http.js'
+import CONFIG from '../config'
 
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -12,7 +14,8 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI);
 
-Vue.prototype.$axios = axios;
+Vue.prototype.$http = http;
+Vue.prototype.$config = CONFIG;
 
 new Vue({
   router,

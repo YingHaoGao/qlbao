@@ -19,7 +19,7 @@
 
 <script>
 import QRCode from "qrcodejs2";
-import CONFIG from "../config.js";
+import CONFIG from "../../config/index.js";
 import TOOL from '../tools.js'
 import IMG from '../../public/code.jpg'
 
