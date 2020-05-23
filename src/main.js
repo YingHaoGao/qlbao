@@ -5,14 +5,20 @@ import axios from 'axios'
 import ElementUI from 'element-ui';
 import { http } from './http.js'
 import CONFIG from '../config'
+import { Swipe, SwipeItem } from 'vant'
+import VideoPlayer from 'vue-video-player'
 
 import 'element-ui/lib/theme-chalk/index.css'
 
 require('./mock/index.js');
+require('video.js/dist/video-js.css');
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
+Vue.use(VideoPlayer);
+Vue.use(Swipe);
+Vue.use(SwipeItem);
 
 Vue.prototype.$http = http;
 Vue.prototype.$config = CONFIG;

@@ -7,6 +7,7 @@ import Pay from '../views/pay.vue'
 import Payment from '../views/payment.vue'
 import Share from '../views/share.vue'
 import SignHtml from '../views/signHtml.vue'
+import Home from '../views/home.vue'
 
 Vue.use(Router)
 
@@ -15,6 +16,15 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Home',
+      component: Home,
+      meta: {
+        title: '开通您的企业视频彩铃',
+    
+      }
+    },
+    {
+      path: '/sign',
       name: 'Sign',
       component: Sign,
       meta: {
