@@ -41,8 +41,11 @@ html{
     height: calc( 100% - 2rem );
     padding: 1rem 0.5rem;
     box-sizing: border-box;
-    background-image: url('../static/icon/background.png');
-    background-size: cover;
+    
+    &:not(#payment) {
+      background-image: url('../static/icon/background.png');
+      background-size: cover;
+    }
 
     .vessel {
       width: calc( 100% - 1rem );
