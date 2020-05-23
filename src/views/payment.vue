@@ -6,7 +6,9 @@
   	</div>
   	<div class="names">
   		<div class="name" v-for="(item, idx) in list" :key="idx">
-  			{{item.name}} {{item.phone}} {{item.operator}} {{typeToNc(item.type)}}
+  			{{item.real_name}}
+        <span>{{item.telephone}}</span>
+        {{telepToNc(item.telephone_type)}}
   		</div>
   	</div>
   	<div class="type">
@@ -26,6 +28,7 @@ export default {
   },
   created () {
   	this.getInfo();
+    this.getOrder();
   },
   mounted () {
     this.$alert('公司管理员可登陆 www.weuq.com 网页统一添加号码', '提示');
@@ -34,20 +37,21 @@ export default {
   	type(val) {
   		let typeNC = ''
   		switch(val) {
-  			case 0:
-  				typeNC = '未提交';
-  				break;
+        case 0:
+          typeNC = '未支付';
+          break;
         case 1:
-          typeNC = '审核中';
+          typeNC = '已支付';
           break;
         case 2:
-          typeNC = '审核失败';
+          typeNC = '支付失败';
           break;
         case 3:
-          typeNC = '审核成功';
+          typeNC = '退款中';
           break;
-  			default:
-  				typeNC = '获取失败';
+        case 4:
+          typeNC = '已退款';
+          break;
   		}
 
   		this.typeNC = typeNC;
@@ -65,15 +69,34 @@ export default {
   	getInfo () {
       let that = this,
           params = {
-            distributorId: that.$distributorId
+            company_id: that.$distributorId
           };
 
-  		this.$axios.get('/api/getType',{params})
+  		this.$http.fetch('/user/getList',{params})
         .then(function(res){
-          that.list = res.data.list;
-          that.type = res.data.type;
+          that.list = res.data;
   	    });
   	},
+    // 查询订单状态
+    getOrder () {
+      let that = this,
+        params = {
+          order_id: that.$route.query.order_id
+        };
+
+      if (params.order_id) {
+        this.$http.fetch('/order/stateusByOrderId',params)
+        .then(function(res){
+          that.type = res.data.state;
+        });
+      } else {
+        this.$message.error({
+          showClose: true,
+          message: '获取订单id失败'
+        });
+        this.typeNC = '获取失败'
+      }
+    },
   	// 添加新号码
   	onNewPhone () {
       this.$router.push({path: '/account', query: {type: 1}});
@@ -82,15 +105,18 @@ export default {
   	onCreate () {
       this.$router.push({path: '/share'});
   	},
-    // 联系人状态转换
-    typeToNc (t) {
+    // 运营商转换
+    telepToNc (t) {
       let typeNC = ''
       switch(t) {
-        case 0:
-          typeNC = '未提交';
-          break;
         case 1:
-          typeNC = '已提交';
+          typeNC = '移动';
+          break;
+        case 2:
+          typeNC = '联通';
+          break;
+        case 3:
+          typeNC = '电信';
           break;
       }
 
@@ -122,6 +148,10 @@ export default {
 
 		.name {
 			font-size: 0.7rem;
+
+      span {
+        padding: 0rem 0.25rem;
+      }
 		}
 	}
 	.type {

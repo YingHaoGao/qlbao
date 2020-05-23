@@ -17,6 +17,16 @@ Vue.use(ElementUI);
 Vue.prototype.$http = http;
 Vue.prototype.$config = CONFIG;
 Vue.prototype.$distributorId = 23;
+Vue.prototype.$tmp_uid = false;
+
+var ua = navigator.userAgent.toLowerCase();  
+if(ua.match(/MicroMessenger/i)=="micromessenger") {    
+	Vue.prototype.$parm = returnCitySN["cip"];
+	Vue.prototype.$browser = 'ip';
+} else {  
+  Vue.prototype.$parm = returnCitySN["cip"]; 
+	Vue.prototype.$browser = 'openid';
+}  
 
 new Vue({
   router,

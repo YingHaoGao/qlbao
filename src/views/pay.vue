@@ -50,6 +50,7 @@ export default {
     this.getBank()
   },
   data() {
+    let tmp_uid = this.$tmp_uid;
     return {
       ICONdg: ICONdg,
       active: 0,
@@ -61,7 +62,7 @@ export default {
         user_number: '',
         total_price: '',
         pay_mode: '',
-        tmp_uid: '',
+        tmp_uid: tmp_uid,
       },
       bank: [
         {
