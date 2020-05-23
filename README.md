@@ -24,6 +24,17 @@ npm run build
 	3、临时用户id存为全局变量  vue.prototype.$tmp_uid
 	4、临时用户ip 或 openid 存为全局变量  vue.prototype.$parm
 
+## 页面 query 传参
+	
+	1、 /pay   	
+						price_id 				价格id
+						level_name			代理价名称
+		        price						代理价
+		        user_number 		开通用户数量
+		        total_price 		总价
+	2、 /payment
+						order_id				订单id
+
 ## 配置
 
 	1、config 文件 HTTP 属性为服务器地址
