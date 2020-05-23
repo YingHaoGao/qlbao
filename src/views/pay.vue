@@ -22,12 +22,12 @@
       </div>
     </div>
     <div class="infoBox">
-      <div class="duigong" v-show="form.pay_mode == 3">
-        <p>开户行：中国工商银行股份有限公司北京紫竹桥支行</p>
-        <p>账  号：0200 2355 0920 1067 897</p>
-        <p>名  称：北京云摄美网络科技有限公司</p>
-        <p>税  号：91110108MA018DH561</p>
-        <p>地  址：北京市海淀区西四环北路131号院1号楼2层203室</p>
+      <div v-for="item in bank" :key="item.id" class="duigong" v-show="form.pay_mode == 3">
+        <p>开户行：{{item.bank_name}}</p>
+        <p>账  号：{{item.card_number}}</p>
+        <p>名  称：{{item.account_name}}</p>
+        <p>税  号：{{item.address}}</p>
+        <p>地  址：{{item.address}}</p>
       </div>
     </div>
   </div>
@@ -46,6 +46,8 @@ export default {
     this.form.price = this.$route.query.price;
     this.form.user_number = this.$route.query.user_number;
     this.form.total_price = this.$route.query.total_price;
+
+    this.getBank()
   },
   data() {
     return {
@@ -60,10 +62,33 @@ export default {
         total_price: '',
         pay_mode: '',
         tmp_uid: '',
-      }
+      },
+      bank: [
+        {
+          id: '',
+          bank: '',
+          bank_name: '',
+          account_name: '',
+          card_number: '',
+          tax_num: '',
+          address: ''
+        }
+      ]
     }
   },
   methods: {
+    // 获取对公转账信息
+    getBank () {
+      let that = this,
+          params = {
+            type: 'selling',
+            company_pid: that.$distributorId
+          }
+      this.$http.fetch('BankAccount/getList')
+        .then(res => {
+          that.bank = res.data
+        })
+    },
   	onWeiXin () {
       this.form.pay_mode = 2;
 
@@ -119,6 +144,8 @@ export default {
 
     .duigong{
       font-size: .6rem;
+      padding: 0.25rem;
+      border-bottom: solid 0.02rem #F2F2F2;
     }
   }
   .payBtn {
