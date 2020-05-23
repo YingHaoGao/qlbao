@@ -53,14 +53,17 @@ export default {
     },
     num(val) {
       var obj = (this.prices.find(item => item.id == this.radio));
-      var num = isNaN(val) ? 0 : val;
-      this.money = num * obj.price
 
-      if (val >= 200) {
-        this.messageErr('提示：请联系VIP专属客服 010-54123456');
-      }
-      else {
-        if (this.messageEvent) this.messageEvent.close();
+      if (obj) {
+        var num = isNaN(val) ? 0 : val;
+        this.money = num * obj.price
+
+        if (val >= 200) {
+          this.messageErr('提示：请联系VIP专属客服 010-54123456');
+        }
+        else {
+          if (this.messageEvent) this.messageEvent.close();
+        }
       }
     }
   },
@@ -76,32 +79,6 @@ export default {
         .then(res => {
           that.prices = res.data
         })
-        // that.prices = [
-        //     {
-        //       level_name: '3个月',
-        //           type: '',
-        //           id: 3,
-        //           seller_id: 3,
-        //           price: 3,
-        //           remarks: '30元/人'
-        //     },
-        //     {
-        //       level_name: '6个月',
-        //           type: '',
-        //           id: 6,
-        //           seller_id: 6,
-        //           price: 6,
-        //           remarks: '60元/人'
-        //     },
-        //     {
-        //       level_name: '12个月',
-        //           type: '',
-        //           id: 12,
-        //           seller_id: 12,
-        //           price: 12,
-        //           remarks: '120元/人/月'
-        //     }
-        //   ]
     },
   	// 立即付款
   	onSubmit () {
@@ -110,11 +87,12 @@ export default {
           num = parseInt(that.num),
           money = that.money,
           type = that.$route.query.type == 1 ? 'append' : 'create',
-          distributorId = that.$distributorId;
+          distributorId = that.$distributorId,
+          obj = that.prices.find(item => item.id == radio );
       const form = {
         distributorId, type, radio, num, money
       }
-      console.log(form)
+
       if (radio == 0) {
         this.messageErr('请勾选开通周期');
         return
@@ -131,11 +109,13 @@ export default {
         if (this.messageEvent) this.messageEvent.close()
       }
 
-      // this.$axios.post('/api/statement', form)
-      //   .then(res => {
-      //     this.$router.push({path: '/pay', query: {money: form.money}});
-      //   })
-      this.$router.push({path: '/pay', query: {money: form.money}});
+      this.$router.push({path: '/pay', query: {
+        price_id: radio,
+        level_name: obj.level_name,
+        price: obj.price,
+        user_number: num,
+        total_price: money
+      }});
   	},
     // 错误提示
     messageErr(msg) {

@@ -201,8 +201,6 @@ export default {
               message: '验证码已发送',
               type: 'success'
             });
-
-            that.codeVal = res.data.code;
             that.coded = true;
             that.codeInterval = setInterval(() => {
               that.codeTime -= 1

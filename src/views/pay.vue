@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="infoBox">
-      <div class="duigong" v-show="pay_mode == 3">
+      <div class="duigong" v-show="form.pay_mode == 3">
         <p>开户行：中国工商银行股份有限公司北京紫竹桥支行</p>
         <p>账  号：0200 2355 0920 1067 897</p>
         <p>名  称：北京云摄美网络科技有限公司</p>
@@ -41,11 +41,14 @@ export default {
     
   },
   created() {
-    this.money = this.$route.query.money;
+    this.form.price_id = this.$route.query.price_id;
+    this.form.level_name = this.$route.query.level_name;
+    this.form.price = this.$route.query.price;
+    this.form.user_number = this.$route.query.user_number;
+    this.form.total_price = this.$route.query.total_price;
   },
   data() {
     return {
-      money: 0,
       ICONdg: ICONdg,
       active: 0,
       form: {
@@ -62,24 +65,25 @@ export default {
   },
   methods: {
   	onWeiXin () {
-      this.form.pay_mode = 1;
+      this.form.pay_mode = 2;
 
       this.createOrder()
   	},
   	onAliPay () {
-      this.form.pay_mode = 2;
+      this.form.pay_mode = 1;
 
       this.createOrder()
   	},
   	onDuiGong () {
       this.form.pay_mode = 3;
-      
+
       // this.createOrder()
   	},
     // 创建订单
     createOrder () {
       let distributorId = this.$distributorId;
       let form = this.form;
+      let that = this;
 
       this.$http.post('/Order/create', {
         ...form,
@@ -88,18 +92,15 @@ export default {
         .then(res => {
           if (res.errNo == 0) {
             this.$message({
-              message: '提交成功！',
+              message: '创建订单成功',
               type: 'success'
             });
-            this.$router.push({path: '/account'});
+            this.$router.push({path: '/payment', query: {
+              order_id: res.data.order_id,
+              order_code: res.data.order_code
+            }});
           }
         })
-    },
-    confirm (s) {
-      var r=confirm('模拟进入支付完成页')
-      if (r==true) {
-          this.$router.push({path: '/payment'});
-        }
     }
   }
 }
