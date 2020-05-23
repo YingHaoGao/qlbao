@@ -39,8 +39,18 @@ html{
   #payment,
   #share {
     height: calc( 100% - 2rem );
-    padding: 0rem 0.75rem;
+    padding: 1rem 0.5rem;
     box-sizing: border-box;
+    background-image: url('../static/icon/background.png');
+    background-size: cover;
+
+    .vessel {
+      width: calc( 100% - 1rem );
+      box-sizing: border-box;
+      margin: auto;
+      padding: 1.25rem 0.75rem;
+      background-color: rgba(242,242,242,0.4);
+    }
   }
 
   #qrcode img {

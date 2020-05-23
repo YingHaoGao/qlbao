@@ -1,50 +1,52 @@
 <template>
   <div id="sign" v-loading="loading">
-  	<el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="企业名称">
-        <el-input placeholder="请输入企业名称" v-model="form.name"
-          @blur="checkName"
-          maxlength="16"
-          show-word-limit></el-input>
-      </el-form-item>
-      <el-form-item label="联系人">
-        <el-input placeholder="请输入联系人信息" v-model="form.contacts"
-          @blur="checkContacts"
-          maxlength="8"
-          show-word-limit></el-input>
-      </el-form-item>
-      <el-form-item label="联系电话">
-        <el-input placeholder="请输入联系人手机" v-model="form.phone"
-          @blur="checkPhone"
-          maxlength="11"
-          show-word-limit></el-input>
-      </el-form-item>
-      <el-form-item label="验证码">
-        <el-input placeholder="请输入验证码" v-model="form.code">
-          <template slot="suffix">
-            <el-button type="text" v-show="!coded" @click="getCode">获取验证码</el-button>
-            <el-button type="text" v-show="coded" style="color: #999999;" disabled>{{codeTime}}s</el-button>
-          </template>    
-        </el-input>
-      </el-form-item>
-      <!-- <el-form-item label="图形验证">
-        <el-input placeholder="请输入图形验证码" v-model="form.graphics">
-          <span slot="suffix" class="graphics" @click="getGraphics">{{graphics}}</span>
-        </el-input>
-      </el-form-item> -->
-    </el-form>
-    <div class="el-form-item ringtone">
-      <el-checkbox-group v-model="form.ringtone">
-        <el-checkbox label="是否为联系人自动开通" name="type"></el-checkbox>
-      </el-checkbox-group>
-    </div>
-    <div class="footer" v-show="showBtn">
-      <el-checkbox v-model="form.deal" class="check">
-        请勾选
-        <el-link type="primary">《云美摄直客协议》</el-link>
-        ，否则无法提交
-      </el-checkbox>
-      <el-button type="primary" @click="onSubmit" :disabled="disabled">提交</el-button>
+  	<div class="vessel">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="企业名称">
+          <el-input placeholder="请输入企业名称" v-model="form.name"
+            @blur="checkName"
+            maxlength="16"
+            show-word-limit></el-input>
+        </el-form-item>
+        <el-form-item label="联系人">
+          <el-input placeholder="请输入联系人信息" v-model="form.contacts"
+            @blur="checkContacts"
+            maxlength="8"
+            show-word-limit></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话">
+          <el-input placeholder="请输入联系人手机" v-model="form.phone"
+            @blur="checkPhone"
+            maxlength="11"
+            show-word-limit></el-input>
+        </el-form-item>
+        <el-form-item label="验证码">
+          <el-input placeholder="请输入验证码" v-model="form.code">
+            <template slot="suffix">
+              <el-button type="text" v-show="!coded" @click="getCode">获取验证码</el-button>
+              <el-button type="text" v-show="coded" style="color: #999999;" disabled>{{codeTime}}s</el-button>
+            </template>    
+          </el-input>
+        </el-form-item>
+        <!-- <el-form-item label="图形验证">
+          <el-input placeholder="请输入图形验证码" v-model="form.graphics">
+            <span slot="suffix" class="graphics" @click="getGraphics">{{graphics}}</span>
+          </el-input>
+        </el-form-item> -->
+      </el-form>
+      <div class="el-form-item ringtone">
+        <el-checkbox-group v-model="form.ringtone">
+          <el-checkbox label="是否为联系人自动开通" name="type"></el-checkbox>
+        </el-checkbox-group>
+      </div>
+      <div class="footer" v-show="showBtn">
+        <el-checkbox v-model="form.deal" class="check">
+          请勾选
+          <el-link type="primary">《云美摄直客协议》</el-link>
+          ，否则无法提交
+        </el-checkbox>
+        <el-button type="primary" @click="onSubmit" round :disabled="disabled">提交</el-button>
+      </div> 
     </div>
   </div>
 </template>
@@ -322,7 +324,7 @@ export default {
 
 <style lang="scss" scoped>
 #sign {
-  position: relative;
+  // position: relative;
 
   .el-form-item {
     height: 2.5rem;
@@ -345,11 +347,12 @@ export default {
     border-bottom: none;
   }
   .footer {
-    width: 90%;
-    position: absolute;
-    bottom: 0.75rem;
-    left: 50%;
-    transform: translate(-50%, 0);
+    width: 100%;
+    margin-top: 3.5rem;
+    // position: absolute;
+    // bottom: 0.75rem;
+    // left: 50%;
+    // transform: translate(-50%, 0);
 
     .check {
       font-size: .6rem;
