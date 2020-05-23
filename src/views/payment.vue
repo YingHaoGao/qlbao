@@ -99,7 +99,7 @@ export default {
     },
   	// 添加新号码
   	onNewPhone () {
-      this.$router.push({path: '/account', query: {type: 1}});
+      this.$router.push({path: '/account', query: {add: true}});
   	},
   	// 生成我的邀请卡
   	onCreate () {

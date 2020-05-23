@@ -31,6 +31,7 @@ export default {
     
   },
   created() {
+    this.isAdd = !!this.$route.query.add
     this.getPrices();
   },
   data() {
@@ -40,7 +41,8 @@ export default {
   		num: 0,
       remarks: '10元/人/月',
       prices: [],
-      messageEvent: false
+      messageEvent: false,
+      isAdd: false
   	}
   },
   watch: {
@@ -114,7 +116,8 @@ export default {
         level_name: obj.level_name,
         price: obj.price,
         user_number: num,
-        total_price: money
+        total_price: money,
+        isAdd: that.isAdd
       }});
   	},
     // 错误提示
