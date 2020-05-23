@@ -21,12 +21,13 @@
         </div>
       </div>
       <div class="infoBox">
-      <div v-for="item in bank" :key="item.id" class="duigong" v-show="form.pay_mode == 3">
-        <p>开户行：{{item.bank_name}}</p>
-        <p>账  号：{{item.card_number}}</p>
-        <p>名  称：{{item.account_name}}</p>
-        <p>税  号：{{item.address}}</p>
-        <p>地  址：{{item.address}}</p>
+        <div v-for="item in bank" :key="item.id" class="duigong" v-show="form.pay_mode == 3">
+          <p>开户行：{{item.bank_name}}</p>
+          <p>账  号：{{item.card_number}}</p>
+          <p>名  称：{{item.account_name}}</p>
+          <p>税  号：{{item.address}}</p>
+          <p>地  址：{{item.address}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -133,11 +134,11 @@ export default {
 
 <style lang="scss" scoped>
 #pay {
-  padding: 0 1.3rem;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+
   .text {
     font-size: 0.7rem;
     padding: 1.5rem 0rem;
@@ -150,7 +151,7 @@ export default {
 
     .duigong{
       font-size: .6rem;
-      padding: 0.25rem;
+      padding: 0.25rem 0.75rem;
       line-height:0.85rem;
       border-bottom: solid 0.02rem #F2F2F2;
       text-align: left;
@@ -172,33 +173,17 @@ export default {
     box-sizing: border-box;
     position: relative;
 
-    &.active {
-      border: solid 0.1rem #4B8AF3;
-    }
     &.active.duifongColor::after {
       content: '';
       display: block;
       position: absolute;
-      bottom: -0.3rem;
-      left: 5.5rem;
-      width: 0.5rem;
-      height: 0.5rem;
-      border: solid 0.1rem #4B8AF3;
+      bottom: -0.2rem;
+      left: 5.6rem;
+      width: 0.4rem;
+      height: 0.4rem;
       transform: rotate(45deg);
       z-index: 1;
       background-color: #fff;
-    }
-    &.active.duifongColor::before {
-      content: '';
-      display: block;
-      position: absolute;
-      bottom: 0rem;
-      left: 0rem;
-      width: 100%;
-      height: 0.5rem;
-      z-index: 10;
-      background-color: #fff;
-      border-radius: .3rem;
     }
   }
   .weixinColor,.alipayColor,.duifongColor {

@@ -2,7 +2,7 @@
   <div id="payment">
     <div class="pay-status-box">
       <div class="status-left">
-        <div class="status-name">状态：</div>
+        <div class="status-name">状态</div>
         <div class="status-type">{{typeNC}}</div>
       </div>
       <div class="status-img-right">
@@ -17,7 +17,7 @@
   		</div>
   	</div>
   	<div class="buttons">
-  		<el-button type="primary" @click="onNewPhone">添加新号码</el-button>
+  		<el-button @click="onNewPhone">添加新号码</el-button>
   		<el-button @click="onCreate">生成我的邀请卡</el-button>
   	</div>
   	<!-- <div class="code">
@@ -135,8 +135,9 @@ export default {
 <style lang="scss" scoped>
 #payment {
   box-sizing: border-box;
-  padding: 0;
+  padding: 2rem 0rem 0rem 0rem;
   background-color: #F2F2F2;
+
   .pay-status-box{
     width: 100%;
     height: 5.8rem;
@@ -144,8 +145,10 @@ export default {
     background:linear-gradient(228deg,rgba(210,210,255,1) 0%,rgba(161,161,249,1) 100%);
     display: flex;
     align-items: center;
+
     .status-left{
       width: 50%;
+
       .status-name {
         font-size: .8rem;
         font-family:PingFangSC-Regular,PingFang SC;
@@ -175,19 +178,22 @@ export default {
 	.buttons {
     width: 100%;
     padding: 1rem 0.75rem;
+    padding-bottom: 0rem;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-		button {
 
+		button {
 			width: 8rem;
 		}
 	}
+
 	.names {
 		background:rgba(255,255,255,1);
     width: 100%;
     // height: 4.2rem;
     padding: .75rem;
+
 		.name {
 			font-size: 0.8rem;
       font-family:PingFangSC-Regular,PingFang SC;
@@ -196,6 +202,7 @@ export default {
       line-height:1.1rem;
       margin-top: 0.5rem;
       display: flex;
+      
       .name-title{
         width: 2.5rem;
         text-align: left;

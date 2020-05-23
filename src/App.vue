@@ -38,8 +38,8 @@ html{
   #pay,
   #payment,
   #share {
-    height: calc( 100% - 2rem );
-    padding: 1rem 0.5rem;
+    height: 100%;
+    padding: 3rem 0.5rem 1rem 0.5rem;
     box-sizing: border-box;
     
     &:not(#payment) {
@@ -75,25 +75,47 @@ html{
       font-size: 0.7rem;
       letter-spacing: 0.02rem;
     }
-    .el-checkbox__inner {
-      border-radius: 50%;
-    }
-    .el-form-item__content {
-      margin-left: 4rem !important;
-    }
     .el-input__inner {
       border: none;
-      padding-left: 0rem;
+      padding-left: 0.5rem;
+      height: 2.3rem;
+      border: solid 0.05rem #fff;
+      border-radius: 2.3rem;
+      background: none;
+      color: #fff;
 
+      &::-webkit-input-placeholder {
+        color: #fff;
+      }
+      &::-moz-placeholder {
+        color: #fff;
+      }
+      &::-ms-input-placeholder {
+        color: #fff;
+      }
+    }
+    .el-checkbox__inner {
+      border-radius: 50%;
+      background: none;
+    }
+    .el-form-item__content {
+      margin-left: 0rem !important;
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner,
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+      border-color: red;
+      background: red !important;
+    }
+    .el-input .el-input__count .el-input__count-inner {
+      background: none;
+      color: #fff;
     }
     .el-input__count-inner {
       color: #999999;
     }
-    .el-checkbox__input.is-checked+.el-checkbox__label {
-      color: #333333;
-    }
     .el-checkbox__label {
       font-size: 0.5rem;
+      color: #fff;
     }
   }
 
@@ -101,16 +123,49 @@ html{
     .el-radio__input {
       display: none;
     }
+    .el-input__inner {
+      border: none;
+      padding-left: 0.5rem;
+      height: 2.3rem;
+      border: solid 0.05rem #fff;
+      border-radius: 2.3rem;
+      background: none;
+      color: #fff;
+
+      &::-webkit-input-placeholder {
+        color: #fff;
+      }
+      &::-moz-placeholder {
+        color: #fff;
+      }
+      &::-ms-input-placeholder {
+        color: #fff;
+      }
+    }
     .el-radio.is-bordered {
-      width: 32%;
+      width: 31%;
       margin: 0rem;
       margin-bottom: 0.5rem;
-      height: 2.8rem;
-      line-height: 1.5rem;
+      height: 2.4rem;
+      line-height: 2.3rem;
       float: left;
+      padding: 0rem;
+      background: #fff;
 
       &:not(:last-child) {
-        margin-right: 1%;
+        margin-right: 3.33%;
+      }
+      &.is-checked {
+        background: #5E43FA !important;
+        border-color: #5E43FA !important;
+
+        .el-radio__label {
+          color: #fff;
+        }
+      }
+
+      .el-radio__label {
+        padding: 0rem;
       }
     }
     .el-radio.is-bordered.is-checked {

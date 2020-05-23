@@ -2,31 +2,28 @@
   <div id="sign" v-loading="loading">
   	<div class="vessel">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="企业名称">
+        <el-form-item>
           <el-input placeholder="请输入企业名称" v-model="form.name"
             @blur="checkName"
             maxlength="16"
             show-word-limit></el-input>
         </el-form-item>
-        <el-form-item label="联系人">
+        <el-form-item>
           <el-input placeholder="请输入联系人信息" v-model="form.contacts"
             @blur="checkContacts"
             maxlength="8"
             show-word-limit></el-input>
         </el-form-item>
-        <el-form-item label="联系电话">
+        <el-form-item>
           <el-input placeholder="请输入联系人手机" v-model="form.phone"
             @blur="checkPhone"
             maxlength="11"
             show-word-limit></el-input>
         </el-form-item>
-        <el-form-item label="验证码">
-          <el-input placeholder="请输入验证码" v-model="form.code">
-            <template slot="suffix">
-              <el-button type="text" v-show="!coded" @click="getCode">获取验证码</el-button>
-              <el-button type="text" v-show="coded" style="color: #999999;" disabled>{{codeTime}}s</el-button>
-            </template>    
-          </el-input>
+        <el-form-item>
+          <el-input class="codeInput" placeholder="请输入验证码" v-model="form.code"></el-input>
+          <el-button type="text" class="codeBtn" v-show="!coded" @click="getCode">获取验证码</el-button>
+          <el-button type="text" class="codeTime" v-show="coded" style="color: #999999;" disabled>{{codeTime}}s</el-button>
         </el-form-item>
         <!-- <el-form-item label="图形验证">
           <el-input placeholder="请输入图形验证码" v-model="form.graphics">
@@ -45,7 +42,7 @@
           <el-link type="primary">《云美摄直客协议》</el-link>
           ，否则无法提交
         </el-checkbox>
-        <el-button type="primary" @click="onSubmit" round :disabled="disabled">提交</el-button>
+        <el-button type="primary" @click="onSubmit" :disabled="disabled" round>提交</el-button>
       </div> 
     </div>
   </div>
@@ -273,6 +270,8 @@ export default {
       }, that)
         .then(res => {
           if (res.errNo == 0) {
+            this.$distributorId = res.data.company_id;
+            // this.$tmp_uid = res.data.user_id;
             this.$message({
               message: '提交成功！',
               type: 'success'
@@ -324,15 +323,34 @@ export default {
 
 <style lang="scss" scoped>
 #sign {
-  // position: relative;
 
+  .vessel {
+    position: absolute;
+    top: calc( 50% + 1rem );
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
   .el-form-item {
-    height: 2.5rem;
+    height: 2.3rem;
     box-sizing: border-box;
-    padding-top: 0.25rem;
     font-size: 0.7rem;
     margin-bottom: 0rem;
-    border-bottom: solid 0.05rem #F2F2F2;
+
+    &:not(:first-child){
+      margin-top: 0.5rem;
+    }
+
+    .codeInput {
+      width: calc( 100% - 5.6rem );
+    }
+    .codeBtn,.codeTime {
+      margin-left: 0.5rem;
+      width: 5.1rem;
+      height: 2.3rem;
+      border: solid 0.05rem #fff;
+      border-radius: 2.3rem;
+      color: #FD3B44 !important;
+    }
 
     input {
       border: none;
@@ -349,18 +367,20 @@ export default {
   .footer {
     width: 100%;
     margin-top: 3.5rem;
-    // position: absolute;
-    // bottom: 0.75rem;
-    // left: 50%;
-    // transform: translate(-50%, 0);
 
     .check {
       font-size: .6rem;
+    }
+    .el-link.el-link--primary {
+      color: red;
     }
 
     button {
       margin-top: 0.5rem;
       width: 100%;
+      font-size: 0.9rem;
+      background: #5E43FA;
+      border-color: #5E43FA;
     }
   }
 }

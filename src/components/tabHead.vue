@@ -80,6 +80,10 @@ export default {
   -o-user-select: none;
   user-select: none;
   border-bottom: solid 0.05rem #F2F2F2;
+  position: fixed;
+  left: 0rem;
+  right: 0rem;
+  background: #fff;
 
 	.left,.right {
 		position: absolute;
