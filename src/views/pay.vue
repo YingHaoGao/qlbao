@@ -1,27 +1,26 @@
 <template>
   <div id="pay">
-    <div class="text">请选择支付方式</div>
   	<div class="footer">
+      <div class="text">请选择支付方式</div>
       <div class="item">
         <div class="payBtn weixinColor" :class="form.pay_mode == 2 ? 'active' : ''" @click="onWeiXin">
-          <i class="iconfont">&#xe607;</i>
-          <span>微信支付</span>
+          <!-- <i class="iconfont">&#xe607;</i>
+          <span>微信支付</span> -->
         </div>
       </div>
       <div class="item">
         <div class="payBtn alipayColor" :class="form.pay_mode == 1 ? 'active' : ''" @click="onAliPay">
-          <i class="iconfont">&#xe629;</i>
-          <span>支付宝</span>
+          <!-- <i class="iconfont">&#xe629;</i>
+          <span>支付宝</span> -->
         </div>
       </div>
       <div class="item">
         <div class="payBtn duifongColor" :class="form.pay_mode == 3 ? 'active' : ''" @click="onDuiGong">
-          <img :src="ICONdg"/>
-          <span>对公转账</span>
+          <!-- <img :src="ICONdg"/>
+          <span>对公转账</span> -->
         </div>
       </div>
-    </div>
-    <div class="infoBox">
+      <div class="infoBox">
       <div v-for="item in bank" :key="item.id" class="duigong" v-show="form.pay_mode == 3">
         <p>开户行：{{item.bank_name}}</p>
         <p>账  号：{{item.card_number}}</p>
@@ -134,11 +133,17 @@ export default {
 
 <style lang="scss" scoped>
 #pay {
+  padding: 0 1.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   .text {
     font-size: 0.7rem;
-    border-bottom: solid 0.05rem #F2F2F2;
-    padding: 0.75rem 0rem;
-    color: #999999;
+    padding: 1.5rem 0rem;
+    font-family:PingFang-SC-Bold,PingFang-SC;
+    font-weight:bold;
+    color:rgba(255,255,255,1);
   }
   .infoBox {
     min-height: 4rem;
@@ -146,18 +151,23 @@ export default {
     .duigong{
       font-size: .6rem;
       padding: 0.25rem;
+      line-height:0.85rem;
       border-bottom: solid 0.02rem #F2F2F2;
+      text-align: left;
+      font-family:PingFang-SC-Regular,PingFang-SC;
+      font-weight:400;
+      color:rgba(255,255,255,1);
     }
   }
   .payBtn {
-    padding: 0.4rem 0rem;
+    // padding: 0.4rem 0rem;
     border: solid 0.05rem #CDCDCD;
-    border-radius: 0.2rem;
+    border-radius: 0.3rem;
     font-size: 0.7rem;
-    width: 9.5rem;
+    width: 12.05rem;
     text-align: center;
     margin: auto;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     height: 2.7rem;
     box-sizing: border-box;
     position: relative;
@@ -170,7 +180,7 @@ export default {
       display: block;
       position: absolute;
       bottom: -0.3rem;
-      left: .5rem;
+      left: 5.5rem;
       width: 0.5rem;
       height: 0.5rem;
       border: solid 0.1rem #4B8AF3;
@@ -184,10 +194,11 @@ export default {
       position: absolute;
       bottom: 0rem;
       left: 0rem;
-      width: 2rem;
-      height: 0.8rem;
+      width: 100%;
+      height: 0.5rem;
       z-index: 10;
       background-color: #fff;
+      border-radius: .3rem;
     }
   }
   .weixinColor,.alipayColor,.duifongColor {
@@ -198,18 +209,24 @@ export default {
     }
   }
   .weixinColor {
+    background-image: url("../../static/icon/weixin.png");
+    background-size: cover;
     .iconfont {
       color: #00C901;
       font-size: 1.7rem;
     }
   }
   .alipayColor {
+    background-image: url("../../static/icon/alipay.png");
+    background-size: cover;
     .iconfont {
       color: #00A2E9;
       font-size: 1.7rem;
     }
   }
   .duifongColor {
+    background-image: url("../../static/icon/accounts.png");
+    background-size: cover;
     img {
       width: 1.7rem;
       height: 1.7rem;
@@ -219,10 +236,12 @@ export default {
     }
   }
   .footer {
-    width: 90%;
+    width: 100%;
+    height: 25rem;
     margin: auto;
-    padding-top: 1rem;
+    background:rgba(242,242,242,0.4);
     text-align: center;
+    overflow: scroll;
 
     button {
       margin-top: 0.5rem;

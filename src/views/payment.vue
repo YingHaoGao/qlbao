@@ -1,22 +1,28 @@
 <template>
   <div id="payment">
+    <div class="pay-status-box">
+      <div class="status-left">
+        <div class="status-name">状态：</div>
+        <div class="status-type">{{typeNC}}</div>
+      </div>
+      <div class="status-img-right">
+        <img src="../../static/icon/book.png">
+      </div>
+    </div>
+    <div class="names">
+  		<div class="name" v-for="(item, idx) in list" :key="idx">
+  			<div class="name-title">{{item.real_name}}</div>
+        <div class="name-phone">{{item.telephone}}</div>
+        <div class="name-type">{{telepToNc(item.telephone_type)}}</div>
+  		</div>
+  	</div>
   	<div class="buttons">
   		<el-button type="primary" @click="onNewPhone">添加新号码</el-button>
   		<el-button @click="onCreate">生成我的邀请卡</el-button>
   	</div>
-  	<div class="names">
-  		<div class="name" v-for="(item, idx) in list" :key="idx">
-  			{{item.real_name}}
-        <span>{{item.telephone}}</span>
-        {{telepToNc(item.telephone_type)}}
-  		</div>
-  	</div>
-  	<div class="type">
-  		状态：{{typeNC}}
-  	</div>
-  	<div class="code">
+  	<!-- <div class="code">
   		二维码分享给员工填写号码
-  	</div>
+  	</div> -->
   </div>
 </template>
 
@@ -129,28 +135,77 @@ export default {
 <style lang="scss" scoped>
 #payment {
   box-sizing: border-box;
-  padding: 1rem 1rem 0rem 1rem;
+  padding: 0;
+  background-color: #F2F2F2;
+  .pay-status-box{
+    width: 100%;
+    height: 5.8rem;
+    padding: 0 0.75rem;
+    background:linear-gradient(228deg,rgba(210,210,255,1) 0%,rgba(161,161,249,1) 100%);
+    display: flex;
+    align-items: center;
+    .status-left{
+      width: 50%;
+      .status-name {
+        font-size: .8rem;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(255,255,255,1);
+        line-height: 1.1rem;
+      }
+      .status-type{
+        font-size:1.2rem;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(255,255,255,1);
+        line-height: 1.65rem;
+        margin-top: .5rem;
+      }
+    }
+    .status-img-right{
+      width: 50%;
+      img{
+        width: 50%;
+        height: audo;
+        margin-left: 35%;
+      }
+    }
+  }
 
 	.buttons {
+    width: 100%;
+    padding: 1rem 0.75rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
 		button {
-			width: 49%;
-		}
-		button:first-child {
-			margin-right: 2%;
-		}
-		button:last-child {
-			margin-left: 0;
+
+			width: 8rem;
 		}
 	}
 	.names {
-		padding-top: 1rem;
-		margin-bottom: 1rem; 
-
+		background:rgba(255,255,255,1);
+    width: 100%;
+    // height: 4.2rem;
+    padding: .75rem;
 		.name {
-			font-size: 0.7rem;
-
-      span {
-        padding: 0rem 0.25rem;
+			font-size: 0.8rem;
+      font-family:PingFangSC-Regular,PingFang SC;
+      font-weight:400;
+      color:rgba(51,51,51,1);
+      line-height:1.1rem;
+      margin-top: 0.5rem;
+      display: flex;
+      .name-title{
+        width: 2.5rem;
+        text-align: left;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
+      .name-phone{
+        width: 5.2rem;
+        margin: 0 1.5rem 0 1rem
       }
 		}
 	}
