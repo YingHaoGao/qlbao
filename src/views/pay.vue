@@ -47,8 +47,8 @@ export default {
     this.form.user_number = this.$route.query.user_number;
     this.form.total_price = this.$route.query.total_price;
     this.isAdd = this.$route.query.add == 'true';
-    this.order_id = this.$route.query.order_id;
 
+    this.getOrder()
     this.getBank()
   },
   data() {
@@ -120,6 +120,19 @@ export default {
       //   return
       // }
   	},
+    // 根据临时用户id查询订单
+    getOrder () {
+      let that = this;
+
+      that.$http.fetch('/Order/stateus', {
+        tmp_uid: that.$tmp_uid
+      })
+        .then(res => {
+          if (res.errNo == 0) {
+            that.order_id = res.data.company_id;
+          }
+        })
+    },
     // 创建订单
     createOrder () {
       let distributorId = this.$distributorId;

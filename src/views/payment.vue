@@ -95,6 +95,15 @@ export default {
         .then(function(res){
           that.type = res.data.state;
         });
+      } else if (that.$tmp_uid && that.$tmp_uid != "") {
+        that.$http.fetch('/Order/stateus', {
+          tmp_uid: that.$tmp_uid
+        })
+          .then(res => {
+            if (res.errNo == 0) {
+              that.type = res.data.state;
+            }
+          })
       } else {
         this.$message.error({
           showClose: true,
