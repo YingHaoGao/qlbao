@@ -7,13 +7,15 @@ export default {
                 && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
         var isEdge = userAgent.indexOf("Edge") > -1; //判断是否IE的Edge浏览器
         var isFF = userAgent.indexOf("Firefox") > -1; //判断是否Firefox浏览器
-        var isSafari = userAgent.indexOf("Safari") > -1
-                && userAgent.indexOf("Chrome") == -1; //判断是否Safari浏览器
         var isChrome = userAgent.indexOf("Chrome") > -1
                 && userAgent.indexOf("Safari") > -1; //判断Chrome浏览器
         var ua = window.navigator.userAgent.toLowerCase();
         var Weixin = ua.match(/MicroMessenger/i) == 'micromessenger';
 
+
+        if (Weixin) {
+            return "Weixin"
+        }
         if (isIE) {
             var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
             reIE.test(userAgent);
@@ -42,14 +44,8 @@ export default {
         if (isFF) {
             return "FF";
         }
-        if (isSafari) {
-            return "Safari";
-        }
         if (isChrome) {
             return "Chrome";
-        }
-        if (isWeiXin) {
-        	return "Weixin"
         }
 	},
 	// 验证 
