@@ -32,7 +32,7 @@ export default {
     
   },
   created() {
-    this.isAdd = !!this.$route.query.add
+    this.isAdd = this.$route.query.add == 'true'
     this.getPrices();
   },
   data() {
@@ -112,13 +112,13 @@ export default {
         if (this.messageEvent) this.messageEvent.close()
       }
 
-      this.$router.push({path: '/pay', query: {
+      this.$router.replace({path: '/pay', query: {
         price_id: radio,
         level_name: obj.level_name,
         price: obj.price,
         user_number: num,
         total_price: money,
-        isAdd: that.isAdd
+        add: that.isAdd
       }});
   	},
     // 错误提示

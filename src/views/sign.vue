@@ -36,7 +36,7 @@
           <el-checkbox label="是否为联系人自动开通" name="type"></el-checkbox>
         </el-checkbox-group>
       </div>
-      <div class="footer" v-show="showBtn">
+      <div class="footer">
         <el-checkbox v-model="form.deal" class="check">
           请勾选
           <el-link type="primary">《云美摄直客协议》</el-link>
@@ -54,29 +54,6 @@ import $ from 'jquery'
 
 export default {
   name: 'sign',
-  props: {
-    
-  },
-  created() {
-    // this.getGraphics();
-
-    var that = this;
-    var olbHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    //navigator.userAgent.indexOf用来判断浏览器类型
-    var isAndroid = navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1;
-    // if (isAndroid){//如果是安卓手机的浏览器
-    if (true){//如果是安卓手机的浏览器
-      window.addEventListener("resize", function() {
-        var newHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-        console.log('resize', olbHeight, newHeight, olbHeight > newHeight)
-        if ( olbHeight > newHeight ){
-          that.showBtn = false;
-        }else{
-           that.showBtn = true;
-        }
-      });
-    }
-  },
   data () {
     return {
       form: {
@@ -97,10 +74,34 @@ export default {
       codeInterval: '',
       messageEvent: false,
       showBtn: true,
-      loading: false
+      loading: false,
+      isBack: false,
+      order_state: 0
     }
   },
+  beforeRouteEnter (to, from, next) {
+    console.log(to, from)
+    next(vm => {
+      if (from.name == 'Home') {
+        vm.isBack = false;
+        return;
+      } else {
+        vm.isBack = true;
+        return;
+      }
+    })
+  },
+  created() {
+    this.orderStatus();
+  },
   watch: {
+    $route: {
+      handler: function(val, oldVal){
+        console.log('ddddd')
+        console.log(val, oldVal)
+      },
+      deep: true
+    },
     codeTime(val) {
       if (val == 0) {
         this.coded = false;
@@ -194,7 +195,7 @@ export default {
           type: 1
         }, that)
         .then(res => {
-          console.log(res)
+          console.log(res, that.isBack)
           if (res.errNo == 0) {
             this.$message({
               message: '验证码已发送',
@@ -204,6 +205,29 @@ export default {
             that.codeInterval = setInterval(() => {
               that.codeTime -= 1
             }, 1000)
+          }
+          if (that.isBack && res.errNo == 400 && res.message.indexOf('手机号已注册') > -1) {
+            let page = { url: '', name: '' };
+
+            switch(that.order_state) {
+              case 0 || 2:
+                page.url = '/pay';
+                page.name = '支付';
+                break;
+              case 1 || 3 || 4:
+                page.url = '/payment';
+                page.name = '我的号码';
+                break;
+            };
+            
+            if (page.url != '' && page.name != '') {
+              that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
+                showClose: false,
+                callback() {
+                  that.$router.replace({path: page.url});
+                }
+              });
+            }
           }
         })
       })
@@ -276,7 +300,7 @@ export default {
               message: '提交成功！',
               type: 'success'
             });
-            this.$router.push({path: '/account'});
+            this.$router.replace({path: '/account'});
           }
         })
     },
@@ -316,6 +340,16 @@ export default {
         showClose: true,
         message: msg
       });
+    },
+    //根据临时用户ID查询订单
+    orderStatus(){
+      let that = this,
+          params = { tmp_uid: that.$tmp_uid };
+
+      this.$http.fetch('Order/stateus',params)
+        .then(res => {
+          that.order_state = res.data.state;
+        }) 
     }
   }
 }

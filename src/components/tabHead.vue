@@ -4,7 +4,7 @@
   		<div class="back" @click="toBack">
 	  		<img :src="ICONback"/>
 	  	</div>
-	  	<div class="close" @click="toClose">
+	  	<div class="close" v-if="isClose" @click="toClose">
 	  		<img :src="ICONcha"/>
 	  	</div>
   	</div>
@@ -27,12 +27,17 @@ export default {
   name: 'tabHead',
   created() {
   	this.isShare = this.$route.meta.isShare;
+
+  	if (TOOL.getFacility() == "Weixin") {
+  		this.isClose = false;
+  	} 
   },
   data () {
   	var title = this.$route.meta.title
   	return {
   		title: title,
   		isShare: false,
+  		isClose: true,
   		ICONback: ICONback,
   		ICONcha: ICONcha,
   		ICONshare: ICONshare
@@ -43,6 +48,7 @@ export default {
 	    handler: function(val, oldVal){
 	      this.title = val.meta.title;
 	      this.isShare = this.$route.meta.isShare;
+	      this.isBack = this.$route.meta.isBack;
 	    },
 	    deep: true
 	  }
@@ -58,7 +64,13 @@ export default {
 		},
 		// 分享
 		toShare () {
-			TOOL.share();
+			let share = {
+        imgUrl: '',
+        title: '',
+        desc: '',
+        link: ''
+      };
+      this.$wxshare(share);
 		}
 	}
 }

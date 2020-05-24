@@ -20,7 +20,6 @@
 <script>
 import QRCode from "qrcodejs2";
 import CONFIG from "../../config/index.js";
-import TOOL from '../tools.js'
 import IMG from '../../public/code.jpg'
 
 export default {
@@ -51,7 +50,13 @@ export default {
   methods: {
   	// 分享微信好友
   	onShare () {
-      TOOL.share();
+      let share = {
+        imgUrl: '',
+        title: '',
+        desc: '',
+        link: ''
+      };
+      this.$wxshare(share);
   	},
     // 生成二维码参数
     qrcode () {

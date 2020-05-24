@@ -46,6 +46,8 @@ export default {
     this.form.price = this.$route.query.price;
     this.form.user_number = this.$route.query.user_number;
     this.form.total_price = this.$route.query.total_price;
+    this.isAdd = this.$route.query.add == 'true';
+    this.order_id = this.$route.query.order_id;
 
     this.getBank()
   },
@@ -54,6 +56,8 @@ export default {
     return {
       ICONdg: ICONdg,
       active: 0,
+      isAdd: false,
+      order_id: '',
       form: {
         user_id: '',
         price_id: '',
@@ -93,17 +97,28 @@ export default {
   	onWeiXin () {
       this.form.pay_mode = 2;
 
+      if (this.isAdd) {
+        this.setOrder();
+        return
+      }
       this.createOrder()
   	},
   	onAliPay () {
       this.form.pay_mode = 1;
 
+      if (this.isAdd) {
+        this.setOrder();
+        return
+      }
       this.createOrder()
   	},
   	onDuiGong () {
       this.form.pay_mode = 3;
 
-      // this.createOrder()
+      // if (this.isAdd) {
+      //   this.setOrder();
+      //   return
+      // }
   	},
     // 创建订单
     createOrder () {
@@ -121,9 +136,32 @@ export default {
               message: '创建订单成功',
               type: 'success'
             });
-            this.$router.push({path: '/payment', query: {
+            this.$router.replace({path: '/payment', query: {
               order_id: res.data.order_id,
               order_code: res.data.order_code
+            }});
+          }
+        })
+    },
+    // 修改订单
+    setOrder () {
+      let distributorId = this.$distributorId;
+      let form = this.form;
+      let that = this;
+
+      this.$http.post('/Order/update', {
+        ...form,
+        company_pid: distributorId,
+        order_id: that.order_id
+      }, that)
+        .then(res => {
+          if (res.errNo == 0) {
+            this.$message({
+              message: '修改订单成功',
+              type: 'success'
+            });
+            this.$router.replace({path: '/payment', query: {
+              order_id: that.order_id
             }});
           }
         })

@@ -7,6 +7,7 @@ import { http } from './http.js'
 import CONFIG from '../config'
 import { Swipe, SwipeItem } from 'vant'
 import VideoPlayer from 'vue-video-player'
+import {wxshare} from './wxshare'
 
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -19,6 +20,7 @@ Vue.use(ElementUI);
 Vue.use(VideoPlayer);
 Vue.use(Swipe);
 Vue.use(SwipeItem);
+Vue.use(wxshare);
 
 Vue.prototype.$http = http;
 Vue.prototype.$config = CONFIG;
