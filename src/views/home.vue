@@ -1,5 +1,7 @@
 <template>
-  <div id="home">
+  
+  <div id="home" :options="option" :autoresize="true" v-loading="loading">
+     <vue-element-loading :active="isActive" :is-full-screen="true"/>
     <div class="background_top"></div>
     <div class="background_center"></div>
     <div class="background_bottom">
@@ -18,10 +20,8 @@
             </div>
             </van-swipe-item>
              <div class="custom-indicator" slot="indicator">
-        
-              </div>
-          
-          <van-swipe-item>
+             </div>
+             <van-swipe-item>
             <div class="box-item">
               <p class="iphoneNum">158****3456</p>
               <p class="text">对方已振铃</p>
@@ -83,11 +83,16 @@
 </template>
 
 <script>
-
+import {
+    Loading
+}
+from 'element-ui'
 export default {
   name: "Video",
+  
   data() {
     return {
+       loading: true,
        banner:["1","2","3"],
        isView :false,
        isOpen :false,
@@ -96,6 +101,7 @@ export default {
        userIp :'',
        userId:'',
        usertype:'',
+       order_id:'',
        playerOptions: {
         playbackRates:false, //播放速度
         autoplay: false, //如果true,浏览器准备好时开始回放。
@@ -125,10 +131,29 @@ export default {
       }
     };
   },
-  created(){
-    this.getIp();
+  beforeCreate(){
+   
   },
+  created(){
+    this.loading=true
+    this.getIp();
+   },
+  mounted(){
+   
+    this.loading=false;
+    
+    },
   methods:{
+   startLoading: function() {
+    loading = Loading.service({
+    lock: true,
+    text: '加载中……',
+    background: 'rgba(0, 0, 0, 0.7)'
+    })
+  },
+   endLoading: function() {
+    loading.close()
+    },
    yiDong:function() {
       var u = navigator.userAgent;
       var ua = window.navigator.userAgent.toLowerCase();//微信
@@ -165,9 +190,12 @@ export default {
           }
       this.$http.fetch('TmpUser/getTmpUserId',params)
         .then(res => {
-           this.userId =res.data.tmp_uid
+           this.userId =res.data.tmp_uid
            this.orderStatus();
-        })
+           window.sessionStorage.setItem('distributor',this.userId);
+           vue.prototype.$distributorId = this.userId;
+           vue.prototype.$tmp_uid = this.userId;
+        })
     },
   //根据临时用户ID查询订单
     orderStatus(){
@@ -177,6 +205,7 @@ export default {
           }
       this.$http.fetch('Order/stateus',params)
         .then(res => {
+          this.order_id = res.id;
           if(res.state == undefined){
             this.isOpen=true;
             this.isContinue =false;
@@ -209,7 +238,7 @@ export default {
             this.getOpenId(code) //把code传给后台获取用户信息
         }
         },
-      getOpenId (code) { // 通过code获取 openId等用户信息，/api/user/wechat/login 为后台接口
+      getOpenId (code) { // 通过code获取 openId等用户信息，/api/IDuserId/wechat/login 为后台接口
             let _this = this
             this.$http.post('/api/user/wechat/login', {code: code}).then((res) => {
                 let datas = res.data
@@ -247,13 +276,17 @@ export default {
      this.$refs.videoPlayer1.player.pause()
     },  
     viewNumber() {
-      this.$router.push({ path: "/payment" });
+      this.$router.push({ path: "/payment" ,query:{
+       order_id:this.order_id
+    } });
     },
     openNow() {
      this.$router.push({ path: "/sign" });
     },
     continueOpen() {
-      this.$router.push({ path: "/account" });
+      this.$router.push({ path: "/account",query:{
+       order_id:this.order_id
+    } });
     },
 
   }
@@ -263,7 +296,7 @@ export default {
 <style lang="scss" scoped>
 #home {
    box-sizing: border-box;
-   width: 18.75rem;
+   width:100%;
    margin: 0 auto;
    position: relative;
   .background_top {
@@ -287,7 +320,7 @@ export default {
       position: absolute;
       top: -3.6rem;
       left: 0;
-      width: 18.75rem;
+      width: 100%;
       height: 25.75rem;
       overflow: hidden;
     }
