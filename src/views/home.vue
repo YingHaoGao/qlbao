@@ -109,7 +109,7 @@ export default {
           {
             type: "video/mp4",
             type: "video/ogg",
-            src: "assets/mp4/中国联通.mp4" //url地址
+            src: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" //url地址
           }
         ],
         poster:
