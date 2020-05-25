@@ -76,7 +76,8 @@ export default {
       showBtn: true,
       loading: false,
       isBack: false,
-      order_state: 0
+      order_state: 0,
+      order_id: false
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -211,11 +212,11 @@ export default {
               let page = { url: '', name: '' };
 
               switch(that.order_state) {
-                case 0 || 2:
-                  page.url = '/pay';
-                  page.name = '支付';
+                case 0:
+                  page.url = '/account';
+                  page.name = '我的号码';
                   break;
-                case 1 || 3 || 4:
+                case 1 || 2 || 3 || 4:
                   page.url = '/payment';
                   page.name = '我的号码';
                   break;
@@ -225,29 +226,40 @@ export default {
                 that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
                   showClose: false,
                   callback() {
-                    that.$router.replace({path: page.url});
+                    that.$router.replace({path: page.url, query: {
+                      order_id: that.order_id,
+                      add: !!that.order_id
+                    }});
                   }
                 });
               }
             } else {
               that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
-                  showClose: false,
-                  callback() {
-                    that.$router.replace({path: '/account'});
-                  }
-                });
+                showClose: false,
+                callback() {
+                  that.$router.replace({path: '/account', query: {
+                    order_id: that.order_id,
+                    add: !!that.order_id
+                  }});
+                }
+              });
             }
           }
         })
       })
     },
     // 根据手机号查询用户状态
-    getUserInfo() {
+    getUserInfo(fn) {
       let that = this;
       that.$http.fetch('User/getUserInfo', { phone: that.form.phone })
         .then(res => {
           if(res.errNo == 0) {
             that.$distributorId = res.data.company_id;
+            that.$tmp_uid = res.data.user_id;
+
+            if (fn) {
+              fn()
+            }
           }
         })
     },
@@ -369,6 +381,7 @@ export default {
         .then(res => {
           if (res.errNo == 0 && res.data) {
             that.order_state = res.data.state;
+            that.order_id = res.data.id
           }
         }) 
     }

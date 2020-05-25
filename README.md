@@ -40,6 +40,9 @@ npm run build
 		        total_price 		总价
 	2、 /payment
 						order_id				订单id
+	3、 /account
+						order_id				订单id
+						add 						是否为追加订单
 
 ## 配置
 
