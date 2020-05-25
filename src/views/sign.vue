@@ -82,7 +82,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     console.log(to, from)
     next(vm => {
-      if (from.name == 'Home') {
+      if (from.name == 'Home' || from.name == null) {
         vm.isBack = false;
         return;
       } else {
