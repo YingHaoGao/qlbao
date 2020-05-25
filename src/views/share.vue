@@ -1,9 +1,13 @@
 <template>
   <div id="share">
   	<div class="text">
-  		二维码分享给员工填写号码
+  		请长按图片保存，分享给好友
   	</div>
   	<div class="img">
+      <div class="info">
+        <p>{{company}}</p>
+        <p>{{name}}</p>
+      </div>
       <a href="javascript:void(0);" v-if="isIOS">
         <div id="qrcode" ref="qrcode"></div>
       </a>
@@ -12,7 +16,7 @@
       </div>
   	</div>
   	<div class="buttons">
-  		<el-button type="primary" @click="onShare" round>分享微信好友</el-button>
+  		<el-button type="primary" @click="onShare" round>把二维码分享给员工填写号码</el-button>
   	</div>
   </div>
 </template>
@@ -34,6 +38,7 @@ export default {
     if (isAndroid) {
       this.isIOS = false;
     }
+    this.getCompanyInfo()
   },
   mounted() {
     this.$nextTick(() => {
@@ -44,7 +49,9 @@ export default {
   	return {
       img: IMG,
   		code: '',
-      isIOS: true
+      isIOS: true,
+      name: '',
+      company: ''
   	}
   },
   methods: {
@@ -62,25 +69,36 @@ export default {
     qrcode () {
       let that = this;
       let clientWidth = document.body.clientWidth,
-          width = clientWidth * 0.8;
+          width = 85;
 
       let qrcode = new QRCode("qrcode", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
-          text: CONFIG.HTTP + "/sign.html?distributorId=" + this.$distributorId
+          text: CONFIG.HTTP + "/sign.html?distributorId=" + that.$distributorId
         });
       console.log('分享链接： ' + CONFIG.HTTP + "/sign.html?distributorId=" + this.$distributorId)
-    }
+    },
+    // 获取企业信息
+    getCompanyInfo () {
+      let that = this;
+
+      that.$http.fetch('Company/getCompanyInfo', {
+        company_id: that.$distributorId
+      })
+      .then(res => {
+        if (res.errNo == 0) {
+          that.company = res.data.company_name;
+          that.name = res.data.contact_name;
+        }
+      }) 
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 #share {
-  box-sizing: border-box;
-  padding: 1rem 1rem 0rem 1rem;
   width: 100%;
-  height: 100%;
   -webkit-user-select: none;
   -moz-user-select: none;
   -o-user-select: none;
@@ -88,24 +106,44 @@ export default {
 
   .text {
   	text-align: center;
+    font-size: 0.9rem;
   }
   .img {
   	position: relative;
   	text-align: center;
-  	height: 60%;
-  	width: 100%;
+  	height: 21.2rem;
+  	width: 11.95rem;
+    margin: auto;
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+    background-image: url('../../static/icon/share_bg.png');
+    background-size: cover;
 
-  	#qrcode,#img {
-  		width: 100%;
-      margin-top: 1rem;
+    .info {
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      right: 1rem;
+      transform: translate(0, -70%);
+      color: #fff;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+
+  	#qrcode {
+  		position: absolute;
+      bottom: 0.75rem;
+      width: 100%;
   	}
   }
   .buttons {
   	button {
   		display: block;
-  		width: 100%;
-  		margin: 0rem;
+  		margin: auto;
   		margin-bottom: 1rem;
+      border: none;
+      padding: 0.45rem 1.25rem;
+      background: linear-gradient( 270deg, rgba(253,59,68,1) 0%, rgba(254,119,45,1) 100%);
   	}
   }
 }

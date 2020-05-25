@@ -41,12 +41,7 @@ html{
     height: 100%;
     padding: 3rem 0.5rem 1rem 0.5rem;
     box-sizing: border-box;
-    
-    &:not(#payment) {
-      background-image: url('../static/icon/background.png');
-      background-size: cover;
-    }
-
+  
     .vessel {
       width: calc( 100% - 1rem );
       box-sizing: border-box;
@@ -54,6 +49,13 @@ html{
       padding: 1.25rem 0.75rem;
       background-color: rgba(242,242,242,0.4);
     }
+  }
+
+  #sign,
+  #account,
+  #pay {
+    background-image: url('../static/icon/background.png');
+    background-size: cover;
   }
 
   #qrcode img {

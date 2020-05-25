@@ -5,9 +5,9 @@
         <div class="status-name">状态</div>
         <div class="status-type">{{typeNC}}</div>
       </div>
-      <div class="status-img-right">
+      <!-- <div class="status-img-right">
         <img src="../../static/icon/book.png">
-      </div>
+      </div> -->
     </div>
     <div class="names">
   		<div class="name" v-for="(item, idx) in list" :key="idx">
@@ -85,17 +85,19 @@ export default {
   	},
     // 查询订单状态
     getOrder () {
-      let that = this,
-        params = {
-          order_id: that.$route.query.order_id
-        };
+      let that = this;
 
-      if (params.order_id) {
-        this.$http.fetch('/order/stateusByOrderId',params)
+      // 通过订单id查询状态
+      if (that.$route.query.order_id && that.$route.query.order_id != "") {
+        this.$http.fetch('/order/stateusByOrderId',{
+          order_id: that.$route.query.order_id
+        })
         .then(function(res){
           that.type = res.data.state;
         });
-      } else if (that.$tmp_uid && that.$tmp_uid != "") {
+      }
+      // 通过临时用户id查询状态
+      else if (that.$tmp_uid && that.$tmp_uid != "") {
         that.$http.fetch('/Order/stateus', {
           tmp_uid: that.$tmp_uid
         })
@@ -104,10 +106,11 @@ export default {
               that.type = res.data.state;
             }
           })
-      } else {
+      }
+      else {
         this.$message.error({
           showClose: true,
-          message: '获取订单id失败'
+          message: '获取订单id、用户id失败'
         });
         this.typeNC = '获取失败'
       }
@@ -151,7 +154,10 @@ export default {
     width: 100%;
     height: 5.8rem;
     padding: 0 0.75rem;
-    background:linear-gradient(228deg,rgba(210,210,255,1) 0%,rgba(161,161,249,1) 100%);
+    // background:linear-gradient(228deg,rgba(210,210,255,1) 0%,rgba(161,161,249,1) 100%);
+    background-image: url('../../static/icon/payment_head.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
 
