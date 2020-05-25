@@ -25,7 +25,8 @@ Vue.use(wxshare);
 Vue.prototype.$http = http;
 Vue.prototype.$config = CONFIG;
 Vue.prototype.$distributorId = 23;
-Vue.prototype.$tmp_uid = false;
+// Vue.prototype.$tmp_uid = false;
+Vue.prototype.$tmp_uid = 19;
 
 var ua = navigator.userAgent.toLowerCase();  
 if(ua.match(/MicroMessenger/i)=="micromessenger") {    

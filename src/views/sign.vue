@@ -206,31 +206,50 @@ export default {
               that.codeTime -= 1
             }, 1000)
           }
-          if (that.isBack && res.errNo == 400 && res.message.indexOf('手机号已注册') > -1) {
-            let page = { url: '', name: '' };
+          if (res.errNo == 400 && res.message.indexOf('手机号已注册') > -1) {
+            if (that.isBack) {
+              let page = { url: '', name: '' };
 
-            switch(that.order_state) {
-              case 0 || 2:
-                page.url = '/pay';
-                page.name = '支付';
-                break;
-              case 1 || 3 || 4:
-                page.url = '/payment';
-                page.name = '我的号码';
-                break;
-            };
-            
-            if (page.url != '' && page.name != '') {
-              that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
-                showClose: false,
-                callback() {
-                  that.$router.replace({path: page.url});
-                }
-              });
+              switch(that.order_state) {
+                case 0 || 2:
+                  page.url = '/pay';
+                  page.name = '支付';
+                  break;
+                case 1 || 3 || 4:
+                  page.url = '/payment';
+                  page.name = '我的号码';
+                  break;
+              };
+
+              if (page.url != '' && page.name != '') {
+                that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
+                  showClose: false,
+                  callback() {
+                    that.$router.replace({path: page.url});
+                  }
+                });
+              }
+            } else {
+              that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
+                  showClose: false,
+                  callback() {
+                    that.$router.replace({path: '/account'});
+                  }
+                });
             }
           }
         })
       })
+    },
+    // 根据手机号查询用户状态
+    getUserInfo() {
+      let that = this;
+      that.$http.fetch('User/getUserInfo', { phone: that.form.phone })
+        .then(res => {
+          if(res.errNo == 0) {
+            that.$distributorId = res.data.company_id;
+          }
+        })
     },
     // 获取图形码
     getGraphics() {
@@ -348,7 +367,9 @@ export default {
 
       this.$http.fetch('Order/stateus',params)
         .then(res => {
-          that.order_state = res.data.state;
+          if (res.errNo == 0 && res.data) {
+            that.order_state = res.data.state;
+          }
         }) 
     }
   }

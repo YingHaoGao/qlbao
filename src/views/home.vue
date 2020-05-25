@@ -1,102 +1,98 @@
 <template>
-  
-  <div id="home" :options="option" :autoresize="true" v-loading="loading">
-     <vue-element-loading :active="isActive" :is-full-screen="true"/>
-    <div class="background_top"></div>
-    <div class="background_center"></div>
-    <div class="background_bottom">
-      <div class="infoBox">
-        <van-swipe class="my-swipe" indicator-color="white" @change="onChange">
-          <van-swipe-item >
-            <div class="box-item">
-              <p class="iphoneNum">158****3456</p>
-              <p class="text">对方已振铃</p>
-              <video-player
-                class="video-player vjs-custom-skin"
-                ref="videoPlayer1"
-                :playsinline="true"
-                :options="playerOptions"
-              ></video-player>
-            </div>
-            </van-swipe-item>
-             <div class="custom-indicator" slot="indicator">
-             </div>
-             <van-swipe-item>
-            <div class="box-item">
-              <p class="iphoneNum">158****3456</p>
-              <p class="text">对方已振铃</p>
-              <video-player
-                class="video-player vjs-custom-skin"
-                ref="videoPlayer2"
-                :playsinline="true"
-                :options="playerOptions"
-              ></video-player>
-            </div>
-          </van-swipe-item>
-           <van-swipe-item>
-            <div class="box-item">
-              <p class="iphoneNum">158****3456</p>
-              <p class="text">对方已振铃</p>
-              <video-player
-                class="video-player vjs-custom-skin"
-                ref="videoPlayer2"
-                :playsinline="true"
-                :options="playerOptions"
-              ></video-player>
-            </div>
-             <div class="custom-indicator" slot="indicator">
-        
-              </div>
-          </van-swipe-item>
-          <van-swipe-item>
-            <div class="box-item">
-              <p class="iphoneNum">158****3456</p>
-              <p class="text">对方已振铃</p>
-              <video-player
-                class="video-player vjs-custom-skin"
-                ref="videoPlayer2"
-                :playsinline="true"
-                :options="playerOptions"
-              ></video-player>
-            </div>
-           
-          </van-swipe-item>
 
-        </van-swipe>
-      </div>
-    </div>
+  <div id="home" :autoresize="true" v-loading="loading">
+   <!-- <vue-element-loading :active="isActive" :is-full-screen="true"/> -->
+   <div class="background_top"></div>
+   <div class="background_center"></div>
+   <div class="background_bottom">
+    <div class="infoBox">
+      <van-swipe class="my-swipe" indicator-color="white" @change="onChange">
+        <van-swipe-item >
+          <div class="box-item">
+            <p class="iphoneNum">158****3456</p>
+            <p class="text">对方已振铃</p>
+            <video-player
+            class="video-player vjs-custom-skin"
+            ref="videoPlayer1"
+            :playsinline="true"
+            :options="playerOptions"
+            ></video-player>
+          </div>
+        </van-swipe-item>
+        <div class="custom-indicator" slot="indicator">
+        </div>
+        <van-swipe-item>
+          <div class="box-item">
+            <p class="iphoneNum">158****3456</p>
+            <p class="text">对方已振铃</p>
+            <video-player
+            class="video-player vjs-custom-skin"
+            ref="videoPlayer2"
+            :playsinline="true"
+            :options="playerOptions"
+            ></video-player>
+          </div>
+        </van-swipe-item>
+        <van-swipe-item>
+          <div class="box-item">
+            <p class="iphoneNum">158****3456</p>
+            <p class="text">对方已振铃</p>
+            <video-player
+            class="video-player vjs-custom-skin"
+            ref="videoPlayer2"
+            :playsinline="true"
+            :options="playerOptions"
+            ></video-player>
+          </div>
+          <div class="custom-indicator" slot="indicator">
 
-    <div class="footer">
-      <div class="item">
-      	<div class="view" @click="viewNumber" v-if="isView">查看号码</div>  
-      </div>
-      <div class="item">
-      	<div class="open" @click="openNow" v-if="isOpen">立即开通</div>
-      </div>
-      <div class="item">
-        <div class="continue" @click="continueOpen" v-if="isContinue" >继续开通</div>
-      </div>
+          </div>
+        </van-swipe-item>
+        <van-swipe-item>
+          <div class="box-item">
+            <p class="iphoneNum">158****3456</p>
+            <p class="text">对方已振铃</p>
+            <video-player
+            class="video-player vjs-custom-skin"
+            ref="videoPlayer2"
+            :playsinline="true"
+            :options="playerOptions"
+            ></video-player>
+          </div>
+
+        </van-swipe-item>
+
+      </van-swipe>
     </div>
-    
   </div>
-  
+
+  <div class="footer">
+    <div class="item">
+     <div class="view" @click="viewNumber" v-if="btnType == 2">查看号码</div>  
+   </div>
+   <div class="item">
+     <div class="open" @click="openNow" v-if="btnType == 0">立即开通</div>
+   </div>
+   <div class="item">
+    <div class="continue" @click="continueOpen" v-if="btnType == 1" >继续开通</div>
+  </div>
+</div>
+
+</div>
+
 </template>
 
 <script>
-import {
-    Loading
-}
-from 'element-ui'
-export default {
-  name: "Video",
-  
-  data() {
-    return {
+  import { Loading } from 'element-ui'
+  import TOOL from '../tools.js'
+
+  export default {
+    name: "Video",
+
+    data() {
+      return {
        loading: true,
        banner:["1","2","3"],
-       isView :false,
-       isOpen :false,
-       isContinue:false,
        paystate:"",
        userIp :'',
        userId:'',
@@ -112,15 +108,15 @@ export default {
         aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [
-          {
-            type: "video/mp4",
-            type: "video/ogg",
+        {
+          type: "video/mp4",
+          type: "video/ogg",
             src: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" //url地址
           }
-        ],
-        poster:
+          ],
+          poster:
           "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-1.jpg", //你的封面地址
-        width: document.documentElement.clientWidth,
+          width: document.documentElement.clientWidth,
         notSupportedMessage: "此视频暂无法播放，请稍后再试", //允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {
           timeDivider: false,
@@ -128,48 +124,94 @@ export default {
           remainingTimeDisplay: false,
           fullscreenToggle: true,//全屏按钮
         }
+      },
+
+      // ip or openid
+      codeType: 'ip',
+       // 显示按钮
+       btnType: 0,
+     };
+   },
+   beforeRouteEnter(to, from, next) {
+    next(_this=>{
+      //判断是否为微信环境
+      if(TOOL.getFacility() == 'Weixin'){
+        _this.codeType = 'openid';
+
+        let code=_this.getUrlKey('code');
+        if(code){
+          let data={
+            code:code
+          }
+          codeGetOpenid(data).then((res)=>{
+            if(res.data.error==0){
+              openid = res.data.datArr.openid;
+              setCookie('openid',openid)
+                //跳转当前页面并加上参数
+                window.location.replace('/scanLogin/checkingCaller?event_id='+_this.event_id)
+              }else{
+                console.log(res.data.msg)
+                // window.location.replace('/scanLogin/checkingCaller?event_id='+_this.event_id)
+              }
+            })
+        }else{
+          _this.getCodeApi('wx')
+        }
+      }else{
+        _this.codeType = 'ip'
       }
-    };
-  },
-  beforeCreate(){
-   
+    })
   },
   created(){
     this.loading=true
-    this.getIp();
-   },
+
+    if (this.codeType == 'ip') {
+      this.getIp();
+    }
+  },
   mounted(){
-   
     this.loading=false;
-    
+  },
+  methods:{
+    //获取url参数
+    getUrlKey(name){   
+       return decodeURIComponent((new RegExp('[?|&]'+name+'='+'([^&;]+?)(&|#|;|$)').exec(location.href)||[,""])[1].replace(/\+/g,'%20'))||null;
     },
-  methods:{
+    //获取code
+    getCodeApi(state){
+      let data={
+        url:location.href
+      }
+      // getWXconfig(data).then((res)=>{
+      //   let Data = res.data;
+      //   let appId = Data.appId;
+      //   // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作
+      //     wx.config({
+      //       debug: false, // 开启调试模式,开发时可以开启
+      //       appId: Data.appId,   // 必填，公众号的唯一标识   由接口返回
+      //       timestamp: Data.timestamp, // 必填，生成签名的时间戳 由接口返回
+      //       nonceStr: Data.nonceStr,    // 必填，生成签名的随机串 由接口返回
+      //       signature: Data.signature,   // 必填，签名 由接口返回
+      //       jsApiList: [] // 此处填你所用到的方法
+      //   });
+      //   let urlNow=encodeURIComponent(window.location.href);
+      //   let scope='snsapi_base';    //snsapi_userinfo   //静默授权 用户无感知
+      //   let url="http://m.yunbisai.com/wechat/Openid?url="+urlNow;
+      //   window.location.replace(url);
+      // })    
+    },
+
+
    startLoading: function() {
     loading = Loading.service({
-    lock: true,
-    text: '加载中……',
-    background: 'rgba(0, 0, 0, 0.7)'
+      lock: true,
+      text: '加载中……',
+      background: 'rgba(0, 0, 0, 0.7)'
     })
-  },
-   endLoading: function() {
+   },
+  endLoading: function() {
     loading.close()
-    },
-   yiDong:function() {
-      var u = navigator.userAgent;
-      var ua = window.navigator.userAgent.toLowerCase();//微信
-      var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android終端
-      var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios終端
-     if(ua.match(/MicroMessenger/i) == 'micromessenger'){
-       this.usertype = "openid"
-       getUrlParam();
-       getCode ();
-       getOpenId();
-     } 
-     else{
-      this.usertype = "ip"
-     }
-    },
-   
+  },
    //获取IP
     getIp () {
       let that = this,
@@ -182,178 +224,168 @@ export default {
         })
     },
   //获取id
-    getId () {
-      let that = this,
-          params = {
-           parm:this.userIp,
-           type:"ip"
-          }
-      this.$http.fetch('TmpUser/getTmpUserId',params)
-        .then(res => {
-           this.userId =res.data.tmp_uid
-           this.orderStatus();
-           window.sessionStorage.setItem('distributor',this.userId);
-           vue.prototype.$distributorId = this.userId;
-           vue.prototype.$tmp_uid = this.userId;
-        })
-    },
-  //根据临时用户ID查询订单
-    orderStatus(){
-      let that = this,
-          params = {
-           tmp_uid:this.userId,
-          }
-      this.$http.fetch('Order/stateus',params)
-        .then(res => {
-          this.order_id = res.id;
-          if(res.state == undefined){
-            this.isOpen=true;
-            this.isContinue =false;
-            this.isView =false;
-          }
-          else if(res.state == 0){
-            this.isOpen=false;
-            this.isContinue =true;
-            this.isView =false;
-          }
-          else {
-            this.isOpen=false;
-            this.isContinue =false;
-            this.isView =true;
-          }
-        }) 
-      },
-     getUrlParam(name) {//封装方法
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
-        var r = window.location.search.substr(1).match(reg); 
-        if (r != null) return unescape(r[2]);
-        return null; //返回参数值
-       },
-      getCode () { // 非静默授权，第一次有弹框
-        const code = GetUrlParam('code') // 截取路径中的code，如果没有就去微信授权，如果已经获取到了就直接传code给后台获取openId
-        const local = window.location.href
-        if (code == null || code === '') {
-            window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + window.APPID + '&redirect_uri=' + encodeURIComponent(local) + '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+      getId () {
+          let that = this,
+              params = {
+                 parm:this.userIp,
+                 type:"ip"
+              }
+          this.$http.fetch('TmpUser/getTmpUserId',params)
+            .then(res => {
+     this.userId =res.data.tmp_uid
+
+     // this.inquireSign(() => {
+      that.orderStatus();
+     // });
+
+     this.$tmp_uid = this.userId;
+   })
+      },
+
+  // 查询用户注册状态
+  inquireSign(fn) {
+    let that = this;
+
+    that.$http.fetch('')
+    .then(res => {
+      if (res.errNo == 0) {
+        if (res.data && fn) {
+          fn();
         } else {
-            this.getOpenId(code) //把code传给后台获取用户信息
+          // 初次开通
+          this.btnType = 0;
         }
-        },
-      getOpenId (code) { // 通过code获取 openId等用户信息，/api/IDuserId/wechat/login 为后台接口
-            let _this = this
-            this.$http.post('/api/user/wechat/login', {code: code}).then((res) => {
-                let datas = res.data
-                if (datas.code === 0 ) {
-                    console.log('成功')
-                }
-            }).catch((error) => {
-                console.log(error)
-            })
-        },
-     onTouchStart (e) {
-        // this.clickIndex = 0; // 为了兼容安卓部分情况而加，如果不需要可忽略
-        this.clickFlag = false;
-      },
-      // 用于判断滑动还是点击
-      onTouchMove (e) {
-        this.clickFlag = true;
-        // 为了兼容安卓部分情况而加的判断，如果不需要可忽略，若需要，注释上面一行代码，打开下面三行代码
-        // this.clickIndex = this.clickIndex + 1;
-        // if (this.clickIndex > 2) {
-        //   this.clickFlag = true;
-        // }
-      },
-      onTouchEnd (position) {
-        if (this.clickFlag) { // 滑动
-          // console.log('滑动');
-        } else { // 点击
-          // console.log('点击');
-          this.handleShowPic(position);
+      }
+    })
+  },
+  //根据临时用户ID查询订单
+  orderStatus() {
+    let that = this,
+        params = { tmp_uid:this.userId };
+
+    this.$http.fetch('Order/stateus',params)
+    .then(res => {
+      if (res.errNo == 0) {
+        let data = res.data;
+
+        if (data) {
+          this.order_id = data.id;
+
+          switch(data.state) {
+            // 未支付
+            case 0:
+            this.btnType = 1;
+            break;
+            // 已完成支付
+            case 1 || 2 || 3 || 4:
+            this.btnType = 2;
+            break;
+          }
         }
-      },
-   
+      }
+    }) 
+  },
+onTouchStart (e) {
+      // this.clickIndex = 0; // 为了兼容安卓部分情况而加，如果不需要可忽略
+      this.clickFlag = false;
+    },
+    // 用于判断滑动还是点击
+    onTouchMove (e) {
+      this.clickFlag = true;
+    },
+    onTouchEnd (position) {
+      if (this.clickFlag) { // 滑动
+        // console.log('滑动');
+      } else { // 点击
+        // console.log('点击');
+        this.handleShowPic(position);
+      }
+    },
+
     //页面滑动视频停止播放
     onChange(index){
      this.$refs.videoPlayer1.player.pause()
-    },  
-    viewNumber() {
-      this.$router.push({ path: "/payment" ,query:{
-       order_id:this.order_id
-    } });
-    },
-    openNow() {
-     this.$router.push({ path: "/sign" });
-    },
-    continueOpen() {
-      this.$router.push({ path: "/account",query:{
-       order_id:this.order_id
-    } });
-    },
+   },  
+   viewNumber() {
+    this.$router.push({ path: "/payment" ,query:{
+     order_id:this.order_id
+   } });
+  },
+  openNow() {
+   this.$router.push({ path: "/sign" });
+ },
+ continueOpen() {
+  this.$router.push({ path: "/account",query:{
+   order_id:this.order_id,
+   add: true
+ } });
+},
 
-  }
+}
 };
 </script>
 
 <style lang="scss" scoped>
 #home {
-   box-sizing: border-box;
-   width:100%;
-   margin: 0 auto;
-   position: relative;
-  .background_top {
-    height: 25.8rem;
-    width: 100%;
-    background: url(../assets/img/background_top.png) no-repeat center;
-    background-size: cover;
-  }
-  .background_center {
-    background-color: #29224e;
-    height: 4.35rem;
-    width: 100%;
-  }
-  .background_bottom {
-    background: url(../assets/img/background_botom.png) no-repeat center;
-    background-size: cover;
-    width: 100%;
-    height: 28.25rem;
-    position: relative;
-    .infoBox {
-      position: absolute;
-      top: -3.6rem;
-      left: 0;
-      width: 100%;
-      height: 25.75rem;
-      overflow: hidden;
-    }
-  }
-  /deep/.van-swipe__indicators{
-    background: #29224e !important;
-  }
-  .footer {
-    width: 14rem;
+ box-sizing: border-box;
+ width:100%;
+ margin: 0 auto;
+ position: relative;
+ .background_top {
+  height: 25.8rem;
+  width: 100%;
+  background: url(../assets/img/background_top.png) no-repeat center;
+  background-size: cover;
+}
+.background_center {
+  background-color: #29224e;
+  height: 4.35rem;
+  width: 100%;
+}
+.background_bottom {
+  background: url(../assets/img/background_botom.png) no-repeat center;
+  background-size: cover;
+  width: 100%;
+  height: 28.25rem;
+  position: relative;
+  .infoBox {
     position: absolute;
-    left: 50%;
-    bottom: 2rem;
-    transform: translate(-50%, 0);
-    .open{
-      background: #FD3B44;
-    }
-    .view{
-      background: #FE772D;
-    }
-    .continue{
-      background: -webkit-linear-gradient(left, #FE772D 0%,#FD3B44 100%);
-    }
-    }
-    }
- .footer .item div{
-   width: 100%;
-   height: 2rem;
-   line-height: 2rem;
-   font-size: 0.8rem;
-   color: #fff;
-   border-radius: 1rem;
-   text-align: center;
- }
+    top: -3.6rem;
+    left: 0;
+    width: 100%;
+    height: 25.75rem;
+    overflow: hidden;
+  }
+}
+/deep/.van-swipe__indicators{
+  background: #29224e !important;
+}
+.footer {
+  width: 14rem;
+  position: absolute;
+  left: 50%;
+  bottom: 2rem;
+  transform: translate(-50%, 0);
+  .open{
+    background: #FD3B44;
+  }
+  .view{
+    background: #FE772D;
+  }
+  .continue{
+    background: -webkit-linear-gradient(left, #FE772D 0%,#FD3B44 100%);
+  }
+}
+}
+.footer .item div{
+ width: 100%;
+ height: 2rem;
+ line-height: 2rem;
+ font-size: 0.8rem;
+ color: #fff;
+ border-radius: 1rem;
+ text-align: center;
+}
 .van-swipe-item {
   width: 100%;
   height: 25.75rem;
@@ -374,13 +406,13 @@ export default {
   bottom:-1rem;
   transform: translate(-50%,0);
   height:0.4rem;
-   width: 100%;
+  width: 100%;
 }
 /deep/.van-swipe__indicator{
-   height:1rem;
-   width: 1rem;
-   background: #29224e;
- }
+ height:1rem;
+ width: 1rem;
+ background: #29224e;
+}
 .van-swipe-item .box-item .iphoneNum {
   position: absolute;
   left: 50%;

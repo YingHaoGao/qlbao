@@ -93,7 +93,9 @@ export default {
           order_id: that.$route.query.order_id
         })
         .then(function(res){
-          that.type = res.data.state;
+          if (res.errNo == 0 && res.data) {
+            that.type = res.data.state;
+          }
         });
       }
       // 通过临时用户id查询状态
@@ -107,7 +109,7 @@ export default {
             }
           })
       }
-      else {
+      else if (process.env.NODE_ENV === "development") {
         this.$message.error({
           showClose: true,
           message: '获取订单id、用户id失败'

@@ -32,7 +32,7 @@ export default {
     
   },
   created() {
-    this.isAdd = this.$route.query.add == 'true'
+    this.isAdd = this.$route.query.add
     this.getPrices();
   },
   data() {

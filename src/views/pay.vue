@@ -46,7 +46,7 @@ export default {
     this.form.price = this.$route.query.price;
     this.form.user_number = this.$route.query.user_number;
     this.form.total_price = this.$route.query.total_price;
-    this.isAdd = this.$route.query.add == 'true';
+    this.isAdd = this.$route.query.add;
 
     this.getOrder()
     this.getBank()
@@ -84,11 +84,7 @@ export default {
   methods: {
     // 获取对公转账信息
     getBank () {
-      let that = this,
-          params = {
-            type: 'selling',
-            company_pid: that.$distributorId
-          }
+      let that = this;
       this.$http.fetch('BankAccount/getList')
         .then(res => {
           that.bank = res.data
@@ -128,8 +124,8 @@ export default {
         tmp_uid: that.$tmp_uid
       })
         .then(res => {
-          if (res.errNo == 0) {
-            that.order_id = res.data.company_id;
+          if (res.errNo == 0 && res.data) {
+            that.order_id = res.data.id;
           }
         })
     },
@@ -141,7 +137,7 @@ export default {
 
       this.$http.post('/Order/create', {
         ...form,
-        company_pid: distributorId
+        company_id: distributorId
       }, that)
         .then(res => {
           if (res.errNo == 0) {
@@ -164,7 +160,7 @@ export default {
 
       this.$http.post('/Order/update', {
         ...form,
-        company_pid: distributorId,
+        company_id: distributorId,
         order_id: that.order_id
       }, that)
         .then(res => {
