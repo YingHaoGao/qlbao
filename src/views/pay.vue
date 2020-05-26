@@ -115,6 +115,7 @@ export default {
       //   this.setOrder();
       //   return
       // }
+      // this.createOrder()
   	},
     // 根据临时用户id查询订单
     getOrder () {
