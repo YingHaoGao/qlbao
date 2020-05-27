@@ -25,6 +25,10 @@
 import QRCode from "qrcodejs2";
 import CONFIG from "../../config/index.js";
 import IMG from '../../public/code.jpg'
+import TOOLS from '../tools';
+// import {wxshare} from '../wxshare'
+
+const wx = require("weixin-js-sdk");
 
 export default {
   name: 'share',
@@ -59,11 +63,14 @@ export default {
   	onShare () {
       let share = {
         imgUrl: '',
-        title: '',
-        desc: '',
-        link: ''
+        title: '我的邀请卡',
+        desc: '我的邀请卡',
+        link: CONFIG.HTTP + "/sign.html"
       };
-      this.$wxshare(share);
+      wx.ready(function () {
+        wx.onMenuShareAppMessage(share) // 分享给好友
+        wx.onMenuShareTimeline(share) // 分享到朋友圈
+      })
   	},
     // 生成二维码参数
     qrcode () {

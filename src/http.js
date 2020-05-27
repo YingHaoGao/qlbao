@@ -1,15 +1,11 @@
 import axios from 'axios';
 import CONFIG from '../config';
+import tools from './tools.js';
 
 import {Message} from 'element-ui'
 
-const api = {
-  sign: '',
-  app_key: ''
-};
-
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL = CONFIG.HTTP;
+// axios.defaults.baseURL = CONFIG.HTTP;
 
 //http request 拦截器
 axios.interceptors.request.use(
@@ -84,9 +80,12 @@ axios.interceptors.response.use(response => {
  * @returns {Promise}
  */
 
-export function fetch(url,params={}, that){
-  var timestamp=new Date().getTime(),
-      { sign, app_key } = api;
+export function fetch(url,params={}, that, proxy){
+  var timestamp=new Date().getTime();
+  var sign = tools.getStorage('access_token');
+  var app_key = '';
+
+  url = proxy ? url : CONFIG.HTTP + url;
 
   return new Promise((resolve,reject) => {
     axios.get(url,{
@@ -98,11 +97,11 @@ export function fetch(url,params={}, that){
       }
     })
     .then(response => {
-      if (that)  that.loading = false;
+      if (that && that.loading)  that.loading = false;
       resolve(response.data);
     })
     .catch(err => {
-      if (that)  that.loading = false;
+      if (that && that.loading)  that.loading = false;
       reject(err)
     })
   })
@@ -116,9 +115,12 @@ export function fetch(url,params={}, that){
  * @returns {Promise}
  */
 
- export function post(url,data = {}){
-  var timestamp=new Date().getTime(),
-      { sign, app_key } = api;
+ export function post(url,data = {},that,proxy){
+  var timestamp=new Date().getTime();
+  var sign = tools.getStorage('access_token');
+  var app_key = '';
+
+  url = proxy ? url : CONFIG.HTTP + url;
 
   let form = new FormData();
   let newData = {
@@ -178,5 +180,5 @@ export function put(url,data = {}){
 }
 
 export const http = {
-    fetch, post, patch, put
+    fetch, post
 }

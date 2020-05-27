@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TabHead/>
+    <TabHead v-if="isShow"/>
     <router-view />
   </div>
 </template>
@@ -13,7 +13,18 @@
     TabHead
   },
   data () {
-    return {}
+    return {
+      isShow: true
+    }
+  },
+   beforeRouteEnter(to, from, next) {
+    next(_this=>{
+      if (from.name == 'Home') {
+        next.isShow = false;
+      } else {
+        next.isShow = true;
+      }
+    })
   },
 })
 </script>

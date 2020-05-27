@@ -321,12 +321,17 @@ export default {
         company_name: form.name,
         contact_name: form.contacts,
         open_user: form.isRingtone ? 1 : 0,
-        company_pid: distributorId
+        company_pid: distributorId,
+        tmp_uid: that.$tmp_uid
       }, that)
         .then(res => {
           if (res.errNo == 0) {
             this.$distributorId = res.data.company_id;
-            // this.$tmp_uid = res.data.user_id;
+            
+            // that.$client_id = 
+            // that.$secret = 
+            that.getAccessToken();
+
             this.$message({
               message: '提交成功！',
               type: 'success'
@@ -334,6 +339,19 @@ export default {
             this.$router.replace({path: '/account'});
           }
         })
+    },
+    // 获取access_token
+    getAccessToken () {
+      let that = this;
+
+      that.$http.fetch('/api/accessToken', {
+        client_id: that.$client_id,
+        secret: that.$secret
+      }).then(res => {
+        if (res.errNo == 0) {
+          TOOL.setStorage('access_token', res.access_token);
+        }
+      })
     },
     // 验证企业名称
     checkName() {

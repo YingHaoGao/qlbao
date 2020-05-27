@@ -23,6 +23,8 @@ import ICONback from '../../static/icon/back.png'
 import ICONcha from '../../static/icon/cha.png'
 import ICONshare from '../../static/icon/share.png'
 
+const wx = require("weixin-js-sdk");
+
 export default {
   name: 'tabHead',
   created() {
@@ -62,16 +64,19 @@ export default {
 		toClose () {
 			window.open("about:blank","_self").close()
 		},
-		// 分享
-		toShare () {
-			let share = {
+  	// 分享微信好友
+  	toShare () {
+      let share = {
         imgUrl: '',
-        title: '',
-        desc: '',
-        link: ''
+        title: '我的邀请卡',
+        desc: '我的邀请卡',
+        link: CONFIG.HTTP + "/sign.html"
       };
-      this.$wxshare(share);
-		}
+      wx.ready(function () {
+        wx.onMenuShareAppMessage(share) // 分享给好友
+        wx.onMenuShareTimeline(share) // 分享到朋友圈
+      })
+  	},
 	}
 }
 </script>

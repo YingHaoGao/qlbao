@@ -1,7 +1,6 @@
 <template>
 
-  <div id="home" :autoresize="true" v-loading="loading">
-   <!-- <vue-element-loading :active="isActive" :is-full-screen="true"/> -->
+  <div id="home" :autoresize="true">
    <div class="background_top"></div>
    <div class="background_center"></div>
    <div class="background_bottom">
@@ -83,15 +82,15 @@
 </template>
 
 <script>
-  import { Loading } from 'element-ui'
-  import TOOL from '../tools.js'
+import TOOL from '../tools.js'
+import CONFIG from "../../config/index.js";
+import axios from 'axios';
 
   export default {
     name: "Video",
 
     data() {
       return {
-       loading: true,
        banner:["1","2","3"],
        paystate:"",
        userIp :'',
@@ -129,89 +128,33 @@
       // ip or openid
       codeType: 'ip',
        // 显示按钮
-       btnType: 0,
+       btnType: 0
      };
    },
    beforeRouteEnter(to, from, next) {
     next(_this=>{
-      //判断是否为微信环境
-      if(TOOL.getFacility() == 'Weixin'){
-        _this.codeType = 'openid';
+      _this.getAccessToken(() => {
+        //判断是否为微信环境
+        if(TOOL.getFacility() == 'Weixin'){
+          _this.codeType = 'openid';
 
-        let code=_this.getUrlKey('code');
-        if(code){
-          let data={
-            code:code
-          }
-          codeGetOpenid(data).then((res)=>{
-            if(res.data.error==0){
-              openid = res.data.datArr.openid;
-              setCookie('openid',openid)
-                //跳转当前页面并加上参数
-                window.location.replace('/scanLogin/checkingCaller?event_id='+_this.event_id)
-              }else{
-                console.log(res.data.msg)
-                // window.location.replace('/scanLogin/checkingCaller?event_id='+_this.event_id)
-              }
-            })
+          _this.accredit()
         }else{
-          _this.getCodeApi('wx')
+          _this.codeType = 'ip'
         }
-      }else{
-        _this.codeType = 'ip'
-      }
+      });
     })
   },
   created(){
-    this.loading=true
-
     if (this.codeType == 'ip') {
       this.getIp();
     }
-  },
-  mounted(){
-    this.loading=false;
   },
   methods:{
     //获取url参数
     getUrlKey(name){   
        return decodeURIComponent((new RegExp('[?|&]'+name+'='+'([^&;]+?)(&|#|;|$)').exec(location.href)||[,""])[1].replace(/\+/g,'%20'))||null;
     },
-    //获取code
-    getCodeApi(state){
-      let data={
-        url:location.href
-      }
-      // getWXconfig(data).then((res)=>{
-      //   let Data = res.data;
-      //   let appId = Data.appId;
-      //   // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作
-      //     wx.config({
-      //       debug: false, // 开启调试模式,开发时可以开启
-      //       appId: Data.appId,   // 必填，公众号的唯一标识   由接口返回
-      //       timestamp: Data.timestamp, // 必填，生成签名的时间戳 由接口返回
-      //       nonceStr: Data.nonceStr,    // 必填，生成签名的随机串 由接口返回
-      //       signature: Data.signature,   // 必填，签名 由接口返回
-      //       jsApiList: [] // 此处填你所用到的方法
-      //   });
-      //   let urlNow=encodeURIComponent(window.location.href);
-      //   let scope='snsapi_base';    //snsapi_userinfo   //静默授权 用户无感知
-      //   let url="http://m.yunbisai.com/wechat/Openid?url="+urlNow;
-      //   window.location.replace(url);
-      // })    
-    },
-
-
-   startLoading: function() {
-    loading = Loading.service({
-      lock: true,
-      text: '加载中……',
-      background: 'rgba(0, 0, 0, 0.7)'
-    })
-   },
-  endLoading: function() {
-    loading.close()
-  },
    //获取IP
     getIp () {
       let that = this,
@@ -220,6 +163,8 @@
       this.$http.fetch('TmpUser/getip')
         .then(res => {
           this.userIp = res.data.ip;
+          that.$parm = res.data.ip;
+          that.$browser = 'ip';
           this.getId();
         })
     },
@@ -285,6 +230,68 @@
       }
     }) 
   },
+  // 获取access_token
+  getAccessToken (fn) {
+    let that = this;
+
+    that.$http.fetch('/api/accessToken', {
+      client_id: that.$client_id,
+      secret: that.$secret
+    }, that, true).then(res => {
+      if (res.errNo == 0) {
+        localStorage.setItem('access_token', res.access_token);
+        fn()
+      }
+    })
+  },
+  // 微信授权
+  accredit () {
+    let that = this;
+    let code = that.getUrlKey('code');
+
+    if (code == null || code == '') {      
+      that.$http.fetch('/api/v1/weixin/getShareInfo/', {
+        access_token: localStorage.getItem('access_token'),
+        url: location.href.split('#')[0],
+        type: 2
+      }, that, true).then(res => {
+        console.log(res)
+        if (res.errNo == 0) {
+          console.log('config ->' ,{
+            debug: process.env.NODE_ENV === "development",
+            appId: res.data.appId,
+            timestamp: res.data.timestamp,
+            nonceStr: res.data.nonceStr,
+            signature: res.data.signature,
+            jsApiList: ['openLocation']
+          })
+          that.$wx.config({
+            debug: process.env.NODE_ENV === "development",
+            appId: res.data.appId,
+            timestamp: res.data.timestamp,
+            nonceStr: res.data.nonceStr,
+            signature: res.data.signature,
+            jsApiList: [
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage',
+              'onMenuShareQQ',
+              'onMenuShareWeibo',
+              'onMenuShareQZone'
+            ]
+          });
+          let uri = encodeURIComponent(location.href.split('#')[0]);
+          axios.get(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.data.appId}&redirect_uri=${uri}&response_type=code&state=1&scope=snsapi_base#wechat_redirect`)
+        }
+      })
+    } else {
+      that.$http.fetch(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code`).then(res => {
+        console.log(res)
+        that.$parm = res.openid;
+        that.$browser = 'openid';
+      })
+    }
+  },
+
 onTouchStart (e) {
       // this.clickIndex = 0; // 为了兼容安卓部分情况而加，如果不需要可忽略
       this.clickFlag = false;

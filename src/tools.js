@@ -1,4 +1,6 @@
-export default {
+const wx = require("weixin-js-sdk");
+
+const tools = {
 	// 检测运行环境
 	getFacility () {
 		var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
@@ -72,5 +74,15 @@ export default {
 		if (is && fn) fn();
 		
 		return is;
-	}
+	},
+    // 设置storage
+    setStorage (key, val) {
+        localStorage.setItem(key, val);
+    },
+    // 获取storage
+    getStorage (key) {
+        localStorage.getItem(key);
+    },
 }
+
+export default tools
