@@ -9,7 +9,7 @@
             show-word-limit></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input placeholder="请输入联系人信息" v-model="form.contacts"
+          <el-input placeholder="请输入联系人" v-model="form.contacts"
             @blur="checkContacts"
             maxlength="8"
             show-word-limit></el-input>
@@ -266,7 +266,7 @@ export default {
     // 获取图形码
     getGraphics() {
       let that = this;
-      that.$http.fetch('/api/getGraphics')
+      that.$http.fetch('/getGraphics')
         .then(res => {
           that.graphics = res.data.graphics
         })
@@ -344,7 +344,7 @@ export default {
     getAccessToken () {
       let that = this;
 
-      that.$http.fetch('/api/accessToken', {
+      that.$http.fetch('/accessToken', {
         client_id: that.$client_id,
         secret: that.$secret
       }).then(res => {

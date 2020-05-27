@@ -234,7 +234,7 @@ import axios from 'axios';
   getAccessToken (fn) {
     let that = this;
 
-    that.$http.fetch('/api/accessToken', {
+    that.$http.fetch('/accessToken', {
       client_id: that.$client_id,
       secret: that.$secret
     }, that, true).then(res => {
@@ -250,7 +250,7 @@ import axios from 'axios';
     let code = that.getUrlKey('code');
 
     if (code == null || code == '') {      
-      that.$http.fetch('/api/v1/weixin/getShareInfo/', {
+      that.$http.fetch('/v1/weixin/getShareInfo/', {
         access_token: localStorage.getItem('access_token'),
         url: location.href.split('#')[0],
         type: 2

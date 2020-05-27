@@ -19,7 +19,6 @@ axios.interceptors.request.use(
 
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {
-  console.log(response)
   if (response.data && response.data.errNo == 400) {
     Message({message: response.data.message, type: "error"})
   }
@@ -85,7 +84,11 @@ export function fetch(url,params={}, that, proxy){
   var sign = tools.getStorage('access_token');
   var app_key = '';
 
-  url = proxy ? url : CONFIG.HTTP + url;
+  if (proxy) {
+    url = ( process.env.NODE_ENV === "development" ? 'api' : 'http://test.api.meisheapp.com' ) + url
+  } else {
+    url = CONFIG.HTTP + url;
+  }
 
   return new Promise((resolve,reject) => {
     axios.get(url,{
@@ -120,7 +123,11 @@ export function fetch(url,params={}, that, proxy){
   var sign = tools.getStorage('access_token');
   var app_key = '';
 
-  url = proxy ? url : CONFIG.HTTP + url;
+  if (proxy) {
+    url = ( process.env.NODE_ENV === "development" ? 'api' : 'http://test.api.meisheapp.com' ) + url
+  } else {
+    url = CONFIG.HTTP + url;
+  }
 
   let form = new FormData();
   let newData = {
