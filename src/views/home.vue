@@ -75,8 +75,10 @@
    <div class="item">
     <div class="continue" @click="continueOpen" v-if="btnType == 1" >继续开通</div>
   </div>
+  <div>
+  </div>
 </div>
-
+    <iframe :src="src" frameborder="0"></iframe>
 </div>
 
 </template>
@@ -128,7 +130,8 @@
         // ip or openid
         codeType: 'ip',
          // 显示按钮
-         btnType: 0
+         btnType: 0,
+         src: ''
        };
      },
      beforeRouteEnter(to, from, next) {
@@ -138,8 +141,6 @@
           if(TOOL.getFacility() == 'Weixin'){
             _this.codeType = 'openid';
             _this.$root.browser = 'openid';
-
-            _this.accredit()
           }else{
             _this.codeType = 'ip'
             _this.$root.browser = 'ip'
@@ -150,6 +151,19 @@
     created(){
       if (this.codeType == 'ip') {
         this.getIp();
+      } else {
+        let openid = this.getUrlKey("openid");
+
+        if(openid){
+            that.$root.parm = openid;
+            that.$root.browser = 'ip';
+
+            if (process.env.NODE_ENV === "debug") {
+              alert('openid = ', openid)
+            }
+         }else{
+            this.accredit();
+         }
       }
     },
     methods:{
@@ -255,82 +269,8 @@
     // 微信授权
     accredit () {
       let that = this;
-      let openid = that.getUrlKey('openid');
 
-      that.$http.fetch('/v1/weixin/getShareInfo/', {
-          access_token: localStorage.getItem('access_token'),
-          url: location.href.split('#')[0],
-          type: 2
-        }, that, true).then(res => {
-          that.$wx.config({
-            debug: process.env.NODE_ENV === "development",
-            appId: res.data.appId,
-            timestamp: res.data.timestamp,
-            nonceStr: res.data.nonceStr,
-            signature: res.data.signature,
-            jsApiList: [
-              'onMenuShareTimeline',
-              'onMenuShareAppMessage',
-              'onMenuShareQQ',
-              'onMenuShareWeibo',
-              'onMenuShareQZone'
-            ]
-          });
-
-          if (openid == null || openid == '') {
-            that.$http.fetch('/v1/weixin/authorize', {
-              access_token: localStorage.getItem('access_token'),
-              redirect: location.href.split('#')[0],
-              scope_type: 1
-            }, that, true)
-          } else {
-            that.$root.parm = openid;
-            that.$root.browser = 'openid';
-            this.inquireSign();
-          }
-        })
-      
-      // if (code == null || code == '') {      
-      //   that.$http.fetch('/v1/weixin/getShareInfo/', {
-      //     access_token: localStorage.getItem('access_token'),
-      //     url: location.href.split('#')[0],
-      //     type: 2
-      //   }, that, true).then(res => {
-      //     console.log(res)
-      //     if (res.errNo == 0) {
-      //       console.log('config ->' ,{
-      //         debug: process.env.NODE_ENV === "development",
-      //         appId: res.data.appId,
-      //         timestamp: res.data.timestamp,
-      //         nonceStr: res.data.nonceStr,
-      //         signature: res.data.signature,
-      //         jsApiList: ['openLocation']
-      //       })
-      //       that.$wx.config({
-      //         debug: process.env.NODE_ENV === "development",
-      //         appId: res.data.appId,
-      //         timestamp: res.data.timestamp,
-      //         nonceStr: res.data.nonceStr,
-      //         signature: res.data.signature,
-      //         jsApiList: [
-      //           'onMenuShareTimeline',
-      //           'onMenuShareAppMessage',
-      //           'onMenuShareQQ',
-      //           'onMenuShareWeibo',
-      //           'onMenuShareQZone'
-      //         ]
-      //       });
-      //       let uri = encodeURIComponent(location.href.split('#')[0]);
-      //       axios.get(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.data.appId}&redirect_uri=${uri}&response_type=code&state=1&scope=snsapi_base#wechat_redirect`)
-      //     }
-      //   })
-      // } else {
-      //   that.$http.fetch(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code`).then(res => {
-      //     console.log(res)
-      //     that.$root.parm = res.openid;
-      //     that.$root.browser = 'openid';
-      //   })
-      // }
+      that.src = `http://api.meisheapp.com/v1/weixin/authorize?access_token=${localStorage.getItem('access_token')}&redirect=${encodeURIComponent(location.href.split('#')[0])}`;
     },
 
   onTouchStart (e) {
@@ -380,6 +320,11 @@
  position: relative;
   background: url(../assets/img/background.png) no-repeat center;
   background-size: cover;
+
+  iframe {
+    display: none;
+  }
+
  .background_top {
   height: 25.8rem;
   width: 100%;

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>注册页面</title>
+	<title>注册</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title><%= htmlWebpackPlugin.options.title %></title>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <!-- iconfont -->
     <style type="text/css">
@@ -38,6 +37,20 @@
           content: "\e61a";
         }
     </style>
+    <script>        
+        (function (doc, win) {    
+            var docEl = doc.documentElement,    
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',    
+            recalc = function () {    
+            var clientWidth = docEl.clientWidth;    
+            if (!clientWidth) return;    
+            docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';    
+        };    
+        if (!doc.addEventListener) return;    
+        win.addEventListener(resizeEvt, recalc, false);    
+        doc.addEventListener('DOMContentLoaded', recalc, false);    
+        })(document, window);    
+    </script>
     <style type="text/css">
     	* {
     		padding: 0px;
@@ -45,6 +58,10 @@
     	}
     	html {
     		font-size: 20px;
+            height: 100%;
+            background-image: url('./background.png');
+            background-size: cover;
+            background-position: 0 2rem;
     	}
 
         #tabHead {
@@ -56,6 +73,7 @@
             position: relative;
             overflow: hidden;
             line-height: 1.5rem; 
+            background: #fff;
         }
         #tabHead .left,#tabHead .right {
             position: absolute;
@@ -83,45 +101,56 @@
             text-align: center;
         }
     	.box {
-    		width: 90%;
-            margin: auto;
-            margin-top: 2rem;
+          position: absolute;
+          top: 4.5rem;
+          bottom: 2.5rem;
+          left: 1.3rem;
+          right: 1.3rem;
+          box-sizing: border-box;
+          margin: auto;
+          padding: 1.25rem 0.75rem;
+          background-color: rgba(242,242,242,0.4);
     	}
     	.box .btns {
     		width: 100%;
     		text-align: center;
+            overflow: hidden;
     	}
     	.box .btns .btn {
-    		width: 25%;
+            width: 3.53rem;
+            height: 2.4rem;
             font-size: 0.8rem;
-    		display: inline-block;
-    		margin-bottom: 2rem;
-    		padding: 0.6rem 0rem;
+            display: inline-block;
+            margin-bottom: 1.25rem;
+            line-height: 2.4rem;
     		text-align: center;
     		border: solid 0.05rem rgba(0,0,0,.2);
+            float: left;
+            background:rgba(242,242,242,1);
+            border-radius:4px;
     	}
         .box .btns .btn.active {
             background: rgba(43,95,195);
             color: #fff;
         }
     	.box .btns .btn:first-child {
-    		margin-right: 2%;
+    		margin-right: 0.5rem;
     	}
     	.box .btns .btn:last-child {
-    		margin-left: 2%;
+    		margin-left: 0.5rem;
     	}
     	.box .btns .btn.active {
     		color: #fff;
-    		background: rgb(55,152,218);
-    		border-color: rgb(55,152,218);
+    		background: #5E43FA;
+    		border-color: #5E43FA;
     	}
     	.box .inputs {
     		width: 100%;
     	}
     	.box .inputs .item {
     		text-align: center;
-            height: 1.5rem;
-    		margin-bottom: 0.4rem;
+            height: 2.3rem;
+    		margin-bottom: 0.75rem;
     	}
     	.box .inputs .label {
             font-size: 0.8rem;
@@ -130,40 +159,60 @@
     		width: 30%;
     	}
     	.box .inputs input {
-    		width: 64%;
-            font-size: 0.8rem;
-            padding: 0.1rem;
+    		width: 100%;
+            height: 2.3rem;
+            font-size: 0.6rem;
+            padding: 0.65rem 0.5rem;
     		box-sizing: border-box;
+            border-radius: 1.25rem;
+            border: 1px solid rgba(255,255,255,1);
+            color: #fff;
+            background: none;
     	}
+        .box .inputs input::-webkit-input-placeholder {
+            color: #fff;
+        }
+        .box .inputs input::-moz-placeholder {
+            color: #fff;
+        }
+        .box .inputs input::-ms-input-placeholder {
+            color: #fff;
+        }
         .box .inputs .codeInput {
-            width: 64%;
-            height: 1.5rem;
+            text-align: left;
+            width: 100%;
+            height: 100%;
             display: inline-block;
             overflow: hidden;
         }
         .box .inputs .codeInput input {
-            width: 64%;
+            width: 7rem;
             height: 100%;
             float: left;
         }
         .box .inputs .sendCode {
-            width: 36%;
+            color: #FD3B44;
+            width: 4.6rem;
+            margin-left: 0.3rem;
+            text-align: center;
             float: left;
-            height: 100%;
-            line-height: 1.5rem;
-            color: #fff;
-            cursor: pointer;
             font-size: .6rem;
-            background: rgba(43,95,195);
+            background: none;
+            height: 2.3rem;
+            font-size: 0.6rem;
+            padding: 0.65rem 0.5rem;
+            box-sizing: border-box;
+            border-radius: 1.25rem;
+            border: 1px solid rgba(255,255,255,1);
         }
         .box .inputs .sendCode.hide {
             display: none;
         }
     	.box .footer {
-    		width: 100%;
-    		position: fixed;
+    		width: 14.65rem;
+    		position: absolute;
     		left: 50%;
-    		bottom: 4rem;
+    		bottom: 1.25rem;
     		transform: translate(-50%, 0);
     	}
     	.box .footer .text {
@@ -175,7 +224,7 @@
             margin: auto;
             border-radius: 2.6rem;
     		text-align: center;
-    		background: #2B5FC3;
+    		background: #5E43FA;
     		color: #fff;
     		padding: .4rem;
             font-size: 0.8rem;
@@ -192,28 +241,25 @@
             <i class="iconfont">&#xe61a;</i>
         </div>
     </div>
-    <div class="title">注册页面</div>
+    <div class="title">注册</div>
 </div>
 <div class="box">
 	<div class="btns">
-		<div class="btn" name="移动">移动</div>
-		<div class="btn" name="联通">联通</div>
-		<div class="btn" name="电信">电信</div>
+		<div class="btn" name="1">移动</div>
+		<div class="btn" name="2">联通</div>
+		<div class="btn" name="3">电信</div>
 	</div>
 	<div class="inputs">
 		<div class="item">
-			<span class="label">姓名</span>
-			<input id="name" type="text" placeholder="请输入联系人信息">
+			<input id="name" type="text" placeholder="请输入姓名">
 		</div>
 		<div class="item">
-			<span class="label">电话号码</span>
-			<input id="phone" type="text" placeholder="请输入联系人手机号码">
+			<input id="phone" type="text" placeholder="请输入手机">
 		</div>
         <div class="item">
-            <span class="label" style="transform: translate(0,-35%);">验证码</span>
             <div class="codeInput">
             <input id="code" type="text" placeholder="请输入验证码">
-            <div class="sendCode send">发送验证码</div>
+            <div class="sendCode send">获取验证码</div>
             <div class="sendCode hide time" data-time="60">60s</div>
             </div>
         </div>
@@ -227,12 +273,14 @@
 <script type="text/javascript">
 $(function() {
     // 服务器地址
-    const HTTP = '';
+    const HTTP = 'http://testapi.cailing.meisheapp.com';
 
     var codeInterval;
 
     var code = '',
-        operator = '';
+        operator = '',
+        company_pid = getUrlParam('company_pid');
+
 
     // 返回
     $('#tabHead .back').on('click', function() {
@@ -287,26 +335,32 @@ $(function() {
 
         $.ajax({
             type: 'get',
-            url: HTTP + '/api/getCode',
+            data: {
+              phone: $('#phone').val(),
+              type: 1
+            },
+            url: HTTP + '/sms/send',
             success(res) {
-                code = res.data.code;
-                $('.sendCode.time').removeClass('hide');
-                $('.sendCode.send').addClass('hide');
+                if (res.errNo == 0) {
+                    $('.sendCode.time').removeClass('hide');
+                    $('.sendCode.send').addClass('hide');
 
-                codeInterval = setInterval(function() {
-                    let time = $('.sendCode.time').data('time');
+                    codeInterval = setInterval(function() {
+                        let time = $('.sendCode.time').data('time');
 
-                    if (time < 0) {
-                        clearInterval(codeInterval);
-                        $('.sendCode.send').removeClass('hide');
-                        $('.sendCode.time').addClass('hide');
-                    }
-                    else {
-                        $('.sendCode.time').attr("data-time", time - 1).text(time - 1);
-                    }
-                }, 1000)
-
-                alert('验证码已发送')
+                        if (time < 0) {
+                            clearInterval(codeInterval);
+                            $('.sendCode.send').removeClass('hide');
+                            $('.sendCode.time').addClass('hide');
+                        }
+                        else {
+                            $('.sendCode.time').attr("data-time", time - 1).text(time - 1);
+                        }
+                    }, 1000)
+                    alert('验证码已发送')
+                } else {
+                    alert(res.message)
+                }
             }
         })
     });
@@ -314,37 +368,40 @@ $(function() {
     // 提交
     $('.submit').on('click', function() {
         var data = {
-            name: $('#name').val(),
-            phone: $('#phone').val(),
-            code: $('#code').val(),
-            operator: operator,
-            distributorId: getUrlParam('distributorId')
+            user_name: $('#name').val(),
+            telephone: $('#phone').val(),
+            verification_code: $('#code').val(),
+            telephone_type: operator,
+            company_id: company_pid
         };
 
-        if (operator == "") {
+        if (data.telephone_type == "") {
             alert('请选择运营商')
             return
         }
-        if (!detection(1, data.name) || data.name.length > 8) {
+        if (!detection(1, data.user_name) || data.user_name.length > 8 || data.user_name.length == 0) {
             alert('请重新输入姓名')
             return
         }
-        if (!detection(0, data.phone)) {
+        if (!detection(0, data.telephone)) {
             alert('请重新输入手机号')
             return
         }
-        if (code == '' || data.code != code) {
-            alert('验证码有误')
+        if (data.verification_code == '') {
+            alert('请输入验证码')
             return
         }
 
-        alert('已提交')
         $.ajax({
-            type: 'get',
-            url: HTTP + '/api/sign',
+            type: 'post',
+            url: HTTP + '/User/add',
             data: data,
             success(res) {
-                
+                if (res.errNo == 0) {
+                    alert('已提交')
+                } else {
+                    alert(res.message)
+                }
             }
         })
     })

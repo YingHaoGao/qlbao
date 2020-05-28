@@ -16,7 +16,7 @@
       </div>
   	</div>
   	<div class="buttons">
-  		<el-button type="primary" @click="onShare" round>把二维码分享给员工填写号码</el-button>
+  		<el-button type="primary" round>把二维码分享给员工填写号码</el-button>
   	</div>
   </div>
 </template>
@@ -27,7 +27,6 @@ import CONFIG from "../../config/index.js";
 import IMG from '../../public/code.jpg'
 import TOOLS from '../tools';
 import bus from '../bus.js';
-// import {wxshare} from '../wxshare'
 
 const wx = require("weixin-js-sdk");
 
@@ -47,10 +46,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      this.custom();
       this.qrcode();
     });
     bus.$on('onShare', () => {
-      this.onShare()
+      // this.onShare()
     })
   },
   data () {
@@ -63,15 +63,15 @@ export default {
   	}
   },
   methods: {
-  	// 分享微信好友
-  	onShare () {
+    // 自定义分享配置
+    custom () {
       console.log('share')
       let that = this;
       let share = {
         imgUrl: '',
         title: '我的邀请卡',
         desc: '我的邀请卡',
-        link: CONFIG.HTTP + "/sign.html"
+        link: CONFIG.SHARE + "/sign.html?company_pid=" + that.$root.company_pid
       };
 
       that.$http.fetch('/v1/weixin/getShareInfo/', {
@@ -80,7 +80,7 @@ export default {
         type: 2
       }, that, true).then(res => {
         that.$wx.config({
-          debug: process.env.NODE_ENV === "development",
+          debug: process.env.NODE_ENV === "debug",
           appId: res.data.appId,
           timestamp: res.data.timestamp,
           nonceStr: res.data.nonceStr,
@@ -110,9 +110,9 @@ export default {
       let qrcode = new QRCode("qrcode", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
-          text: CONFIG.HTTP + "/sign.html?company_pid=" + that.$root.company_pid
+          text: CONFIG.SHARE + "/sign.html?company_pid=" + that.$root.company_pid
         });
-      console.log('分享链接： ' + CONFIG.HTTP + "/sign.html?company_pid=" + this.$root.company_pid)
+      console.log('分享链接： ' + CONFIG.SHARE + "/sign.html?company_pid=" + this.$root.company_pid)
     },
     // 获取企业信息
     getCompanyInfo () {

@@ -85,7 +85,7 @@ export function fetch(url,params={}, that, proxy){
   var app_key = '';
 
   if (proxy) {
-    url = ( process.env.NODE_ENV === "development" ? 'api' : 'http://test.api.meisheapp.com' ) + url
+    url = CONFIG.WXHTTP + url
   } else {
     url = CONFIG.HTTP + url;
   }
@@ -124,7 +124,7 @@ export function fetch(url,params={}, that, proxy){
   var app_key = '';
 
   if (proxy) {
-    url = ( process.env.NODE_ENV === "development" ? 'api' : 'http://test.api.meisheapp.com' ) + url
+    url = CONFIG.WXHTTP + url
   } else {
     url = CONFIG.HTTP + url;
   }

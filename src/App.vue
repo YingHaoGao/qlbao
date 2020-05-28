@@ -57,7 +57,7 @@ html{
   
     .vessel {
       position: absolute;
-      top: 5.5rem;
+      top: 4.5rem;
       bottom: 2.5rem;
       width: calc( 100% - 1rem );
       box-sizing: border-box;

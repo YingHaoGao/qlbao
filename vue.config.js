@@ -3,7 +3,7 @@ module.exports = {
     devServer: {
         proxy: {
             "/api": {
-                target: "http://test.api.meisheapp.com",
+                target: "http://api.meisheapp.com",
                 headers: {
                     'origin': 'http://m.meisheapp.com'
                 },

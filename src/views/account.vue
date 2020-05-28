@@ -176,9 +176,12 @@ export default {
   }
   .footer {
     font-size: 0.7rem;
-    width: 100%;
     margin: auto;
-    margin-top: 9.65rem;
+    width: 14.65rem;
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translate(-50%, 0);
 
     button {
       margin-top: 0.75rem;

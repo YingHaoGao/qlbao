@@ -6,7 +6,6 @@ import Account from '../views/account.vue'
 import Pay from '../views/pay.vue'
 import Payment from '../views/payment.vue'
 import Share from '../views/share.vue'
-import SignHtml from '../views/signHtml.vue'
 import Home from '../views/home.vue'
 import Protocol from '../views/protocol.vue'
 
@@ -38,14 +37,6 @@ export default new Router({
       component: Sign,
       meta: {
         title: '注册'
-      }
-    },
-    {
-      path: '/sign',
-      name: 'SignHtml',
-      component: SignHtml,
-      meta: {
-        title: '注册页面'
       }
     },
     {
