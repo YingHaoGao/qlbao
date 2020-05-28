@@ -149,6 +149,9 @@
       })
     },
     created(){
+      let agent_id = this.getUrlKey("agent_id");
+      this.$root.agent_id = agent_id;
+
       if (this.codeType == 'ip') {
         this.getIp();
       } else {

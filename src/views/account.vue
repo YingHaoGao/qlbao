@@ -15,7 +15,7 @@
           <el-radio v-model="radio" v-for="item in prices" :label="item.id" :key="item.id" border>{{item.level_name}}</el-radio>
         </div>
       </div>
-      <div class="footer">
+      <div class="footer" v-show="footerShow">
         <div class="money">
           订单金额：￥<span>{{money}}</span>
         </div>
@@ -34,6 +34,14 @@ export default {
   created() {
     this.isAdd = this.$route.query.add
     this.getPrices();
+
+    window.onresize= ()=>{
+      if(this.clientHeight > document.documentElement.clientHeight) {
+        this.footerShow = false;
+      }else{
+        this.footerShow = true;
+      }
+    }
   },
   data() {
   	return {
@@ -43,7 +51,9 @@ export default {
       remarks: '10元/人/月',
       prices: [],
       messageEvent: false,
-      isAdd: false
+      isAdd: false,
+      footerShow: true,
+      clientHeight: document.documentElement.clientHeight
   	}
   },
   watch: {
@@ -74,10 +84,16 @@ export default {
     // 查询价格档位
     getPrices() {
       let that = this,
+          agent_id = this.$root.agent_id,
           params = {
             type: 'selling',
-            company_pid: that.$root.company_pid
+            company_pid: 0
           }
+
+      if (agent_id) {
+        params.company_pid = agent_id;
+      }
+
           console.log(that.$root)
       this.$http.fetch('prices/getPrice', params)
         .then(res => {

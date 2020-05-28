@@ -29,6 +29,8 @@ new Vue({
   router,
   data() {
   	return {
+      // 代理商id
+      agent_id: false,
       // 企业id
       company_pid: 23,
       // 临时用户id

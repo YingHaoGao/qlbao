@@ -36,7 +36,7 @@
           <el-checkbox label="是否为联系人自动开通" name="type"></el-checkbox>
         </el-checkbox-group>
       </div>
-      <div class="footer">
+      <div class="footer" v-show="footerShow">
         <el-checkbox v-model="form.deal" class="check">
           请勾选
           <el-link type="primary" @click="toTxt">《云美摄直客协议》</el-link>
@@ -77,7 +77,9 @@ export default {
       loading: false,
       isBack: false,
       order_state: 0,
-      order_id: false
+      order_id: false,
+      footerShow: true,
+      clientHeight: document.documentElement.clientHeight
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -94,6 +96,14 @@ export default {
   },
   created() {
     this.orderStatus();
+
+    window.onresize= ()=>{
+      if(this.clientHeight > document.documentElement.clientHeight) {
+        this.footerShow = false;
+      }else{
+        this.footerShow = true;
+      }
+    }
   },
   watch: {
     $route: {
@@ -448,7 +458,6 @@ export default {
   }
   .footer {
     width: 14.65rem;
-    margin-top: 3.5rem;
     position: absolute;
     bottom: 1.25rem;
     left: 50%;

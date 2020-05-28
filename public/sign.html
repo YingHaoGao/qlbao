@@ -102,8 +102,8 @@
         }
     	.box {
           position: absolute;
+          height: calc( 100vh - 7rem );
           top: 4.5rem;
-          bottom: 2.5rem;
           left: 1.3rem;
           right: 1.3rem;
           box-sizing: border-box;
@@ -279,8 +279,17 @@ $(function() {
 
     var code = '',
         operator = '',
-        company_pid = getUrlParam('company_pid');
+        company_pid = getUrlParam('company_pid'),
+        clientHeight = document.documentElement.clientHeight;
 
+    // 解决底部定位上升
+    window.onresize = function() {
+      if(clientHeight > document.documentElement.clientHeight) {
+        $('.footer').hide();
+      }else{
+        $('.footer').show();
+      }
+    }
 
     // 返回
     $('#tabHead .back').on('click', function() {
