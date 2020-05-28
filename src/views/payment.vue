@@ -75,7 +75,7 @@ export default {
   	getInfo () {
       let that = this,
           params = {
-            company_id: that.$distributorId
+            company_id: that.$root.company_pid
           };
 
   		this.$http.fetch('/user/getList',{params})
@@ -99,9 +99,9 @@ export default {
         });
       }
       // 通过临时用户id查询状态
-      else if (that.$tmp_uid && that.$tmp_uid != "") {
+      else if (that.$root.tmp_uid && that.$root.tmp_uid != "") {
         that.$http.fetch('/Order/stateus', {
-          tmp_uid: that.$tmp_uid
+          tmp_uid: that.$root.tmp_uid
         })
           .then(res => {
             if (res.errNo == 0) {

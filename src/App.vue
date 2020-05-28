@@ -48,12 +48,17 @@ html{
   #account,
   #pay,
   #payment,
+  #protocol,
   #share {
+    position: relative;
     height: 100%;
     padding: 3rem 0.5rem 1rem 0.5rem;
     box-sizing: border-box;
   
     .vessel {
+      position: absolute;
+      top: 5.5rem;
+      bottom: 2.5rem;
       width: calc( 100% - 1rem );
       box-sizing: border-box;
       margin: auto;

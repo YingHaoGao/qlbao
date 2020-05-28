@@ -24,25 +24,24 @@ Vue.use(SwipeItem);
 Vue.prototype.$wx = wx;
 Vue.prototype.$http = http;
 Vue.prototype.$config = CONFIG;
-Vue.prototype.$distributorId = 23;
-Vue.prototype.$tmp_uid = false;
-// 账号id
-Vue.prototype.$client_id = 'msd0c28f00413d6c95';
-// 账号密码
-Vue.prototype.$secret = 'a89c4996d0c28f00413d6c95ff6e4a2a';
-// token
-Vue.prototype.$access_token = false;
-
-var ua = navigator.userAgent.toLowerCase();  
-if(ua.match(/MicroMessenger/i)=="micromessenger") {    
-	Vue.prototype.$parm = returnCitySN["cip"];
-	Vue.prototype.$browser = 'ip';
-} else {  
-  Vue.prototype.$parm = ''; 
-	Vue.prototype.$browser = 'openid';
-}
 
 new Vue({
   router,
+  data() {
+  	return {
+      // 企业id
+      company_pid: 23,
+      // 临时用户id
+      tmp_uid: false,
+      // 账号id
+      client_id: 'msd0c28f00413d6c95',
+      // 账号密码
+      secret: 'a89c4996d0c28f00413d6c95ff6e4a2a',
+      // token
+      access_token: false,
+      browser: 'ip',
+      parm: ''
+  	}
+  },
   render: h => h(App)
 }).$mount('#app')

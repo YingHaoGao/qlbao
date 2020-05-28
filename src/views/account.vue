@@ -76,8 +76,9 @@ export default {
       let that = this,
           params = {
             type: 'selling',
-            company_pid: that.$distributorId
+            company_pid: that.$root.company_pid
           }
+          console.log(that.$root)
       this.$http.fetch('prices/getPrice', params)
         .then(res => {
           that.prices = res.data
@@ -90,10 +91,10 @@ export default {
           num = parseInt(that.num),
           money = that.money,
           type = that.$route.query.type == 1 ? 'append' : 'create',
-          distributorId = that.$distributorId,
+          company_pid = that.$root.company_pid,
           obj = that.prices.find(item => item.id == radio );
       const form = {
-        distributorId, type, radio, num, money
+        company_pid, type, radio, num, money
       }
 
       if (radio == 0) {
@@ -138,12 +139,6 @@ export default {
 <style lang="scss" scoped>
 #account {
 
-  .vessel {
-    position: absolute;
-    top: calc( 50% + 1rem );
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
   .box {
 
     .radio {

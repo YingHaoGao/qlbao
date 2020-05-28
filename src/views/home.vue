@@ -82,189 +82,186 @@
 </template>
 
 <script>
-import TOOL from '../tools.js'
-import CONFIG from "../../config/index.js";
-import axios from 'axios';
+  import TOOL from '../tools.js'
+  import CONFIG from "../../config/index.js";
+  import axios from 'axios';
 
-  export default {
-    name: "Video",
+    export default {
+      name: "Video",
 
-    data() {
-      return {
-       banner:["1","2","3"],
-       paystate:"",
-       userIp :'',
-       userId:'',
-       usertype:'',
-       order_id:'',
-       playerOptions: {
-        playbackRates:false, //播放速度
-        autoplay: false, //如果true,浏览器准备好时开始回放。
-        muted: false, // 默认情况下将会消除任何音频。
-        loop: false, // 导致视频一结束就重新开始。
-        preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
-        language: "zh-CN",
-        aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-        fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-        sources: [
-        {
-          type: "video/mp4",
-          type: "video/ogg",
-            src: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" //url地址
+      data() {
+        return {
+         banner:["1","2","3"],
+         paystate:"",
+         userIp :'',
+         userId:'',
+         usertype:'',
+         order_id:'',
+         playerOptions: {
+          playbackRates:false, //播放速度
+          autoplay: false, //如果true,浏览器准备好时开始回放。
+          muted: false, // 默认情况下将会消除任何音频。
+          loop: false, // 导致视频一结束就重新开始。
+          preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+          language: "zh-CN",
+          aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+          fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+          sources: [
+          {
+            type: "video/mp4",
+            type: "video/ogg",
+              src: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" //url地址
+            }
+            ],
+            poster:
+            "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-1.jpg", //你的封面地址
+            width: document.documentElement.clientWidth,
+          notSupportedMessage: "此视频暂无法播放，请稍后再试", //允许覆盖Video.js无法播放媒体源时显示的默认信息。
+          controlBar: {
+            timeDivider: false,
+            durationDisplay: false,
+            remainingTimeDisplay: false,
+            fullscreenToggle: true,//全屏按钮
           }
-          ],
-          poster:
-          "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-1.jpg", //你的封面地址
-          width: document.documentElement.clientWidth,
-        notSupportedMessage: "此视频暂无法播放，请稍后再试", //允许覆盖Video.js无法播放媒体源时显示的默认信息。
-        controlBar: {
-          timeDivider: false,
-          durationDisplay: false,
-          remainingTimeDisplay: false,
-          fullscreenToggle: true,//全屏按钮
-        }
-      },
+        },
 
-      // ip or openid
-      codeType: 'ip',
-       // 显示按钮
-       btnType: 0
-     };
-   },
-   beforeRouteEnter(to, from, next) {
-    next(_this=>{
-      _this.getAccessToken(() => {
-        //判断是否为微信环境
-        if(TOOL.getFacility() == 'Weixin'){
-          _this.codeType = 'openid';
+        // ip or openid
+        codeType: 'ip',
+         // 显示按钮
+         btnType: 0
+       };
+     },
+     beforeRouteEnter(to, from, next) {
+      next(_this=>{
+        _this.getAccessToken(() => {
+          //判断是否为微信环境
+          if(TOOL.getFacility() == 'Weixin'){
+            _this.codeType = 'openid';
+            _this.$root.browser = 'openid';
 
-          _this.accredit()
-        }else{
-          _this.codeType = 'ip'
-        }
-      });
-    })
-  },
-  created(){
-    if (this.codeType == 'ip') {
-      this.getIp();
-    }
-  },
-  methods:{
-    //获取url参数
-    getUrlKey(name){   
-       return decodeURIComponent((new RegExp('[?|&]'+name+'='+'([^&;]+?)(&|#|;|$)').exec(location.href)||[,""])[1].replace(/\+/g,'%20'))||null;
+            _this.accredit()
+          }else{
+            _this.codeType = 'ip'
+            _this.$root.browser = 'ip'
+          }
+        });
+      })
     },
-   //获取IP
-    getIp () {
-      let that = this,
-       params = {
-          }
-      this.$http.fetch('TmpUser/getip')
-        .then(res => {
-          this.userIp = res.data.ip;
-          that.$parm = res.data.ip;
-          that.$browser = 'ip';
-          this.getId();
-        })
-    },
-  //获取id
-      getId () {
-          let that = this,
-              params = {
-                 parm:this.userIp,
-                 type:"ip"
-              }
-          this.$http.fetch('TmpUser/getTmpUserId',params)
-            .then(res => {
-     this.userId =res.data.tmp_uid
-
-     // this.inquireSign(() => {
-      that.orderStatus();
-     // });
-
-     this.$tmp_uid = this.userId;
-   })
-      },
-
-  // 查询用户注册状态
-  inquireSign(fn) {
-    let that = this;
-
-    that.$http.fetch('')
-    .then(res => {
-      if (res.errNo == 0) {
-        if (res.data && fn) {
-          fn();
-        } else {
-          // 初次开通
-          this.btnType = 0;
-        }
+    created(){
+      if (this.codeType == 'ip') {
+        this.getIp();
       }
-    })
-  },
-  //根据临时用户ID查询订单
-  orderStatus() {
-    let that = this,
-        params = { tmp_uid:this.userId };
+    },
+    methods:{
+      //获取url参数
+      getUrlKey(name){   
+         return decodeURIComponent((new RegExp('[?|&]'+name+'='+'([^&;]+?)(&|#|;|$)').exec(location.href)||[,""])[1].replace(/\+/g,'%20'))||null;
+      },
+     //获取IP
+      getIp () {
+        let that = this,
+         params = {
+            }
+        this.$http.fetch('TmpUser/getip')
+          .then(res => {
+            this.userIp = res.data.ip;
+            that.$root.parm = res.data.ip;
+            that.$root.browser = 'ip';
+            this.getId();
+          })
+      },
+    //获取id
+        getId () {
+            let that = this,
+                params = {
+                   parm:this.userIp,
+                   type:"ip"
+                }
+            this.$http.fetch('TmpUser/getTmpUserId',params)
+              .then(res => {
+       this.userId =res.data.tmp_uid
 
-    this.$http.fetch('Order/stateus',params)
-    .then(res => {
-      if (res.errNo == 0) {
-        let data = res.data;
+       this.inquireSign(() => {
+        that.orderStatus();
+       });
 
-        if (data) {
-          this.order_id = data.id;
+       this.$root.tmp_uid = this.userId;
+     })
+        },
 
-          switch(data.state) {
-            // 未支付
-            case 0:
-            this.btnType = 1;
-            break;
-            // 已完成支付
-            case 1 || 2 || 3 || 4:
-            this.btnType = 2;
-            break;
+    // 查询用户注册状态
+    inquireSign(fn) {
+      let that = this;
+      console.log(that.$root.browser, that.$root.parm)
+      that.$http.fetch('TmpUser/getTmpUserId', {
+        parm: that.$root.parm,
+        type: that.$root.browser
+      })
+      .then(res => {
+        if (res.errNo == 0) {
+          if (res.data && res.data.company_id && !!fn) {
+            that.btnType = 1;
+            that.$root.tmp_uid = res.data.tmp_uid;
+            that.$root.company_pid = res.data.company_id;
+            fn();
+          } else {
+            // 初次开通
+            this.btnType = 0;
           }
         }
-      }
-    }) 
-  },
-  // 获取access_token
-  getAccessToken (fn) {
-    let that = this;
+      })
+    },
+    //根据临时用户ID查询订单
+    orderStatus() {
+      let that = this,
+          params = { tmp_uid:this.userId };
 
-    that.$http.fetch('/accessToken', {
-      client_id: that.$client_id,
-      secret: that.$secret
-    }, that, true).then(res => {
-      if (res.errNo == 0) {
-        localStorage.setItem('access_token', res.access_token);
-        fn()
-      }
-    })
-  },
-  // 微信授权
-  accredit () {
-    let that = this;
-    let code = that.getUrlKey('code');
-
-    if (code == null || code == '') {      
-      that.$http.fetch('/v1/weixin/getShareInfo/', {
-        access_token: localStorage.getItem('access_token'),
-        url: location.href.split('#')[0],
-        type: 2
-      }, that, true).then(res => {
-        console.log(res)
+      this.$http.fetch('Order/stateus',params)
+      .then(res => {
         if (res.errNo == 0) {
-          console.log('config ->' ,{
-            debug: process.env.NODE_ENV === "development",
-            appId: res.data.appId,
-            timestamp: res.data.timestamp,
-            nonceStr: res.data.nonceStr,
-            signature: res.data.signature,
-            jsApiList: ['openLocation']
-          })
+          let data = res.data;
+
+          if (data) {
+            this.order_id = data.id;
+
+            switch(data.state) {
+              // 未支付
+              case 0:
+              this.btnType = 1;
+              break;
+              // 已完成支付
+              case 1 || 2 || 3 || 4:
+              this.btnType = 2;
+              break;
+            }
+          }
+        }
+      }) 
+    },
+    // 获取access_token
+    getAccessToken (fn) {
+      let that = this;
+
+      that.$http.fetch('/accessToken', {
+        client_id: that.$root.client_id,
+        secret: that.$root.secret
+      }, that, true).then(res => {
+        if (res.errNo == 0) {
+          localStorage.setItem('access_token', res.access_token);
+          fn()
+        }
+      })
+    },
+    // 微信授权
+    accredit () {
+      let that = this;
+      let openid = that.getUrlKey('openid');
+
+      that.$http.fetch('/v1/weixin/getShareInfo/', {
+          access_token: localStorage.getItem('access_token'),
+          url: location.href.split('#')[0],
+          type: 2
+        }, that, true).then(res => {
           that.$wx.config({
             debug: process.env.NODE_ENV === "development",
             appId: res.data.appId,
@@ -279,57 +276,100 @@ import axios from 'axios';
               'onMenuShareQZone'
             ]
           });
-          let uri = encodeURIComponent(location.href.split('#')[0]);
-          axios.get(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.data.appId}&redirect_uri=${uri}&response_type=code&state=1&scope=snsapi_base#wechat_redirect`)
+
+          if (openid == null || openid == '') {
+            that.$http.fetch('/v1/weixin/authorize', {
+              access_token: localStorage.getItem('access_token'),
+              redirect: location.href.split('#')[0],
+              scope_type: 1
+            }, that, true)
+          } else {
+            that.$root.parm = openid;
+            that.$root.browser = 'openid';
+            this.inquireSign();
+          }
+        })
+      
+      // if (code == null || code == '') {      
+      //   that.$http.fetch('/v1/weixin/getShareInfo/', {
+      //     access_token: localStorage.getItem('access_token'),
+      //     url: location.href.split('#')[0],
+      //     type: 2
+      //   }, that, true).then(res => {
+      //     console.log(res)
+      //     if (res.errNo == 0) {
+      //       console.log('config ->' ,{
+      //         debug: process.env.NODE_ENV === "development",
+      //         appId: res.data.appId,
+      //         timestamp: res.data.timestamp,
+      //         nonceStr: res.data.nonceStr,
+      //         signature: res.data.signature,
+      //         jsApiList: ['openLocation']
+      //       })
+      //       that.$wx.config({
+      //         debug: process.env.NODE_ENV === "development",
+      //         appId: res.data.appId,
+      //         timestamp: res.data.timestamp,
+      //         nonceStr: res.data.nonceStr,
+      //         signature: res.data.signature,
+      //         jsApiList: [
+      //           'onMenuShareTimeline',
+      //           'onMenuShareAppMessage',
+      //           'onMenuShareQQ',
+      //           'onMenuShareWeibo',
+      //           'onMenuShareQZone'
+      //         ]
+      //       });
+      //       let uri = encodeURIComponent(location.href.split('#')[0]);
+      //       axios.get(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.data.appId}&redirect_uri=${uri}&response_type=code&state=1&scope=snsapi_base#wechat_redirect`)
+      //     }
+      //   })
+      // } else {
+      //   that.$http.fetch(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code`).then(res => {
+      //     console.log(res)
+      //     that.$root.parm = res.openid;
+      //     that.$root.browser = 'openid';
+      //   })
+      // }
+    },
+
+  onTouchStart (e) {
+        // this.clickIndex = 0; // 为了兼容安卓部分情况而加，如果不需要可忽略
+        this.clickFlag = false;
+      },
+      // 用于判断滑动还是点击
+      onTouchMove (e) {
+        this.clickFlag = true;
+      },
+      onTouchEnd (position) {
+        if (this.clickFlag) { // 滑动
+          // console.log('滑动');
+        } else { // 点击
+          // console.log('点击');
+          this.handleShowPic(position);
         }
-      })
-    } else {
-      that.$http.fetch(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code`).then(res => {
-        console.log(res)
-        that.$parm = res.openid;
-        that.$browser = 'openid';
-      })
-    }
+      },
+
+      //页面滑动视频停止播放
+      onChange(index){
+       this.$refs.videoPlayer1.player.pause()
+     },  
+     viewNumber() {
+      this.$router.push({ path: "/payment" ,query:{
+       order_id:this.order_id
+     } });
+    },
+    openNow() {
+     this.$router.push({ path: "/sign" });
+   },
+   continueOpen() {
+    let that = this;
+
+    this.$router.push({ path: "/account" });
   },
 
-onTouchStart (e) {
-      // this.clickIndex = 0; // 为了兼容安卓部分情况而加，如果不需要可忽略
-      this.clickFlag = false;
-    },
-    // 用于判断滑动还是点击
-    onTouchMove (e) {
-      this.clickFlag = true;
-    },
-    onTouchEnd (position) {
-      if (this.clickFlag) { // 滑动
-        // console.log('滑动');
-      } else { // 点击
-        // console.log('点击');
-        this.handleShowPic(position);
-      }
-    },
-
-    //页面滑动视频停止播放
-    onChange(index){
-     this.$refs.videoPlayer1.player.pause()
-   },  
-   viewNumber() {
-    this.$router.push({ path: "/payment" ,query:{
-     order_id:this.order_id
-   } });
-  },
-  openNow() {
-   this.$router.push({ path: "/sign" });
- },
- continueOpen() {
-  this.$router.push({ path: "/account",query:{
-   order_id:this.order_id,
-   add: true
- } });
-},
-
-}
-};
+  }
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -338,10 +378,12 @@ onTouchStart (e) {
  width:100%;
  margin: 0 auto;
  position: relative;
+  background: url(../assets/img/background.png) no-repeat center;
+  background-size: cover;
  .background_top {
   height: 25.8rem;
   width: 100%;
-  background: url(../assets/img/background_top.png) no-repeat center;
+  // background: url(../assets/img/background_top.png) no-repeat center;
   background-size: cover;
 }
 .background_center {
@@ -350,7 +392,7 @@ onTouchStart (e) {
   width: 100%;
 }
 .background_bottom {
-  background: url(../assets/img/background_botom.png) no-repeat center;
+  // background: url(../assets/img/background_botom.png) no-repeat center;
   background-size: cover;
   width: 100%;
   height: 28.25rem;

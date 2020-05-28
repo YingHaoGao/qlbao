@@ -26,6 +26,7 @@ import QRCode from "qrcodejs2";
 import CONFIG from "../../config/index.js";
 import IMG from '../../public/code.jpg'
 import TOOLS from '../tools';
+import bus from '../bus.js';
 // import {wxshare} from '../wxshare'
 
 const wx = require("weixin-js-sdk");
@@ -48,6 +49,9 @@ export default {
     this.$nextTick(() => {
       this.qrcode();
     });
+    bus.$on('onShare', () => {
+      this.onShare()
+    })
   },
   data () {
   	return {
@@ -61,15 +65,40 @@ export default {
   methods: {
   	// 分享微信好友
   	onShare () {
+      console.log('share')
+      let that = this;
       let share = {
         imgUrl: '',
         title: '我的邀请卡',
         desc: '我的邀请卡',
         link: CONFIG.HTTP + "/sign.html"
       };
-      wx.ready(function () {
-        wx.onMenuShareAppMessage(share) // 分享给好友
-        wx.onMenuShareTimeline(share) // 分享到朋友圈
+
+      that.$http.fetch('/v1/weixin/getShareInfo/', {
+        access_token: localStorage.getItem('access_token'),
+        url: location.href.split('#')[0],
+        type: 2
+      }, that, true).then(res => {
+        that.$wx.config({
+          debug: process.env.NODE_ENV === "development",
+          appId: res.data.appId,
+          timestamp: res.data.timestamp,
+          nonceStr: res.data.nonceStr,
+          signature: res.data.signature,
+          jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone'
+          ]
+        });
+
+
+        wx.ready(function () {
+          wx.onMenuShareAppMessage(share) // 分享给好友
+          wx.onMenuShareTimeline(share) // 分享到朋友圈
+        })
       })
   	},
     // 生成二维码参数
@@ -81,9 +110,9 @@ export default {
       let qrcode = new QRCode("qrcode", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
-          text: CONFIG.HTTP + "/sign.html?distributorId=" + that.$distributorId
+          text: CONFIG.HTTP + "/sign.html?company_pid=" + that.$root.company_pid
         });
-      console.log('分享链接： ' + CONFIG.HTTP + "/sign.html?distributorId=" + this.$distributorId)
+      console.log('分享链接： ' + CONFIG.HTTP + "/sign.html?company_pid=" + this.$root.company_pid)
     },
     // 获取企业信息
     getCompanyInfo () {

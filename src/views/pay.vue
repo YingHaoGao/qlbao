@@ -52,14 +52,15 @@ export default {
     this.getBank()
   },
   data() {
-    let tmp_uid = this.$tmp_uid;
+    let tmp_uid = this.$root.tmp_uid;
+
     return {
       ICONdg: ICONdg,
       active: 0,
       isAdd: false,
       order_id: '',
       form: {
-        user_id: '',
+        // user_id: '',
         price_id: '',
         level_name: '',
         price: '',
@@ -122,7 +123,7 @@ export default {
       let that = this;
 
       that.$http.fetch('/Order/stateus', {
-        tmp_uid: that.$tmp_uid
+        tmp_uid: that.$root.tmp_uid
       })
         .then(res => {
           if (res.errNo == 0 && res.data) {
@@ -132,13 +133,14 @@ export default {
     },
     // 创建订单
     createOrder () {
-      let distributorId = this.$distributorId;
+      let company_pid = this.$root.company_pid;
       let form = this.form;
       let that = this;
+      console.log(this.$root)
 
       this.$http.post('/Order/create', {
         ...form,
-        company_id: distributorId
+        company_id: company_pid
       }, that)
         .then(res => {
           if (res.errNo == 0) {
@@ -155,13 +157,13 @@ export default {
     },
     // 修改订单
     setOrder () {
-      let distributorId = this.$distributorId;
+      let company_pid = this.$root.company_pid;
       let form = this.form;
       let that = this;
 
       this.$http.post('/Order/update', {
         ...form,
-        company_id: distributorId,
+        company_id: company_pid,
         order_id: that.order_id
       }, that)
         .then(res => {

@@ -15,7 +15,7 @@
             show-word-limit></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input placeholder="请输入联系人手机" v-model="form.phone"
+          <el-input placeholder="请输入手机号" v-model="form.phone"
             @blur="checkPhone"
             maxlength="11"
             show-word-limit></el-input>
@@ -39,7 +39,7 @@
       <div class="footer">
         <el-checkbox v-model="form.deal" class="check">
           请勾选
-          <el-link type="primary">《云美摄直客协议》</el-link>
+          <el-link type="primary" @click="toTxt">《云美摄直客协议》</el-link>
           ，否则无法提交
         </el-checkbox>
         <el-button type="primary" @click="onSubmit" :disabled="disabled" round>提交</el-button>
@@ -254,8 +254,8 @@ export default {
       that.$http.fetch('User/getUserInfo', { phone: that.form.phone })
         .then(res => {
           if(res.errNo == 0) {
-            that.$distributorId = res.data.company_id;
-            that.$tmp_uid = res.data.user_id;
+            that.$root.company_pid = res.data.company_id;
+            that.$root.tmp_uid = res.data.user_id;
 
             if (fn) {
               fn()
@@ -275,7 +275,7 @@ export default {
     onSubmit() {
       let that = this;
       let form = this.form;
-      let distributorId = this.$distributorId;
+      let company_pid = this.$root.company_pid;
       console.log(form)
 
       // 企业名称
@@ -312,7 +312,7 @@ export default {
         if (this.messageEvent) this.messageEvent.close();
       }
 
-      form.distributorId = distributorId;
+      form.company_pid = company_pid;
       form.isRingtone = form.ringtone.length > 0;
 
       this.$http.post('/company/register', {
@@ -321,15 +321,13 @@ export default {
         company_name: form.name,
         contact_name: form.contacts,
         open_user: form.isRingtone ? 1 : 0,
-        company_pid: distributorId,
-        tmp_uid: that.$tmp_uid
+        company_pid: company_pid,
+        tmp_uid: that.$root.tmp_uid
       }, that)
         .then(res => {
           if (res.errNo == 0) {
-            this.$distributorId = res.data.company_id;
+            this.$root.company_pid = res.data.company_id;
             
-            // that.$client_id = 
-            // that.$secret = 
             that.getAccessToken();
 
             this.$message({
@@ -345,8 +343,8 @@ export default {
       let that = this;
 
       that.$http.fetch('/accessToken', {
-        client_id: that.$client_id,
-        secret: that.$secret
+        client_id: that.$root.client_id,
+        secret: that.$root.secret
       }).then(res => {
         if (res.errNo == 0) {
           TOOL.setStorage('access_token', res.access_token);
@@ -393,7 +391,7 @@ export default {
     //根据临时用户ID查询订单
     orderStatus(){
       let that = this,
-          params = { tmp_uid: that.$tmp_uid };
+          params = { tmp_uid: that.$root.tmp_uid };
 
       this.$http.fetch('Order/stateus',params)
         .then(res => {
@@ -402,6 +400,10 @@ export default {
             that.order_id = res.data.id
           }
         }) 
+    },
+    // 
+    toTxt() {
+      this.$router.push('/protocol');
     }
   }
 }
@@ -410,12 +412,6 @@ export default {
 <style lang="scss" scoped>
 #sign {
 
-  .vessel {
-    position: absolute;
-    top: calc( 50% + 1rem );
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
   .el-form-item {
     height: 2.3rem;
     box-sizing: border-box;
@@ -451,8 +447,12 @@ export default {
     border-bottom: none;
   }
   .footer {
-    width: 100%;
+    width: 14.65rem;
     margin-top: 3.5rem;
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translate(-50%, 0);
 
     .check {
       font-size: .6rem;
