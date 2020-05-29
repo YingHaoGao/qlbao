@@ -216,7 +216,7 @@
       })
       .then(res => {
         if (res.errNo == 0) {
-          if (res.data && res.data.company_id && !!fn) {
+          if (res.data && !!fn) {
             that.btnType = 1;
             that.$root.tmp_uid = res.data.tmp_uid;
             that.$root.company_pid = res.data.company_id;
