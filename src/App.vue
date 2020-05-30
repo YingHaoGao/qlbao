@@ -37,6 +37,11 @@
 html{
   font-size: 20px;
 
+  *{
+    margin: 0;
+    padding: 0;
+  }
+
   &,body,#app{
     padding: 0px;
     margin: 0px;

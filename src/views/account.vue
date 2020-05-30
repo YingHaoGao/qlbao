@@ -1,6 +1,6 @@
 <template>
   <div id="account">
-    <div class="vessel">
+    <div class="vessel" style="top:0">
       <div class="box">
         <div class="input">
           <span class="tag">请输入开通号码数量</span>
@@ -154,7 +154,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 #account {
-
+  background-size: 100% 100%;
+  width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  .vessel{
+    position: relative;
+    // margin-top: 2rem;
+  }
   .box {
 
     .radio {
@@ -193,10 +202,12 @@ export default {
   .footer {
     font-size: 0.7rem;
     margin: auto;
-    width: 14.65rem;
+    width: 100%;
     position: absolute;
     bottom: 1.25rem;
     left: 50%;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
     transform: translate(-50%, 0);
 
     button {

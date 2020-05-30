@@ -271,12 +271,14 @@ export default {
     }
   }
   .footer {
-    width: 100%;
-    height: 25rem;
+    width: calc( 100% - 1rem);
+    height: calc( 100vh - 7rem);
     margin: auto;
     background:rgba(242,242,242,0.4);
     text-align: center;
     overflow: scroll;
+    padding: 1.25rem 0.75rem;
+    box-sizing: border-box;
 
     button {
       margin-top: 0.5rem;

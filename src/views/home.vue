@@ -1,64 +1,22 @@
 <template>
 
   <div id="home" :autoresize="true">
-   <div class="background_top"></div>
-   <div class="background_center"></div>
+   <!-- <div class="background_top"></div> -->
+   <!-- <div class="background_center"></div> -->
    <div class="background_bottom">
     <div class="infoBox">
-      <van-swipe class="my-swipe" indicator-color="white" @change="onChange">
-        <van-swipe-item >
+      <van-swipe class="my-swipe" indicator-color="#FD3D43" @change="onChange" :loop="false">
+        <van-swipe-item v-for="(item,index) in swiperList" :key="index" :class="seiperIndex == index ? 'active-item-one': 'videoPlayer1'">
           <div class="box-item">
-            <p class="iphoneNum">158****3456</p>
-            <p class="text">对方已振铃</p>
+            <p class="iphoneNum">{{item.phone}}</p>
+            <p class="text">{{item.text}}</p>
             <video-player
             class="video-player vjs-custom-skin"
-            ref="videoPlayer1"
+            :ref=item.ref
             :playsinline="true"
             :options="playerOptions"
             ></video-player>
           </div>
-        </van-swipe-item>
-        <div class="custom-indicator" slot="indicator">
-        </div>
-        <van-swipe-item>
-          <div class="box-item">
-            <p class="iphoneNum">158****3456</p>
-            <p class="text">对方已振铃</p>
-            <video-player
-            class="video-player vjs-custom-skin"
-            ref="videoPlayer2"
-            :playsinline="true"
-            :options="playerOptions"
-            ></video-player>
-          </div>
-        </van-swipe-item>
-        <van-swipe-item>
-          <div class="box-item">
-            <p class="iphoneNum">158****3456</p>
-            <p class="text">对方已振铃</p>
-            <video-player
-            class="video-player vjs-custom-skin"
-            ref="videoPlayer2"
-            :playsinline="true"
-            :options="playerOptions"
-            ></video-player>
-          </div>
-          <div class="custom-indicator" slot="indicator">
-
-          </div>
-        </van-swipe-item>
-        <van-swipe-item>
-          <div class="box-item">
-            <p class="iphoneNum">158****3456</p>
-            <p class="text">对方已振铃</p>
-            <video-player
-            class="video-player vjs-custom-skin"
-            ref="videoPlayer2"
-            :playsinline="true"
-            :options="playerOptions"
-            ></video-player>
-          </div>
-
         </van-swipe-item>
 
       </van-swipe>
@@ -87,6 +45,7 @@
   import TOOL from '../tools.js'
   import CONFIG from "../../config/index.js";
   import axios from 'axios';
+  import Swiper from "swiper"
 
     export default {
       name: "Video",
@@ -108,13 +67,12 @@
           language: "zh-CN",
           aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-          sources: [
-          {
+          sources: [{
             type: "video/mp4",
-            type: "video/ogg",
+            // type: "video/ogg",
               src: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" //url地址
-            }
-            ],
+              // src: require("../assets/mp4/test.mp4")                 // 本地
+          }],
             poster:
             "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-1.jpg", //你的封面地址
             width: document.documentElement.clientWidth,
@@ -131,7 +89,27 @@
         codeType: 'ip',
          // 显示按钮
          btnType: 0,
-         src: ''
+         src: '',
+        
+        // Boxin Star
+        seiperIndex: 0,
+        swiperList: [{
+          phone: "158****3456",
+          text: "对方已振铃",
+          ref: "videoPlayer1"
+        },{
+          phone: "158****3456",
+          text: "对方已振铃",
+          ref: "videoPlayer2"
+        },{
+          phone: "158****3456",
+          text: "对方已振铃",
+          ref: "videoPlayer3"
+        },{
+          phone: "158****3456",
+          text: "对方已振铃",
+          ref: "videoPlayer4"
+        }]
        };
      },
      beforeRouteEnter(to, from, next) {
@@ -216,7 +194,7 @@
       })
       .then(res => {
         if (res.errNo == 0) {
-          if (res.data && !!fn) {
+          if (res.data && !!fn && res.data.company_id != null) {
             that.btnType = 1;
             that.$root.tmp_uid = res.data.tmp_uid;
             that.$root.company_pid = res.data.company_id;
@@ -295,7 +273,10 @@
 
       //页面滑动视频停止播放
       onChange(index){
-       this.$refs.videoPlayer1.player.pause()
+        this.seiperIndex = index;
+        console.log(this.$refs.videoPlayer1[0])
+        this.$refs.videoPlayer1[0].player.pause();
+        // this.$refs.videoPlayer1.player.pause();
      },  
      viewNumber() {
       this.$router.push({ path: "/payment" ,query:{
@@ -317,13 +298,14 @@
 
 <style lang="scss" scoped>
 #home {
- box-sizing: border-box;
- width:100%;
- margin: 0 auto;
- position: relative;
-  background: url(../assets/img/background.png) no-repeat center;
-  background-size: cover;
-
+  box-sizing: border-box;
+  width:100%;
+  height: 58.4rem;
+  margin: 0 auto;
+  position: relative;
+  background: url(../assets/img/background.png);
+  background-size: 100% 100%;
+  top: 2rem;
   iframe {
     display: none;
   }
@@ -347,7 +329,7 @@
   position: relative;
   .infoBox {
     position: absolute;
-    top: -3.6rem;
+    top: 26.5rem;
     left: 0;
     width: 100%;
     height: 25.75rem;
@@ -361,16 +343,17 @@
   width: 14rem;
   position: absolute;
   left: 50%;
-  bottom: 2rem;
+  bottom: 1.5rem;
   transform: translate(-50%, 0);
   .open{
-    background: #FD3B44;
+    background:linear-gradient(270deg,rgba(253,59,68,1) 0%,rgba(254,119,45,1) 100%);
+    box-shadow:0px 4px 4px 0px rgba(0,0,0,0.3);
   }
   .view{
     background: #FE772D;
   }
   .continue{
-    background: -webkit-linear-gradient(left, #FE772D 0%,#FD3B44 100%);
+    background:rgba(253,59,68,1);
   }
 }
 }
@@ -389,7 +372,7 @@
   float: left;
 }
 .van-swipe-item .box-item {
-  margin: 0 auto;
+  
   width: 14.4rem;
   height: 25.75rem;
   background: url(../assets/img/phone.png) no-repeat center;
@@ -432,7 +415,7 @@
   top: 7.7rem;
   left: 0.2rem;
   width: 14rem;
-  height: 7.9rem;
+  height: 8rem;
   margin: 0 auto;
   .vjs_video_3 {
     width: 14rem;
@@ -456,6 +439,16 @@
 }
 /deep/.vjs-custom-skin > .video-js {
   width: 14rem;
-  height: 7.9rem;
+  height: 8rem;
+}
+
+.my-swipe{
+  height: 100%;
+  .van-swipe-item{
+    margin: 0 auto;
+    .box-item{
+      margin: 0 auto;
+    }
+  }
 }
 </style>

@@ -1,9 +1,10 @@
 <template>
   <div id="sign" v-loading="loading">
-  	<div class="vessel">
+  	<div class="new-vessel">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item>
           <el-input placeholder="请输入企业名称" v-model="form.name"
+            class="ipt"
             @blur="checkName"
             maxlength="16"
             show-word-limit></el-input>
@@ -11,19 +12,21 @@
         <el-form-item>
           <el-input placeholder="请输入联系人" v-model="form.contacts"
             @blur="checkContacts"
+            class="ipt"
             maxlength="8"
             show-word-limit></el-input>
         </el-form-item>
         <el-form-item>
           <el-input placeholder="请输入手机号" v-model="form.phone"
             @blur="checkPhone"
+            class="ipt"
             maxlength="11"
             show-word-limit></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input class="codeInput" placeholder="请输入验证码" v-model="form.code"></el-input>
-          <el-button type="text" class="codeBtn" v-show="!coded" @click="getCode">获取验证码</el-button>
-          <el-button type="text" class="codeTime" v-show="coded" style="color: #999999;" disabled>{{codeTime}}s</el-button>
+          <el-input class="codeInput ipt" placeholder="请输入验证码" v-model="form.code"></el-input>
+          <el-button type="text" class="codeBtn but" v-show="!coded" @click="getCode">获取验证码</el-button>
+          <el-button type="text" class="codeTime but" v-show="coded" style="color: #999999;" disabled>{{codeTime}}s</el-button>
         </el-form-item>
         <!-- <el-form-item label="图形验证">
           <el-input placeholder="请输入图形验证码" v-model="form.graphics">
@@ -39,10 +42,10 @@
       <div class="footer" v-show="footerShow">
         <el-checkbox v-model="form.deal" class="check">
           请勾选
-          <el-link type="primary" @click="toTxt">《云美摄直客协议》</el-link>
+          <el-link type="primary" @click="toTxt" style="font-size: 0.6rem">《云美摄直客协议》</el-link>
           ，否则无法提交
         </el-checkbox>
-        <el-button type="primary" @click="onSubmit" :disabled="disabled" round>提交</el-button>
+        <el-button type="primary but" @click="onSubmit" :disabled="disabled" round>提交</el-button>
       </div> 
     </div>
   </div>
@@ -421,7 +424,22 @@ export default {
 
 <style lang="scss" scoped>
 #sign {
-
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    .new-vessel{
+      position: relative;
+      width: calc( 100% - 1rem);
+      height: calc( 100vh - 7rem);
+      background:rgba(242,242,242,0.4);
+      padding: 1.25rem 0.75rem;
+      box-sizing: border-box;
+      // margin-top: 2rem;
+    }
   .el-form-item {
     height: 2.3rem;
     box-sizing: border-box;
@@ -457,12 +475,10 @@ export default {
     border-bottom: none;
   }
   .footer {
-    width: 14.65rem;
+    width: 90.71%;
     position: absolute;
-    bottom: 1.25rem;
-    left: 50%;
-    transform: translate(-50%, 0);
-
+    bottom: 0.75rem;
+    box-sizing: border-box;
     .check {
       font-size: .6rem;
     }
@@ -478,5 +494,12 @@ export default {
       border-color: #5E43FA;
     }
   }
+}
+.ipt,.but {
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-size: 0.7rem;
+}
+.el-link--inner{
+  font-size: 0.6rem !important;
 }
 </style>
