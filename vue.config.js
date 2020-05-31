@@ -2,7 +2,7 @@ module.exports = {
     publicPath : '',
     devServer: {
         proxy: {
-            "/api": {
+            "/meishe-wxapi": {
                 target: "http://api.meisheapp.com",
                 headers: {
                     'origin': 'http://m.meisheapp.com'
@@ -10,7 +10,7 @@ module.exports = {
                 // changeOrigin: true,
                 ws: true,
                 pathRewrite: {
-                    "^/api": ''
+                    "^/meishe-wxapi": ''
                 }
             }
         },
