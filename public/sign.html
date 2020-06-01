@@ -280,16 +280,12 @@ $(function() {
     var code = '',
         operator = '',
         company_pid = getUrlParam('company_pid'),
-        clientHeight = document.documentElement.clientHeight;
+        clientHeight = document.documentElement.clientHeight,
+        clientWidth = document.documentElement.clientWidth;
 
     // 解决底部定位上升
-    window.onresize = function() {
-      if(clientHeight > document.documentElement.clientHeight) {
-        $('.footer').hide();
-      }else{
-        $('.footer').show();
-      }
-    }
+    $('html').css('height', clientHeight + 'px');
+    $('.box').css('height',  clientHeight - ( 10 * 10*(clientWidth / 320) ) + 'px');
 
     // 返回
     $('#tabHead .back').on('click', function() {

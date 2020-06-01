@@ -9,12 +9,11 @@
         <p>{{name}}</p>
       </div>
       <div id="QRCodeNone"></div>
-      <a href="javascript:void(0);" v-if="isIOS">
+      <a id="img" href="javascript:void(0);" v-if="isIOS">
         <div id="qrcode" ref="qrcode"></div>
       </a>
       <div id="img" v-if="!isIOS">
         <div id="qrcode" ref="qrcode"></div>
-        <!-- <img :src="img" style="width: 100%;"> -->
       </div>
   	</div>
   	<div class="buttons">
@@ -26,7 +25,6 @@
 <script>
 import QRCode from "qrcodejs2";
 import CONFIG from "../../config/index.js";
-import IMG from '../../public/code.jpg'
 import TOOLS from '../tools';
 import bus from '../bus.js';
 
@@ -57,7 +55,6 @@ export default {
   },
   data () {
   	return {
-      img: IMG,
   		code: '',
       isIOS: true,
       name: '',
@@ -82,7 +79,7 @@ export default {
         type: 2
       }, that, true).then(res => {
         that.$wx.config({
-          debug: process.env.NODE_ENV === "debug",
+          debug: process.env.VUE_APP_DEBUG === "true",
           appId: res.data.appId,
           timestamp: res.data.timestamp,
           nonceStr: res.data.nonceStr,

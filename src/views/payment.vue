@@ -9,17 +9,39 @@
         <img src="../../static/icon/book.png">
       </div> -->
     </div>
-    <div class="names">
+    <div class="buttons">
+      <el-button @click="onNewPhone" round>追加开通新号码</el-button>
+      <el-button @click="onCreate" round>生成我的邀请卡</el-button>
+    </div>
+    <!-- <div class="names">
   		<div class="name" v-for="(item, idx) in list" :key="idx">
   			<div class="name-title">{{item.user_name}}</div>
         <div class="name-phone">{{item.telephone}}</div>
         <div class="name-type">{{telepToNc(item.telephone_type)}}</div>
   		</div>
-  	</div>
-  	<div class="buttons">
-  		<el-button @click="onNewPhone">添加新号码</el-button>
-  		<el-button @click="onCreate">生成我的邀请卡</el-button>
-  	</div>
+  	</div> -->
+    <el-table
+      :data="list"
+      stripe
+      style="width: 100%;margin-top: 1rem;">
+      <el-table-column
+        prop="user_name"
+        label="姓名">
+      </el-table-column>
+      <el-table-column
+        header-align="center"
+        align="center"
+        prop="telephone"
+        label="手机号"
+        :width="width">
+      </el-table-column>
+      <el-table-column
+        header-align="right"
+        align="right"
+        prop="telephoneNc"
+        label="服务商">
+      </el-table-column>
+    </el-table>
   	<!-- <div class="code">
   		二维码分享给员工填写号码
   	</div> -->
@@ -35,6 +57,9 @@ export default {
   created () {
   	this.getInfo();
     this.getOrder();
+
+    var clientWidth = document.documentElement.clientWidth;
+    this.width = 13 * 10*(clientWidth / 320);
   },
   mounted () {
     this.$alert('公司管理员可登陆 www.weuq.com 网页统一添加号码', '提示');
@@ -67,7 +92,8 @@ export default {
   	return {
   		list: [],
   		type: '',
-  		typeNC: ''
+  		typeNC: '',
+      width: 0
   	}
   },
   methods: {
@@ -80,7 +106,15 @@ export default {
 
   		this.$http.fetch('/user/getList',params)
         .then(function(res){
-          that.list = res.data;
+          // that.list = res.data;
+          let newList = [];
+          res.data.map(item => {
+            newList.push({
+              ...item,
+              telephoneNc: that.telepToNc(item.telephone_type)
+            })
+          });
+          that.list = newList;
   	    });
   	},
     // 查询订单状态
@@ -101,7 +135,8 @@ export default {
       // 通过临时用户id查询状态
       else if (that.$root.tmp_uid && that.$root.tmp_uid != "") {
         that.$http.fetch('/Order/stateus', {
-          tmp_uid: that.$root.tmp_uid
+          tmp_uid: that.$root.tmp_uid,
+          company_id: that.$root.company_pid
         })
           .then(res => {
             if (res.errNo == 0) {
@@ -195,13 +230,22 @@ export default {
 	.buttons {
     width: 100%;
     padding: 1rem 0.75rem;
-    padding-bottom: 0rem;
     box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
+    text-align: center;
+    background: #fff;
+    color: #FFFFFF;
 
 		button {
-			width: 8rem;
+			width: 7rem;
+      display: inline-block;
+      color: #fff;
+
+      &:first-child {
+        background: linear-gradient(180deg,rgba(253,188,124,1) 0%,rgba(254,121,119,1) 100%);
+      }
+      &:last-child {
+        background: linear-gradient(180deg,rgba(124,193,253,1) 0%,rgba(127,119,254,1) 100%);
+      }
 		}
 	}
 

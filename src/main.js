@@ -7,6 +7,7 @@ import { http } from './http.js'
 import CONFIG from '../config'
 import { Swipe, SwipeItem } from 'vant'
 import VideoPlayer from 'vue-video-player'
+import { Lazyload } from 'vant';
 
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -20,6 +21,7 @@ Vue.use(ElementUI);
 Vue.use(VideoPlayer);
 Vue.use(Swipe);
 Vue.use(SwipeItem);
+Vue.use(Lazyload);
 
 Vue.prototype.$wx = wx;
 Vue.prototype.$http = http;
@@ -30,7 +32,7 @@ new Vue({
   data() {
   	return {
       // 代理商id
-      agent_id: false,
+      agent_id: 0,
       // 企业id
       company_pid: false,
       // 临时用户id

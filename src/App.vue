@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <TabHead v-if="isShow"/>
-    <router-view />
+    <router-view  :style="{ height: clientHeight + 'px' }"/>
   </div>
 </template>
 
@@ -14,7 +14,8 @@
   },
   data () {
     return {
-      isShow: true
+      isShow: true,
+      clientHeight: document.documentElement.clientHeight,
     }
   },
    beforeRouteEnter(to, from, next) {
@@ -59,12 +60,13 @@ html{
     height: 100%;
     padding: 3rem 0.5rem 1rem 0.5rem;
     box-sizing: border-box;
+    overflow: auto;
   
     .vessel {
       position: absolute;
-      top: 4.5rem;
+      top: 3.5rem;
       height: calc( 100vh - 7rem );
-      width: calc( 100% - 2rem );
+      width: calc( 100% - 1rem );
       box-sizing: border-box;
       margin: auto;
       padding: 1.25rem 0.75rem;
@@ -200,6 +202,14 @@ html{
     }
     .el-radio.is-bordered.is-checked {
       background:rgba(236,243,255, .5);
+    }
+  }
+  #payment {
+    .el-table__row {
+      td div{
+        font-size: 0.8rem;
+        font-weight: 400;
+      }
     }
   }
 }

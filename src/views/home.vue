@@ -1,6 +1,6 @@
 <template>
 
-  <div id="home" :autoresize="true">
+  <div id="home" :autoresize="true" v-lazy:background-image="background">
    <!-- <div class="background_top"></div> -->
    <!-- <div class="background_center"></div> -->
    <div class="background_bottom">
@@ -46,12 +46,14 @@
   import CONFIG from "../../config/index.js";
   import axios from 'axios';
   import Swiper from "swiper"
+  import Background from '../assets/img/background.png';
 
     export default {
       name: "Video",
 
       data() {
         return {
+         background: Background,
          banner:["1","2","3"],
          paystate:"",
          userIp :'',
@@ -111,39 +113,44 @@
         }]
        };
      },
-     beforeRouteEnter(to, from, next) {
-      next(_this=>{
-        _this.getAccessToken(() => {
-          //判断是否为微信环境
-          if(TOOL.getFacility() == 'Weixin'){
-            _this.codeType = 'openid';
-            _this.$root.browser = 'openid';
-          }else{
-            _this.codeType = 'ip'
-            _this.$root.browser = 'ip'
-          }
-        });
-      })
-    },
+    //  beforeRouteEnter(to, from, next) {
+    //   next(_this=>{
+    //     _this.getAccessToken(() => {
+    //       TOOL.alert(TOOL.getFacility())
+    //       //判断是否为微信环境
+    //       if(TOOL.getFacility() == 'Weixin'){
+    //         _this.codeType = 'openid';
+    //         _this.$root.browser = 'openid';
+    //       }else{
+    //         _this.codeType = 'ip'
+    //         _this.$root.browser = 'ip'
+    //       }
+    //     });
+    //   })
+    // },
     created(){
       let agent_id = this.getUrlKey("agent_id");
       this.$root.agent_id = agent_id;
-
-      if (this.codeType == 'ip') {
-        TOOL.alert('ip')
-        this.getIp();
-      } else {
+      
+      TOOL.alert(TOOL.getFacility())
+      if (TOOL.getFacility() == 'Weixin') {
         TOOL.alert('weixin')
-        let openid = this.getUrlKey("openid");
-
+        // let openid = this.getUrlKey("openid");
+        let openid = "olWi6wv5MGVNfYTHb-dj86bFqF8";
+        TOOL.alert('url openid = ' + openid)
+        TOOL.alert('!!openid = ' + !!openid)
         if(openid){
-            that.$root.parm = openid;
-            that.$root.browser = 'openid';
+            this.$root.parm = openid;
+            this.$root.browser = 'openid';
 
             TOOL.alert('openid = ' + openid)
+            this.getId(openid, 'openid');
          }else{
             this.accredit();
          }
+      } else {
+        TOOL.alert('ip')
+        this.getIp();
       }
     },
     methods:{
@@ -161,32 +168,41 @@
             this.userIp = res.data.ip;
             that.$root.parm = res.data.ip;
             that.$root.browser = 'ip';
-            this.getId();
+            this.getId(res.data.ip, 'ip');
           })
       },
     //获取id
-        getId () {
+        getId (parm, type) {
             let that = this,
                 params = {
-                   parm:this.userIp,
-                   type:"ip"
+                   parm: parm,
+                   type: type
                 }
-            this.$http.fetch('TmpUser/getTmpUserId',params)
-              .then(res => {
-       this.userId =res.data.tmp_uid
+        TOOL.alert('根据 ' + type + ' = ' + parm + ' 获取tmp_uid')
 
-       this.inquireSign(() => {
-        that.orderStatus();
-       });
-
-       this.$root.tmp_uid = this.userId;
-     })
-        },
+        this.$http.fetch('TmpUser/getTmpUserId',params)
+        .then(res => {
+          if (res.errNo == 0) {
+            console.log(res)
+            that.$root.tmp_uid = res.data.tmp_uid;
+            if (res.data && res.data.company_id != null) {
+              that.btnType = 1;
+              this.userId =res.data.tmp_uid
+              that.$root.company_pid = res.data.company_id;
+              TOOL.alert('tmp_uid = ' + that.$root.tmp_uid + ', company_pid = ' + res.data.company_id)
+              that.orderStatus();
+            } else {
+              // 初次开通
+              this.btnType = 0;
+            }
+          }
+        })
+      },
 
     // 查询用户注册状态
     inquireSign(fn) {
       let that = this;
-      console.log(that.$root.browser, that.$root.parm)
+      TOOL.alert('根据 ' + that.$root.browser + ' = ' + that.$root.parm + ' 查询用户注册状态')
       that.$http.fetch('TmpUser/getTmpUserId', {
         parm: that.$root.parm,
         type: that.$root.browser
@@ -197,6 +213,7 @@
             that.btnType = 1;
             that.$root.tmp_uid = res.data.tmp_uid;
             that.$root.company_pid = res.data.company_id;
+            TOOL.alert('tmp_uid = ' + res.data.tmp_uid + ', company_pid = ' + res.data.company_id)
             fn();
           } else {
             // 初次开通
@@ -208,12 +225,17 @@
     //根据临时用户ID查询订单
     orderStatus() {
       let that = this,
-          params = { tmp_uid:this.userId };
+          params = {
+            tmp_uid:that.userId,
+            company_id: that.$root.company_pid
+          };
 
+      TOOL.alert('tmp_uid = '+ params.tmp_uid)
       this.$http.fetch('Order/stateus',params)
       .then(res => {
         if (res.errNo == 0) {
           let data = res.data;
+          TOOL.alert('订单id = '+ data.id)
 
           if (data) {
             this.order_id = data.id;
@@ -251,6 +273,7 @@
       let that = this;
 
       that.src = `http://api.meisheapp.com/v1/weixin/authorize?access_token=${localStorage.getItem('access_token')}&redirect=${encodeURIComponent(location.href.split('#')[0])}`;
+      TOOL.alert(that.src)
     },
 
   onTouchStart (e) {
@@ -302,7 +325,7 @@
   height: 58.4rem;
   margin: 0 auto;
   position: relative;
-  background: url(../assets/img/background.png);
+  // background: url(../assets/img/background.png);
   background-size: 100% 100%;
   top: 2rem;
   iframe {

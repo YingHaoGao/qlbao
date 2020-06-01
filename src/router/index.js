@@ -53,7 +53,7 @@ export default new Router({
       component: Payment,
       meta: {
         title: '我的号码',
-        isShare: true
+        // isShare: true
       }
     },
     {
@@ -70,7 +70,7 @@ export default new Router({
       component: Share,
       meta: {
         title: '我的邀请卡',
-        isShare: true
+        // isShare: true
       }
     }
   ]

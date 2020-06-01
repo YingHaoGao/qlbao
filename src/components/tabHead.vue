@@ -32,7 +32,9 @@ export default {
 
   	if (TOOL.getFacility() == "Weixin") {
   		this.isClose = false;
-  	} 
+  	} else {
+  		this.isShare = false;
+  	}
   },
   data () {
   	var title = this.$route.meta.title

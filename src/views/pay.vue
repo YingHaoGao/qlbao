@@ -126,7 +126,8 @@ export default {
       let that = this;
 
       that.$http.fetch('/Order/stateus', {
-        tmp_uid: that.$root.tmp_uid
+        tmp_uid: that.$root.tmp_uid,
+        company_id: that.$root.company_pid
       })
         .then(res => {
           if (res.errNo == 0 && res.data) {
@@ -162,10 +163,17 @@ export default {
     setOrder () {
       let company_pid = this.$root.company_pid;
       let form = this.form;
+      let newForm = {};
       let that = this;
 
+      Object.keys(form).map(key => {
+        if (form[key] != undefined && form[key] != '') {
+          newForm[key] = form[key]
+        }
+      })
+
       this.$http.post('/Order/update', {
-        ...form,
+        ...newForm,
         company_id: company_pid,
         order_id: that.order_id
       }, that)

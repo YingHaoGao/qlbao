@@ -1,6 +1,6 @@
 <template>
   <div id="sign" v-loading="loading">
-  	<div class="new-vessel" ref="vessel" :style="{ height: height + 'px' }">
+  	<div class="vessel" ref="vessel" :style="{ height: height + 'px' }">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item>
           <el-input placeholder="请输入企业名称" v-model="form.name"
@@ -110,15 +110,15 @@ export default {
     this.orderStatus();
 
     var clientWidth = document.documentElement.clientWidth;
-    this.height = this.clientHeight - ( 7 * 10*(clientWidth / 320) );
-    console.log(this.height)
-    window.onresize= ()=>{
-      if(this.clientHeight > document.documentElement.clientHeight) {
-        this.footerShow = false;
-      }else{
-        this.footerShow = true;
-      }
-    }
+    this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
+
+    // window.onresize= ()=>{
+    //   if(this.clientHeight > document.documentElement.clientHeight) {
+    //     this.footerShow = false;
+    //   }else{
+    //     this.footerShow = true;
+    //   }
+    // }
   },
   watch: {
     $route: {
@@ -233,42 +233,44 @@ export default {
             }, 1000)
           }
           if (res.errNo == 400 && res.message.indexOf('手机号已注册') > -1) {
-            if (that.isBack) {
-              let page = { url: '', name: '' };
+            that.getUserInfo(() => {
+              if (that.isBack) {
+                let page = { url: '', name: '' };
 
-              switch(that.order_state) {
-                case 0:
-                  page.url = '/account';
-                  page.name = '我的号码';
-                  break;
-                case 1 || 2 || 3 || 4:
-                  page.url = '/payment';
-                  page.name = '我的号码';
-                  break;
-              };
+                switch(that.order_state) {
+                  case 0:
+                    page.url = '/account';
+                    page.name = '我的号码';
+                    break;
+                  case 1 || 2 || 3 || 4:
+                    page.url = '/payment';
+                    page.name = '我的号码';
+                    break;
+                };
 
-              if (page.url != '' && page.name != '') {
-                that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
+                if (page.url != '' && page.name != '') {
+                  that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
+                    showClose: false,
+                    callback() {
+                      that.$router.replace({path: page.url, query: {
+                        order_id: that.order_id,
+                        add: !!that.order_id
+                      }});
+                    }
+                  });
+                }
+              } else {
+                that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
                   showClose: false,
                   callback() {
-                    that.$router.replace({path: page.url, query: {
+                    that.$router.replace({path: '/account', query: {
                       order_id: that.order_id,
                       add: !!that.order_id
                     }});
                   }
                 });
               }
-            } else {
-              that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
-                showClose: false,
-                callback() {
-                  that.$router.replace({path: '/account', query: {
-                    order_id: that.order_id,
-                    add: !!that.order_id
-                  }});
-                }
-              });
-            }
+            })
           }
         })
       })
@@ -337,7 +339,7 @@ export default {
         if (this.messageEvent) this.messageEvent.close();
       }
 
-      form.company_pid = that.$root.agent_id;
+      form.company_pid = that.$root.agent_id || 0;
       form.isRingtone = form.ringtone.length > 0;
       console.log('that.$root.tmp_uid = ' + that.$root.tmp_uid)
 
@@ -417,8 +419,10 @@ export default {
     //根据临时用户ID查询订单
     orderStatus(){
       let that = this,
-          params = { tmp_uid: that.$root.tmp_uid };
-
+          params = {
+            tmp_uid: that.$root.tmp_uid,
+            company_id: that.$root.company_pid
+          };
       this.$http.fetch('Order/stateus',params)
         .then(res => {
           if (res.errNo == 0 && res.data) {

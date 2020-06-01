@@ -1,10 +1,10 @@
 <template>
   <div id="account">
-    <div class="vessel" style="top:0">
+    <div class="vessel" :style="{ height: height + 'px' }">
       <div class="box">
         <div class="input">
           <span class="tag">请输入开通号码数量</span>
-          <el-input v-model="num" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通号码数量" v-focus @focus="selectFocus($event)">
+          <el-input v-model="num" type="number" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通号码数量" v-focus @focus="selectFocus($event)">
             <span slot="suffix" class="suffix">个</span>
           </el-input>
         </div>
@@ -36,13 +36,15 @@ export default {
     this.getPrices();
     this.orderStatus();
 
-    window.onresize= ()=>{
-      if(this.clientHeight > document.documentElement.clientHeight) {
-        this.footerShow = false;
-      }else{
-        this.footerShow = true;
-      }
-    }
+    var clientWidth = document.documentElement.clientWidth;
+    this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
+    // window.onresize= ()=>{
+    //   if(this.clientHeight > document.documentElement.clientHeight) {
+    //     this.footerShow = false;
+    //   }else{
+    //     this.footerShow = true;
+    //   }
+    // }
   },
   data() {
   	return {
@@ -54,7 +56,8 @@ export default {
       messageEvent: false,
       isAdd: false,
       footerShow: true,
-      clientHeight: document.documentElement.clientHeight
+      clientHeight: document.documentElement.clientHeight,
+      height: 0
   	}
   },
   watch: {
@@ -154,7 +157,10 @@ export default {
     //根据临时用户ID查询订单
     orderStatus() {
       let that = this,
-          params = { tmp_uid:that.$root.tmp_uid };
+          params = {
+            tmp_uid:that.$root.tmp_uid,
+            company_id: that.$root.company_pid
+          };
 
       this.$http.fetch('Order/stateus',params)
       .then(res => {
@@ -163,14 +169,24 @@ export default {
 
           if (data) {
             let order_id = data.id;
+            let { price_id, level_name, price, user_number, total_price } = data;
 
             if (data.state == 0) {
               this.$confirm('存在未支付的订单, 是否去支付?', {
+                showClose: false,
+                closeOnClickModal: false,
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                alert('前往支付页面，订单id = ' + order_id)
+                that.$router.replace({path: '/pay', query: {
+                  price_id: price_id,
+                  level_name: level_name,
+                  price: price,
+                  user_number: user_number,
+                  total_price: total_price,
+                  add: true
+                }});
               }).catch(() => {
                 that.isAdd = true;
               })
@@ -197,14 +213,8 @@ export default {
 #account {
   background-size: 100% 100%;
   width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  .vessel{
-    position: relative;
-    // margin-top: 2rem;
-  }
+  height: 100%;
+
   .box {
 
     .radio {

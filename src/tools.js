@@ -85,7 +85,7 @@ const tools = {
     },
     // debug alert
     alert(val) {
-        if (process.env.NODE_ENV === "debug") {
+        if (process.env.NODE_ENV  === "development" || process.env.VUE_APP_DEBUG === "true") {
             alert(val)
         }
     }
