@@ -7,7 +7,6 @@ import Pay from '../views/pay.vue'
 import Payment from '../views/payment.vue'
 import Share from '../views/share.vue'
 import Home from '../views/home.vue'
-import Protocol from '../views/protocol.vue'
 
 Vue.use(Router)
 
@@ -21,14 +20,6 @@ export default new Router({
       meta: {
         title: '开通您的企业视频彩铃',
     
-      }
-    },
-    {
-      path: '/protocol',
-      name: 'Protocol',
-      component: Protocol,
-      meta: {
-        title: '云美摄直客协议'
       }
     },
     {

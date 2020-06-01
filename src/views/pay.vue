@@ -35,12 +35,15 @@
 
 <script>
 import ICONdg from '../../static/icon/duigong.png'
+import TOOL from '../tools.js'
 export default {
   name: 'pay',
   props: {
     
   },
   created() {
+    let that = this;
+    
     this.form.price_id = this.$route.query.price_id;
     this.form.level_name = this.$route.query.level_name;
     this.form.price = this.$route.query.price;
@@ -50,6 +53,7 @@ export default {
 
     this.getOrder()
     this.getBank()
+    TOOL.setShare(that)
   },
   data() {
     let tmp_uid = this.$root.tmp_uid;

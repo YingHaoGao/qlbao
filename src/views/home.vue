@@ -15,6 +15,9 @@
             :ref=item.ref
             :playsinline="true"
             :options="playerOptions"
+            x5-video-player-type="h5"
+            x5-video-orientation="portraint"
+            webkit-playsinline="true"
             ></video-player>
           </div>
         </van-swipe-item>
@@ -47,6 +50,8 @@
   import axios from 'axios';
   import Swiper from "swiper"
   import Background from '../assets/img/background.png';
+
+  const wx = require("weixin-js-sdk");
 
     export default {
       name: "Video",
@@ -113,21 +118,11 @@
         }]
        };
      },
-    //  beforeRouteEnter(to, from, next) {
-    //   next(_this=>{
-    //     _this.getAccessToken(() => {
-    //       TOOL.alert(TOOL.getFacility())
-    //       //判断是否为微信环境
-    //       if(TOOL.getFacility() == 'Weixin'){
-    //         _this.codeType = 'openid';
-    //         _this.$root.browser = 'openid';
-    //       }else{
-    //         _this.codeType = 'ip'
-    //         _this.$root.browser = 'ip'
-    //       }
-    //     });
-    //   })
-    // },
+     beforeRouteEnter(to, from, next) {
+      next(_this=>{
+        _this.getAccessToken();
+      })
+    },
     created(){
       let agent_id = this.getUrlKey("agent_id");
       this.$root.agent_id = agent_id;
@@ -264,7 +259,7 @@
       }, that, true).then(res => {
         if (res.errNo == 0) {
           localStorage.setItem('access_token', res.access_token);
-          fn()
+          that.custom();
         }
       })
     },
@@ -274,6 +269,34 @@
 
       that.src = `http://api.meisheapp.com/v1/weixin/authorize?access_token=${localStorage.getItem('access_token')}&redirect=${encodeURIComponent(location.href.split('#')[0])}`;
       TOOL.alert(that.src)
+    },
+
+    // 自定义分享配置
+    custom () {
+      console.log('share')
+      let that = this;
+
+      that.$http.fetch('/v1/weixin/getShareInfo/', {
+        access_token: localStorage.getItem('access_token'),
+        url: location.href.split('#')[0],
+        type: 2
+      }, that, true).then(res => {
+        that.$wx.config({
+          debug: process.env.VUE_APP_DEBUG === "true",
+          appId: res.data.appId,
+          timestamp: res.data.timestamp,
+          nonceStr: res.data.nonceStr,
+          signature: res.data.signature,
+          jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone'
+          ]
+        });
+        TOOL.setShare(that)
+      })
     },
 
   onTouchStart (e) {

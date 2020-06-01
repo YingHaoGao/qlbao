@@ -49,14 +49,18 @@
 </template>
 
 <script>
+import TOOL from '../tools.js'
 export default {
   name: 'payment',
   props: {
     
   },
   created () {
+    let that = this;
+
   	this.getInfo();
     this.getOrder();
+    TOOL.setShare(that);
 
     var clientWidth = document.documentElement.clientWidth;
     this.width = 13 * 10*(clientWidth / 320);

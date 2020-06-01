@@ -107,18 +107,13 @@ export default {
     })
   },
   created() {
+    let that = this;
+
     this.orderStatus();
+    TOOL.setShare(that)
 
     var clientWidth = document.documentElement.clientWidth;
     this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
-
-    // window.onresize= ()=>{
-    //   if(this.clientHeight > document.documentElement.clientHeight) {
-    //     this.footerShow = false;
-    //   }else{
-    //     this.footerShow = true;
-    //   }
-    // }
   },
   watch: {
     $route: {

@@ -26,25 +26,23 @@
 </template>
 
 <script>
+import TOOL from '../tools.js'
 export default {
   name: 'account',
   props: {
     
   },
   created() {
+    let that = this;
+    
     this.isAdd = this.$route.query.add
     this.getPrices();
     this.orderStatus();
 
     var clientWidth = document.documentElement.clientWidth;
     this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
-    // window.onresize= ()=>{
-    //   if(this.clientHeight > document.documentElement.clientHeight) {
-    //     this.footerShow = false;
-    //   }else{
-    //     this.footerShow = true;
-    //   }
-    // }
+    
+    TOOL.setShare(that)
   },
   data() {
   	return {

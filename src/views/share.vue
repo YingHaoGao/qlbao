@@ -25,7 +25,7 @@
 <script>
 import QRCode from "qrcodejs2";
 import CONFIG from "../../config/index.js";
-import TOOLS from '../tools';
+import TOOL from '../tools';
 import bus from '../bus.js';
 
 const wx = require("weixin-js-sdk");
@@ -66,39 +66,13 @@ export default {
     custom () {
       console.log('share')
       let that = this;
-      let share = {
-        imgUrl: '',
-        title: '我的邀请卡',
-        desc: '我的邀请卡',
-        link: CONFIG.SHARE + "/sign.html?company_pid=" + that.$root.company_pid
-      };
-
-      that.$http.fetch('/v1/weixin/getShareInfo/', {
-        access_token: localStorage.getItem('access_token'),
-        url: location.href.split('#')[0],
-        type: 2
-      }, that, true).then(res => {
-        that.$wx.config({
-          debug: process.env.VUE_APP_DEBUG === "true",
-          appId: res.data.appId,
-          timestamp: res.data.timestamp,
-          nonceStr: res.data.nonceStr,
-          signature: res.data.signature,
-          jsApiList: [
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage',
-            'onMenuShareQQ',
-            'onMenuShareWeibo',
-            'onMenuShareQZone'
-          ]
-        });
-
-
-        wx.ready(function () {
-          wx.onMenuShareAppMessage(share) // 分享给好友
-          wx.onMenuShareTimeline(share) // 分享到朋友圈
-        })
-      })
+      // let share = {
+      //   imgUrl: '',
+      //   title: '我的邀请卡',
+      //   desc: '我的邀请卡',
+      //   link: CONFIG.SHARE + "/sign.html?company_pid=" + that.$root.company_pid
+      // };
+      TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_pid=" + that.$root.company_pid)
   	},
     // 生成二维码参数
     qrcode () {

@@ -88,6 +88,21 @@ const tools = {
         if (process.env.NODE_ENV  === "development" || process.env.VUE_APP_DEBUG === "true") {
             alert(val)
         }
+    },
+    // 设置分享
+    setShare(that, link) {
+        let share = {
+            imgUrl: '',
+            title: that.$route.meta.title,
+            desc: that.$route.meta.title,
+            link: link || location.href.split('#')[0]
+        };
+        console.log(share)
+        alert(share.link)
+        wx.ready(function () {
+          wx.onMenuShareAppMessage(share) // 分享给好友
+          wx.onMenuShareTimeline(share) // 分享到朋友圈
+        })
     }
 }
 
