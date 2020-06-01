@@ -86,7 +86,10 @@ export default {
     // 获取对公转账信息
     getBank () {
       let that = this;
-      this.$http.fetch('BankAccount/getList')
+      this.$http.fetch('BankAccount/getList', {
+        company_pid: that.$root.agent_id || 0,
+        type: 1
+      })
         .then(res => {
           that.bank = res.data
         })

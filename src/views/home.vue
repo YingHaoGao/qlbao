@@ -73,8 +73,7 @@
               src: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" //url地址
               // src: require("../assets/mp4/test.mp4")                 // 本地
           }],
-            poster:
-            "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-1.jpg", //你的封面地址
+            poster: "", //你的封面地址
             width: document.documentElement.clientWidth,
           notSupportedMessage: "此视频暂无法播放，请稍后再试", //允许覆盖Video.js无法播放媒体源时显示的默认信息。
           controlBar: {

@@ -186,6 +186,16 @@ export default {
     #QRCodeNone {
       display: none;
     }
+    #img {
+      position: absolute;
+      bottom: 0.75rem;
+      width: 4.25rem;
+      left: 50%;
+      transform: translate(-50%,0%);
+      img {
+        width: 100%;
+      }
+    }
   }
   .buttons {
   	button {
