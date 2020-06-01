@@ -1,6 +1,6 @@
 <template>
   <div id="sign" v-loading="loading">
-  	<div class="new-vessel">
+  	<div class="new-vessel" ref="vessel" :style="{ height: height + 'px' }">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item>
           <el-input placeholder="请输入企业名称" v-model="form.name"
@@ -42,12 +42,19 @@
       <div class="footer" v-show="footerShow">
         <el-checkbox v-model="form.deal" class="check">
           请勾选
-          <el-link type="primary" @click="toTxt" style="font-size: 0.6rem">《云美摄直客协议》</el-link>
+          <el-link type="primary"  @click="centerDialogVisible = true" style="font-size: 0.6rem">《云美摄直客协议》</el-link>
           ，否则无法提交
         </el-checkbox>
         <el-button type="primary but" @click="onSubmit" :disabled="disabled" round>提交</el-button>
       </div> 
     </div>
+    <el-dialog
+      title="云美摄直客协议"
+      :visible.sync="centerDialogVisible"
+      width="100%"
+      center>
+      <iframe src="./protocol.txt"></iframe>
+    </el-dialog>
   </div>
 </template>
 
@@ -68,6 +75,7 @@ export default {
         ringtone: ['是否为联系人自动开通'],
         deal: false
       },
+      centerDialogVisible: false,
       disabled: true,
       // graphics: '',
       checkInterval: '',
@@ -82,7 +90,8 @@ export default {
       order_state: 0,
       order_id: false,
       footerShow: true,
-      clientHeight: document.documentElement.clientHeight
+      clientHeight: document.documentElement.clientHeight,
+      height: 0
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -100,6 +109,9 @@ export default {
   created() {
     this.orderStatus();
 
+    var clientWidth = document.documentElement.clientWidth;
+    this.height = this.clientHeight - ( 7 * 10*(clientWidth / 320) );
+    console.log(this.height)
     window.onresize= ()=>{
       if(this.clientHeight > document.documentElement.clientHeight) {
         this.footerShow = false;
@@ -325,8 +337,9 @@ export default {
         if (this.messageEvent) this.messageEvent.close();
       }
 
-      form.company_pid = company_pid;
+      form.company_pid = that.$root.agent_id;
       form.isRingtone = form.ringtone.length > 0;
+      console.log('that.$root.tmp_uid = ' + that.$root.tmp_uid)
 
       this.$http.post('/company/register', {
         contact_telephone: Number(form.phone),
@@ -431,6 +444,14 @@ export default {
     align-items: center;
     width: 100%;
     height: 100%;
+
+
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+
     .new-vessel{
       position: relative;
       width: calc( 100% - 1rem);

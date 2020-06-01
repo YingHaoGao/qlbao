@@ -8,11 +8,13 @@
         <p>{{company}}</p>
         <p>{{name}}</p>
       </div>
+      <div id="QRCodeNone"></div>
       <a href="javascript:void(0);" v-if="isIOS">
         <div id="qrcode" ref="qrcode"></div>
       </a>
       <div id="img" v-if="!isIOS">
-        <img :src="img" style="width: 100%;">
+        <div id="qrcode" ref="qrcode"></div>
+        <!-- <img :src="img" style="width: 100%;"> -->
       </div>
   	</div>
   	<div class="buttons">
@@ -107,13 +109,23 @@ export default {
       let clientWidth = document.body.clientWidth,
           width = 85;
 
-      let qrcode = new QRCode("qrcode", {
+      let qrcode = new QRCode("QRCodeNone", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
           text: CONFIG.SHARE + "/sign.html?company_pid=" + that.$root.company_pid
         });
+      var myCanvas = document.getElementsByTagName('canvas')[0];
+      var qrcodeNode = document.getElementById('qrcode');
+      var img = that.convertCanvasToImage(myCanvas);
+      qrcodeNode.appendChild(img);
       console.log('分享链接： ' + CONFIG.SHARE + "/sign.html?company_pid=" + this.$root.company_pid)
     },
+    //将canvas返回的图片添加到image里
+    convertCanvasToImage(canvas){
+      var image = new Image();
+      image.src = canvas.toDataURL("image/png");
+      return image;
+    },
     // 获取企业信息
     getCompanyInfo () {
       let that = this;
@@ -166,11 +178,14 @@ export default {
       text-align: left;
     }
 
-  	#qrcode {
+  	#qrcode,#QRCodeNone {
   		position: absolute;
       bottom: 0.75rem;
       width: 100%;
   	}
+    #QRCodeNone {
+      display: none;
+    }
   }
   .buttons {
   	button {

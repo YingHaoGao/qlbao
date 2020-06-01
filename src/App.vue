@@ -64,7 +64,7 @@ html{
       position: absolute;
       top: 4.5rem;
       height: calc( 100vh - 7rem );
-      width: calc( 100% - 1rem );
+      width: calc( 100% - 2rem );
       box-sizing: border-box;
       margin: auto;
       padding: 1.25rem 0.75rem;
@@ -96,6 +96,9 @@ html{
   }
 
   #sign {
+    .el-dialog__body {
+      height: 50vh;
+    }
     .el-form-item__label {
       padding: 0rem;
       text-align: left;

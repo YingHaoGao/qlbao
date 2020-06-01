@@ -131,17 +131,17 @@
       this.$root.agent_id = agent_id;
 
       if (this.codeType == 'ip') {
+        TOOL.alert('ip')
         this.getIp();
       } else {
+        TOOL.alert('weixin')
         let openid = this.getUrlKey("openid");
 
         if(openid){
             that.$root.parm = openid;
-            that.$root.browser = 'ip';
+            that.$root.browser = 'openid';
 
-            if (process.env.NODE_ENV === "debug") {
-              alert('openid = ', openid)
-            }
+            TOOL.alert('openid = ' + openid)
          }else{
             this.accredit();
          }

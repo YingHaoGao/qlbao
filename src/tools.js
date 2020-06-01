@@ -83,6 +83,12 @@ const tools = {
     getStorage (key) {
         localStorage.getItem(key);
     },
+    // debug alert
+    alert(val) {
+        if (process.env.NODE_ENV === "debug") {
+            alert(val)
+        }
+    }
 }
 
 export default tools

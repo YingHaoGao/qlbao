@@ -32,7 +32,7 @@ new Vue({
       // 代理商id
       agent_id: false,
       // 企业id
-      company_pid: 23,
+      company_pid: false,
       // 临时用户id
       tmp_uid: false,
       // 账号id
@@ -41,7 +41,7 @@ new Vue({
       secret: 'a89c4996d0c28f00413d6c95ff6e4a2a',
       // token
       access_token: false,
-      browser: 'ip',
+      browser: '',
       parm: ''
   	}
   },

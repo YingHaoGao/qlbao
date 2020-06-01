@@ -11,7 +11,7 @@
     </div>
     <div class="names">
   		<div class="name" v-for="(item, idx) in list" :key="idx">
-  			<div class="name-title">{{item.real_name}}</div>
+  			<div class="name-title">{{item.user_name}}</div>
         <div class="name-phone">{{item.telephone}}</div>
         <div class="name-type">{{telepToNc(item.telephone_type)}}</div>
   		</div>
@@ -78,7 +78,7 @@ export default {
             company_id: that.$root.company_pid
           };
 
-  		this.$http.fetch('/user/getList',{params})
+  		this.$http.fetch('/user/getList', params)
         .then(function(res){
           that.list = res.data;
   	    });

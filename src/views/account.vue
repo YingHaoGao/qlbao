@@ -34,6 +34,7 @@ export default {
   created() {
     this.isAdd = this.$route.query.add
     this.getPrices();
+    this.orderStatus();
 
     window.onresize= ()=>{
       if(this.clientHeight > document.documentElement.clientHeight) {
@@ -138,6 +139,34 @@ export default {
         add: that.isAdd
       }});
   	},
+    //根据临时用户ID查询订单
+    orderStatus() {
+      let that = this,
+          params = { tmp_uid:that.$root.tmp_uid };
+
+      this.$http.fetch('Order/stateus',params)
+      .then(res => {
+        if (res.errNo == 0) {
+          let data = res.data;
+
+          if (data) {
+            let order_id = data.id;
+
+            if (data.state == 0) {
+              this.$confirm('存在未支付的订单, 是否去支付?', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                alert('前往支付页面，订单id = ' + order_id)
+              }).catch(() => {
+                that.isAdd = true;
+              })
+            }
+          }
+        }
+      }) 
+    },
     // 错误提示
     messageErr(msg) {
       if (this.messageEvent) this.messageEvent.close();
