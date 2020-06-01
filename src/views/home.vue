@@ -1,6 +1,6 @@
 <template>
 
-  <div id="home" :autoresize="true" v-lazy:background-image="background">
+  <div id="home" :autoresize="true" v-lazy:background-image="background" style="height: none !important;">
    <!-- <div class="background_top"></div> -->
    <!-- <div class="background_center"></div> -->
    <div class="background_bottom">

@@ -95,7 +95,7 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
-    console.log(to, from)
+    // console.log(to, from)
     next(vm => {
       if (from.name == 'Home' || from.name == null) {
         vm.isBack = false;
@@ -123,7 +123,6 @@ export default {
   watch: {
     $route: {
       handler: function(val, oldVal){
-        console.log('ddddd')
         console.log(val, oldVal)
       },
       deep: true

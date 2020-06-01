@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <TabHead v-if="isShow"/>
-    <router-view  :style="{ height: clientHeight + 'px' }"/>
+    <TabHead/>
+    <router-view  :style="{ height: isHome ? 'none' : (clientHeight + 'px') }"/>
   </div>
 </template>
 
@@ -14,18 +14,19 @@
   },
   data () {
     return {
-      isShow: true,
+      isHome: true,
       clientHeight: document.documentElement.clientHeight,
     }
   },
-   beforeRouteEnter(to, from, next) {
-    next(_this=>{
-      if (from.name == 'Home') {
-        next.isShow = false;
+  watch: {
+    // 方法1
+    '$route' (to, from) { //监听路由是否变化
+      if (to.name == 'Home') {
+        this.isHome = true;
       } else {
-        next.isShow = true;
+        this.isHome = false;
       }
-    })
+    },
   },
 })
 </script>
