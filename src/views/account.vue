@@ -4,7 +4,7 @@
       <div class="box">
         <div class="input">
           <span class="tag">请输入开通号码数量</span>
-          <el-input v-model="num" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通号码数量">
+          <el-input v-model="num" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通号码数量" v-focus @focus="selectFocus($event)">
             <span slot="suffix" class="suffix">个</span>
           </el-input>
         </div>
@@ -80,7 +80,19 @@ export default {
       }
     }
   },
+  directives: {
+    // 获得焦点指令
+    focus: {
+      inserted: function(el) {
+        el.children[0].focus();
+      }
+    }
+  },
   methods: {
+    // 获得焦点后选中内容
+    selectFocus(event) {
+      event.currentTarget.select();
+    },
     // 查询价格档位
     getPrices() {
       let that = this,

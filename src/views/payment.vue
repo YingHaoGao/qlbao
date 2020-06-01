@@ -78,7 +78,7 @@ export default {
             company_id: that.$root.company_pid
           };
 
-  		this.$http.fetch('/user/getList',{params})
+  		this.$http.fetch('/user/getList',params)
         .then(function(res){
           that.list = res.data;
   	    });
@@ -210,6 +210,7 @@ export default {
     width: 100%;
     // height: 4.2rem;
     padding: .75rem;
+    box-sizing: border-box;
 
 		.name {
 			font-size: 0.8rem;

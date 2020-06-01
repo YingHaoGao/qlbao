@@ -12,7 +12,7 @@
         <div id="qrcode" ref="qrcode"></div>
       </a>
       <div id="img" v-if="!isIOS">
-        <img :src="img" style="width: 100%;">
+        <img :src="img">
       </div>
   	</div>
   	<div class="buttons">
@@ -171,6 +171,16 @@ export default {
       bottom: 0.75rem;
       width: 100%;
   	}
+    #img {
+      position: absolute;
+      bottom: 0.75rem;
+      width: 4.25rem;
+      left: 50%;
+      transform: translate(-50%,0%);
+      img {
+        width: 100%;
+      }
+    }
   }
   .buttons {
   	button {
