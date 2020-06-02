@@ -1,5 +1,5 @@
 <template>
-  <div id="sign" v-loading="loading">
+  <div id="sign" v-loading="loading" :style="{ height: clientHeight + 'px' }">
   	<div class="vessel" ref="vessel" :style="{ height: height + 'px' }">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item>
@@ -335,7 +335,16 @@ export default {
 
       form.company_pid = that.$root.agent_id || 0;
       form.isRingtone = form.ringtone.length > 0;
-      console.log('that.$root.tmp_uid = ' + that.$root.tmp_uid)
+      console.log('that.$root.tmp_uid = ' + (that.$root.tmp_uid || that.$route.query.tmp_uid))
+
+      TOOL.alert('上传参数：')
+      TOOL.alert('contact_telephone: ' + Number(form.phone))
+      TOOL.alert('verification_code: ' + Number(form.code))
+      TOOL.alert('company_name: ' + form.name)
+      TOOL.alert('contact_name: ' + form.contacts)
+      TOOL.alert('open_user: ' + (form.isRingtone ? 1 : 0))
+      TOOL.alert('company_pid: ' + form.company_pid)
+      TOOL.alert('tmp_uid: ' + (that.$root.tmp_uid || that.$route.query.tmp_uid))
 
       this.$http.post('/company/register', {
         contact_telephone: Number(form.phone),
@@ -343,8 +352,8 @@ export default {
         company_name: form.name,
         contact_name: form.contacts,
         open_user: form.isRingtone ? 1 : 0,
-        company_pid: company_pid,
-        tmp_uid: that.$root.tmp_uid
+        company_pid: form.company_pid,
+        tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid
       }, that)
         .then(res => {
           if (res.errNo == 0) {

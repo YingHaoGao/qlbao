@@ -1,6 +1,6 @@
 <template>
-  <div id="pay">
-  	<div class="footer">
+  <div id="pay" :style="{ height: clientHeight + 'px' }">
+  	<div class="footer" :style="{ height: height + 'px' }">
       <div class="text">请选择支付方式</div>
       <div class="item">
         <div class="payBtn weixinColor" :class="form.pay_mode == 2 ? 'active' : ''" @click="onWeiXin">
@@ -54,6 +54,9 @@ export default {
     this.getOrder()
     this.getBank()
     TOOL.setShare(that)
+
+    var clientWidth = document.documentElement.clientWidth;
+    this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
   },
   data() {
     let tmp_uid = this.$root.tmp_uid;
@@ -73,6 +76,8 @@ export default {
         pay_mode: '',
         tmp_uid: tmp_uid,
       },
+      clientHeight: document.documentElement.clientHeight,
+      height: 0,
       bank: [
         {
           id: '',
@@ -287,7 +292,6 @@ export default {
   }
   .footer {
     width: calc( 100% - 1rem);
-    height: calc( 100vh - 7rem);
     margin: auto;
     background:rgba(242,242,242,0.4);
     text-align: center;

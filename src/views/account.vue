@@ -1,5 +1,5 @@
 <template>
-  <div id="account">
+  <div id="account" :style="{ height: clientHeight + 'px' }">
     <div class="vessel" :style="{ height: height + 'px' }">
       <div class="box">
         <div class="input">

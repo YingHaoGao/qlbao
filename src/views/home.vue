@@ -1,6 +1,6 @@
 <template>
 
-  <div id="home" :autoresize="true" v-lazy:background-image="background" style="height: none !important;">
+  <div id="home" :autoresize="true" v-lazy:background-image="background" style="height: none !important;" v-loading="loading">
    <!-- <div class="background_top"></div> -->
    <!-- <div class="background_center"></div> -->
    <div class="background_bottom">
@@ -58,6 +58,8 @@
 
       data() {
         return {
+         tmp_uid: false,
+         loading: true,
          background: Background,
          banner:["1","2","3"],
          paystate:"",
@@ -90,7 +92,7 @@
             fullscreenToggle: true,//全屏按钮
           }
         },
-
+        load: false,
         // ip or openid
         codeType: 'ip',
          // 显示按钮
@@ -126,14 +128,19 @@
     created(){
       let agent_id = this.getUrlKey("agent_id");
       this.$root.agent_id = agent_id;
+
+      this.load = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       
       TOOL.alert(TOOL.getFacility())
       if (TOOL.getFacility() == 'Weixin') {
         TOOL.alert('weixin')
-        // let openid = this.getUrlKey("openid");
-        let openid = "olWi6wv5MGVNfYTHb-dj86bFqF8";
+        let openid = this.getUrlKey("openid");
         TOOL.alert('url openid = ' + openid)
-        TOOL.alert('!!openid = ' + !!openid)
         if(openid){
             this.$root.parm = openid;
             this.$root.browser = 'openid';
@@ -173,13 +180,17 @@
                    parm: parm,
                    type: type
                 }
-        TOOL.alert('根据 ' + type + ' = ' + parm + ' 获取tmp_uid')
+        TOOL.alert('根据 ' + type + ' = ' + parm + ' 开始获取tmp_uid')
 
         this.$http.fetch('TmpUser/getTmpUserId',params)
         .then(res => {
           if (res.errNo == 0) {
-            console.log(res)
             that.$root.tmp_uid = res.data.tmp_uid;
+            that.tmp_uid = res.data.tmp_uid;
+            TOOL.alert('根据 ' + type + ' = ' + parm + ' 获取到tmp_uid = ' + that.$root.tmp_uid + ' ' + res.data.tmp_uid)
+              if (that.load) {
+                that.load.close();
+              }
             if (res.data && res.data.company_id != null) {
               that.btnType = 1;
               this.userId =res.data.tmp_uid
@@ -191,6 +202,10 @@
               this.btnType = 0;
             }
           }
+        }).catch(() => {
+            if (that.load) {
+              that.load.close();
+            }
         })
       },
 
@@ -230,9 +245,9 @@
       .then(res => {
         if (res.errNo == 0) {
           let data = res.data;
-          TOOL.alert('订单id = '+ data.id)
 
           if (data) {
+            TOOL.alert('订单id = '+ res.data.id)
             this.order_id = data.id;
 
             switch(data.state) {
@@ -329,7 +344,10 @@
      } });
     },
     openNow() {
-     this.$router.push({ path: "/sign" });
+      let that = this;
+     this.$router.push({ path: "/sign", query: {
+      tmp_uid: that.tmp_uid
+     } });
    },
    continueOpen() {
     let that = this;

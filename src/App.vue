@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <TabHead/>
-    <router-view  :style="{ height: isHome ? 'none' : (clientHeight + 'px') }"/>
+    <router-view />
   </div>
 </template>
 
@@ -11,23 +11,7 @@
   export default({
   components: {
     TabHead
-  },
-  data () {
-    return {
-      isHome: true,
-      clientHeight: document.documentElement.clientHeight,
-    }
-  },
-  watch: {
-    // 方法1
-    '$route' (to, from) { //监听路由是否变化
-      if (to.name == 'Home') {
-        this.isHome = true;
-      } else {
-        this.isHome = false;
-      }
-    },
-  },
+  }
 })
 </script>
 
@@ -116,6 +100,7 @@ html{
       border-radius: 2.3rem;
       background: none;
       color: #fff;
+      font-size: 0.7rem;
 
       &::-webkit-input-placeholder {
         color: #fff;
@@ -147,7 +132,7 @@ html{
       color: #999999;
     }
     .el-checkbox__label {
-      font-size: 0.5rem;
+      font-size: 0.6rem;
       color: #fff;
     }
   }
