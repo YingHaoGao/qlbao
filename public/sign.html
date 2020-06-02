@@ -351,8 +351,8 @@ $(function() {
                     $('.sendCode.send').addClass('hide');
 
                     codeInterval = setInterval(function() {
-                        let time = $('.sendCode.time').data('time');
-
+                        let time = $('.sendCode.time').attr('data-time');
+                        console.log(time)
                         if (time < 0) {
                             clearInterval(codeInterval);
                             $('.sendCode.send').removeClass('hide');

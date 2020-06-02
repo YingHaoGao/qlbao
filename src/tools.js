@@ -97,7 +97,6 @@ const tools = {
             desc: that.$route.meta.title,
             link: link || location.href.split('#')[0]
         };
-        console.log(share)
         alert(share.link)
         wx.ready(function () {
           wx.onMenuShareAppMessage(share) // 分享给好友
