@@ -1,5 +1,5 @@
 <template>
-  <div id="tabHead">
+  <div id="tabHead" v-if="isShow">
   	<div class="left">
   		<div class="back" @click="toBack">
 	  		<img :src="ICONback"/>
@@ -38,8 +38,11 @@ export default {
   },
   data () {
   	var title = this.$route.meta.title
+  	var isShow = !this.$route.meta.notHead
+
   	return {
   		title: title,
+  		isShow: true,
   		isShare: false,
   		isClose: true,
   		ICONback: ICONback,

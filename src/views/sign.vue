@@ -1,52 +1,46 @@
 <template>
   <div id="sign" v-loading="loading" :style="{ height: clientHeight + 'px' }">
-  	<div class="vessel" ref="vessel" :style="{ height: height + 'px' }">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item>
-          <el-input placeholder="请输入企业名称" v-model="form.name"
-            class="ipt"
-            @blur="checkName"
-            maxlength="16"
-            show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input placeholder="请输入联系人" v-model="form.contacts"
-            @blur="checkContacts"
-            class="ipt"
-            maxlength="8"
-            show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input placeholder="请输入手机号" v-model="form.phone"
-            @blur="checkPhone"
-            class="ipt"
-            maxlength="11"
-            show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input class="codeInput ipt" placeholder="请输入验证码" v-model="form.code"></el-input>
-          <el-button type="text" class="codeBtn but" v-show="!coded" @click="getCode">获取验证码</el-button>
-          <el-button type="text" class="codeTime but" v-show="coded" style="color: #999999;" disabled>{{codeTime}}s</el-button>
-        </el-form-item>
-        <!-- <el-form-item label="图形验证">
-          <el-input placeholder="请输入图形验证码" v-model="form.graphics">
-            <span slot="suffix" class="graphics" @click="getGraphics">{{graphics}}</span>
-          </el-input>
-        </el-form-item> -->
-      </el-form>
-      <div class="el-form-item ringtone">
-        <el-checkbox-group v-model="form.ringtone">
-          <el-checkbox label="是否为联系人自动开通" name="type"></el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <div class="footer" v-show="footerShow">
-        <el-checkbox v-model="form.deal" class="check">
-          请勾选
-          <el-link type="primary"  @click="centerDialogVisible = true" style="font-size: 0.6rem">《云美摄直客协议》</el-link>
-          ，否则无法提交
-        </el-checkbox>
-        <el-button type="primary but" @click="onSubmit" :disabled="disabled" round>提交</el-button>
-      </div> 
+    <!-- <div class="vessel" ref="vessel" :style="{ height: height + 'px' }"> -->
+    <div class="logoBox">
+      <img src="../../static/icon/duigong.png">
+    </div>
+    <el-form ref="form" :model="form" label-width="80px">
+      <el-form-item>
+        <el-input placeholder="请输入企业名称" v-model="form.name"
+          class="ipt"
+          @blur="checkName"
+          maxlength="16"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input placeholder="请输入联系人" v-model="form.contacts"
+          @blur="checkContacts"
+          class="ipt"
+          maxlength="8"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input placeholder="请输入手机号" v-model="form.phone"
+          @blur="checkPhone"
+          class="ipt"
+          maxlength="11"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input class="codeInput ipt" placeholder="请输入验证码" v-model="form.code"></el-input>
+        <el-button type="text" class="codeBtn but" v-show="!coded" @click="getCode">获取验证码</el-button>
+        <el-button type="text" class="codeTime but" v-show="coded" style="color: #999999;" disabled>{{codeTime}}s</el-button>
+      </el-form-item>
+    </el-form>
+    <div class="el-form-item ringtone">
+      <el-checkbox-group v-model="form.ringtone">
+        <el-checkbox label="是否为联系人自动开通" name="type"></el-checkbox>
+      </el-checkbox-group>
+    </div>
+    <div class="footer" v-show="footerShow">
+      <el-checkbox v-model="form.deal" class="check">
+        请勾选
+        <el-link type="primary"  @click="centerDialogVisible = true" style="font-size: 0.6rem">《云美摄直客协议》</el-link>
+        ，否则无法提交
+      </el-checkbox>
+      <el-button type="primary but" @click="onSubmit" :disabled="disabled" round>提交</el-button>
     </div>
     <el-dialog
       title="云美摄直客协议"
@@ -444,38 +438,49 @@ export default {
 
 <style lang="scss" scoped>
 #sign {
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+
+
+  iframe {
+    border: none;
     width: 100%;
     height: 100%;
+  }
 
+  .new-vessel{
+    position: relative;
+    width: calc( 100% - 1rem);
+    height: calc( 100vh - 7rem);
+    background:rgba(242,242,242,0.4);
+    padding: 1.25rem 0.75rem;
+    box-sizing: border-box;
+    // margin-top: 2rem;
+  }
+  .logoBox {
+    width: 100%;
+    height: 7rem;
+    position: relative;
 
-    iframe {
-      border: none;
-      width: 100%;
-      height: 100%;
+    img {
+      width: 3rem;
+      height: 3rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
-
-    .new-vessel{
-      position: relative;
-      width: calc( 100% - 1rem);
-      height: calc( 100vh - 7rem);
-      background:rgba(242,242,242,0.4);
-      padding: 1.25rem 0.75rem;
-      box-sizing: border-box;
-      // margin-top: 2rem;
-    }
+  }
   .el-form-item {
-    height: 2.3rem;
+    height: 2.2rem;
     box-sizing: border-box;
     font-size: 0.7rem;
     margin-bottom: 0rem;
 
     &:not(:first-child){
-      margin-top: 0.5rem;
+      margin-top: 0.75rem;
     }
 
     .codeInput {
@@ -484,10 +489,11 @@ export default {
     .codeBtn,.codeTime {
       margin-left: 0.5rem;
       width: 5.1rem;
-      height: 2.3rem;
+      height: 2.2rem;
       border: solid 0.05rem #fff;
-      border-radius: 2.3rem;
-      color: #FD3B44 !important;
+      border-radius: 0.2rem;
+      color: #FFFFFF !important;
+      background: #79D4E4;
     }
 
     input {
@@ -503,7 +509,7 @@ export default {
     border-bottom: none;
   }
   .footer {
-    width: 90.71%;
+    width: calc( 100% - 3.2rem );
     position: absolute;
     bottom: 0.75rem;
     box-sizing: border-box;
@@ -511,15 +517,19 @@ export default {
       font-size: .6rem;
     }
     .el-link.el-link--primary {
-      color: red;
+      color: #999999;
     }
 
     button {
       margin-top: 0.5rem;
       width: 100%;
       font-size: 0.9rem;
-      background: #5E43FA;
-      border-color: #5E43FA;
+      background:rgba(121,212,228,1);
+      border: none;
+      padding: 0.5rem 0rem;
+    }
+    button[disabled='disabled'] {
+      background: rgba(172,231,242,1);
     }
   }
 }

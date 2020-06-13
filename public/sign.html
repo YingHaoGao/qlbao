@@ -102,14 +102,13 @@
         }
     	.box {
           position: absolute;
-          height: calc( 100vh - 7rem );
-          top: 4.5rem;
-          left: 1.3rem;
-          right: 1.3rem;
+          top: 3.5rem;
+          left: 0.5rem;
+          width: calc(100% - 1rem);
           box-sizing: border-box;
           margin: auto;
-          padding: 1.25rem 0.75rem;
-          background-color: rgba(242,242,242,0.4);
+          padding: 1.25rem .75rem;
+          background-color: hsla(0,0%,94.9%,.4);
     	}
     	.box .btns {
     		width: 100%;
@@ -134,10 +133,10 @@
             color: #fff;
         }
     	.box .btns .btn:first-child {
-    		margin-right: 0.5rem;
+    		margin-right: 0.3rem;
     	}
     	.box .btns .btn:last-child {
-    		margin-left: 0.5rem;
+    		margin-left: 0.3rem;
     	}
     	.box .btns .btn.active {
     		color: #fff;
@@ -162,6 +161,7 @@
     		width: 100%;
             height: 2.3rem;
             font-size: 0.6rem;
+            line-height: 0.6rem;
             padding: 0.65rem 0.5rem;
     		box-sizing: border-box;
             border-radius: 1.25rem;
@@ -186,7 +186,7 @@
             overflow: hidden;
         }
         .box .inputs .codeInput input {
-            width: 7rem;
+            width: calc( 100% - 5.1rem );
             height: 100%;
             float: left;
         }
@@ -245,7 +245,7 @@
 </div>
 <div class="box">
 	<div class="btns">
-		<div class="btn" name="1">移动</div>
+		<div class="btn active" name="1">移动</div>
 		<div class="btn" name="2">联通</div>
 		<div class="btn" name="3">电信</div>
 	</div>
@@ -278,14 +278,21 @@ $(function() {
     var codeInterval;
 
     var code = '',
-        operator = '',
+        operator = $('.btn.active').attr('name'),
         company_pid = getUrlParam('company_pid'),
         clientHeight = document.documentElement.clientHeight,
         clientWidth = document.documentElement.clientWidth;
 
+    if (getFacility() == 'Weixin') {
+        $('.close').hide()
+    } else {
+        $('.close').show()
+    }
+
     // 解决底部定位上升
     $('html').css('height', clientHeight + 'px');
     $('.box').css('height',  clientHeight - ( 10 * 10*(clientWidth / 320) ) + 'px');
+    $('.btn').css('width', 'calc( (100% - 1rem) / 3 )')
 
     // 返回
     $('#tabHead .back').on('click', function() {
@@ -438,6 +445,56 @@ $(function() {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
         var r = window.location.search.substr(1).match(reg);  //匹配目标参数
         if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+
+    // 检测运行环境
+    function getFacility () {
+        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
+        var isIE = userAgent.indexOf("compatible") > -1
+                && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
+        var isEdge = userAgent.indexOf("Edge") > -1; //判断是否IE的Edge浏览器
+        var isFF = userAgent.indexOf("Firefox") > -1; //判断是否Firefox浏览器
+        var isChrome = userAgent.indexOf("Chrome") > -1
+                && userAgent.indexOf("Safari") > -1; //判断Chrome浏览器
+        var ua = window.navigator.userAgent.toLowerCase();
+        var Weixin = ua.match(/MicroMessenger/i) == 'micromessenger';
+
+
+        if (Weixin) {
+            return "Weixin"
+        }
+        if (isIE) {
+            var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+            reIE.test(userAgent);
+            var fIEVersion = parseFloat(RegExp["$1"]);
+            if (fIEVersion == 7) {
+                return "IE7";
+            } else if (fIEVersion == 8) {
+                return "IE8";
+            } else if (fIEVersion == 9) {
+                return "IE9";
+            } else if (fIEVersion == 10) {
+                return "IE10";
+            } else if (fIEVersion == 11) {
+                return "IE11";
+            } else {
+                return "0";
+            }//IE版本过低
+            return "IE";
+        }
+        if (isOpera) {
+            return "Opera";
+        }
+        if (isEdge) {
+            return "Edge";
+        }
+        if (isFF) {
+            return "FF";
+        }
+        if (isChrome) {
+            return "Chrome";
+        }
     }
 })
 </script>

@@ -7,6 +7,7 @@ import Pay from '../views/pay.vue'
 import Payment from '../views/payment.vue'
 import Share from '../views/share.vue'
 import Home from '../views/home.vue'
+import Loading from '../views/loading.vue'
 
 Vue.use(Router)
 
@@ -15,11 +16,19 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Loading',
+      component: Loading,
+      meta: {
+        title: '开通您的企业视频彩铃',
+        notHead: true
+      }
+    },
+    {
+      path: '/home',
       name: 'Home',
       component: Home,
       meta: {
-        title: '开通您的企业视频彩铃',
-    
+        title: '开通您的企业视频彩铃'
       }
     },
     {

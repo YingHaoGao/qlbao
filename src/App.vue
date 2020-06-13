@@ -22,6 +22,7 @@
 <style lang="scss">
 html{
   font-size: 20px;
+  font-family: 'PingFangSC-Regular','PingFang SC';
 
   *{
     margin: 0;
@@ -33,6 +34,7 @@ html{
     margin: 0px;
     width: 100%;
     height: 100%;
+    letter-spacing: 0.05rem;
   }
 
   #sign,
@@ -43,7 +45,8 @@ html{
   #share {
     position: relative;
     height: 100%;
-    padding: 3rem 0.5rem 1rem 0.5rem;
+    // padding: 3rem 0.5rem 1rem 0.5rem;
+    padding: 2rem 1.6rem 1rem 1.6rem;
     box-sizing: border-box;
     overflow: auto;
   
@@ -62,8 +65,8 @@ html{
   #sign,
   #account,
   #pay {
-    background-image: url('../static/icon/background.png');
-    background-size: cover;
+    // background-image: url('../static/icon/background.png');
+    // background-size: cover;
   }
 
   #qrcode img {
@@ -94,22 +97,25 @@ html{
     }
     .el-input__inner {
       border: none;
-      padding-left: 0.5rem;
-      height: 2.3rem;
-      border: solid 0.05rem #fff;
-      border-radius: 2.3rem;
-      background: none;
-      color: #fff;
+      padding: 0.6rem 0.75rem;
+      height: 2.2rem;
+      color: #333333;
       font-size: 0.7rem;
+      line-height: 0.7rem;
+      letter-spacing: 0.05rem;
+
+      background: rgba(242,242,242,1);
+      border-radius: 0.2rem;
 
       &::-webkit-input-placeholder {
-        color: #fff;
+        color: #999999;
+        line-height: 0.7rem;
       }
       &::-moz-placeholder {
-        color: #fff;
+        color: #999999;
       }
       &::-ms-input-placeholder {
-        color: #fff;
+        color: #999999;
       }
     }
     .el-checkbox__inner {
@@ -121,8 +127,8 @@ html{
     }
     .el-checkbox__input.is-checked .el-checkbox__inner,
     .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-      border-color: red;
-      background: red !important;
+      border-color: #79d4e4;
+      background: #79d4e4 !important;
     }
     .el-input .el-input__count .el-input__count-inner {
       background: none;
@@ -133,7 +139,8 @@ html{
     }
     .el-checkbox__label {
       font-size: 0.6rem;
-      color: #fff;
+      color: #999999;
+      padding-left: 0.3rem;
     }
   }
 
@@ -142,40 +149,42 @@ html{
       display: none;
     }
     .el-input__inner {
-      border: none;
       padding-left: 0.5rem;
-      height: 2.3rem;
-      border: solid 0.05rem #fff;
-      border-radius: 2.3rem;
       background: none;
-      color: #fff;
+      color: #333333;
+      font-size: 0.7rem;
+      line-height: 0.7rem;
+      height: 2.2rem;
+      border-radius: 0.2rem;
+      border: 0.05rem solid rgba(121,212,228,1);
 
       &::-webkit-input-placeholder {
-        color: #fff;
+        color: #999999;
       }
       &::-moz-placeholder {
-        color: #fff;
+        color: #999999;
       }
       &::-ms-input-placeholder {
-        color: #fff;
+        color: #999999;
       }
     }
     .el-radio.is-bordered {
       width: 31%;
       margin: 0rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
       height: 2.4rem;
       line-height: 2.3rem;
       float: left;
       padding: 0rem;
-      background: #fff;
+      background: rgba(242,242,242,1);
+      border: none;
 
       &:not(:last-child) {
         margin-right: 3.33%;
       }
       &.is-checked {
-        background: #5E43FA !important;
-        border-color: #5E43FA !important;
+        background: #79D4E4 !important;
+        border-color: #79D4E4 !important;
 
         .el-radio__label {
           color: #fff;
@@ -187,7 +196,7 @@ html{
       }
     }
     .el-radio.is-bordered.is-checked {
-      background:rgba(236,243,255, .5);
+      background: #79D4E4;
     }
   }
   #payment {
@@ -196,6 +205,27 @@ html{
         font-size: 0.8rem;
         font-weight: 400;
       }
+    }
+    .el-button.is-round {
+      padding: 0 !important;
+    }
+    .el-table .cell {
+      padding-right: 1.25rem;
+      padding-left: 1.25rem;
+      font-size: 0.8rem;
+    }
+    .el-table th>.cell {
+      font-size: 0.8rem;
+      color: #333;
+    }
+    .el-table .phone .cell {
+      padding: 0rem !important;
+    }
+    .el-table .gray-row {
+      background: rgba(242,242,242,1);
+    }
+    .el-button{
+      border: none;
     }
   }
 }

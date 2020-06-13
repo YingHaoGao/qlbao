@@ -10,38 +10,43 @@
       </div> -->
     </div>
     <div class="buttons">
-      <el-button @click="onNewPhone" round>追加开通新号码</el-button>
-      <el-button @click="onCreate" round>生成我的邀请卡</el-button>
+      <el-button @click="onNewPhone" :style="{ width: btnWidth }" round>追加开通新号码</el-button>
+      <el-button @click="onCreate" :style="{ width: btnWidth }" round>生成我的邀请卡</el-button>
     </div>
-    <!-- <div class="names">
-  		<div class="name" v-for="(item, idx) in list" :key="idx">
-  			<div class="name-title">{{item.user_name}}</div>
-        <div class="name-phone">{{item.telephone}}</div>
-        <div class="name-type">{{telepToNc(item.telephone_type)}}</div>
-  		</div>
-  	</div> -->
-    <el-table
-      :data="list"
-      stripe
-      style="width: 100%;margin-top: 1rem;">
-      <el-table-column
-        prop="user_name"
-        label="姓名">
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="telephone"
-        label="手机号"
-        :width="width">
-      </el-table-column>
-      <el-table-column
-        header-align="right"
-        align="right"
-        prop="telephoneNc"
-        label="服务商">
-      </el-table-column>
-    </el-table>
+    <div class="tab">
+      <div class="title">
+        目前已添加{{list.length}}人，剩余可添加{{10}}人
+      </div>
+      <el-table
+        :data="list"
+        :row-class-name="tableRowClassName"
+        style="width: 100%;">
+        <el-table-column
+          prop="user_name"
+          label="姓名">
+        </el-table-column>
+        <el-table-column
+          class-name="phone"
+          header-align="center"
+          align="center"
+          prop="telephone"
+          label="手机号"
+          :width="width">
+        </el-table-column>
+        <el-table-column
+          header-align="right"
+          align="right"
+          prop="time"
+          label="开通时常">
+        </el-table-column>
+        <el-table-column
+          header-align="right"
+          align="right"
+          prop="telephoneNc"
+          label="运营商">
+        </el-table-column>
+      </el-table>
+    </div>
   	<!-- <div class="code">
   		二维码分享给员工填写号码
   	</div> -->
@@ -64,6 +69,7 @@ export default {
 
     var clientWidth = document.documentElement.clientWidth;
     this.width = 13 * 10*(clientWidth / 320);
+    this.btnWidth =  (clientWidth - 55) / 2 + 'px';
   },
   mounted () {
     this.$alert('公司管理员可登陆 www.weuq.com 网页统一添加号码', '提示');
@@ -97,7 +103,8 @@ export default {
   		list: [],
   		type: '',
   		typeNC: '',
-      width: 0
+      width: 0,
+      btnWidth: 0
   	}
   },
   methods: {
@@ -180,6 +187,12 @@ export default {
       }
 
       return typeNC
+    },
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 == 0) {
+        return 'gray-row';
+      }
+      return '';
     }
   }
 }
@@ -197,7 +210,8 @@ export default {
     padding: 0 0.75rem;
     // background:linear-gradient(228deg,rgba(210,210,255,1) 0%,rgba(161,161,249,1) 100%);
     background-image: url('../../static/icon/payment_head.png');
-    background-size: 100% 100%;
+    background-size: cover;
+    background-position: right;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -235,20 +249,24 @@ export default {
     width: 100%;
     padding: 1rem 0.75rem;
     box-sizing: border-box;
-    text-align: center;
+    text-align: left;
     background: #fff;
     color: #FFFFFF;
+    overflow: hidden;
 
 		button {
-			width: 7rem;
+			// width: 8rem;
       display: inline-block;
       color: #fff;
+      height: 2rem;
+      font-size: 0.8rem;
 
       &:first-child {
         background: linear-gradient(180deg,rgba(253,188,124,1) 0%,rgba(254,121,119,1) 100%);
       }
       &:last-child {
         background: linear-gradient(180deg,rgba(124,193,253,1) 0%,rgba(127,119,254,1) 100%);
+        float: right;
       }
 		}
 	}
@@ -291,5 +309,23 @@ export default {
 		text-align: center;
 		font-size: 0.8rem;
 	}
+  .tab {
+    background: #fff;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem; 
+
+    .title {
+      width: 17.25rem;
+      height: 1.4rem;
+      background:rgba(242,242,242,1);
+      border-radius: 0.2rem;
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: rgba(153,153,153,1);
+      line-height: 1.4rem;
+      margin: auto;
+      text-align: center;
+    }
+  }
 }
 </style>

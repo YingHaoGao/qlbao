@@ -1,26 +1,25 @@
 <template>
   <div id="account" :style="{ height: clientHeight + 'px' }">
-    <div class="vessel" :style="{ height: height + 'px' }">
-      <div class="box">
-        <div class="input">
-          <span class="tag">请输入开通号码数量</span>
-          <el-input v-model="num" type="number" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通号码数量" v-focus @focus="selectFocus($event)">
-            <span slot="suffix" class="suffix">个</span>
-          </el-input>
-        </div>
-        <div class="tag text">
-          计费说明：{{remarks}}
-        </div>
-        <div class="radio">
-          <el-radio v-model="radio" v-for="item in prices" :label="item.id" :key="item.id" border>{{item.level_name}}</el-radio>
-        </div>
+    <!-- <div class="vessel" :style="{ height: height + 'px' }"> -->
+    <div class="box">
+      <div class="input">
+        <span class="tag">请输入开通号码数量:</span>
+        <el-input v-model="num" class="number" type="number" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通号码数量" v-focus @focus="selectFocus($event)">
+          <span slot="suffix" class="suffix">个</span>
+        </el-input>
       </div>
-      <div class="footer" v-show="footerShow">
-        <div class="money">
-          订单金额：￥<span>{{money}}</span>
-        </div>
-        <el-button type="primary" @click="onSubmit" round>立即付款</el-button>
+      <div class="radio">
+        <el-radio v-model="radio" v-for="item in prices" :label="item.id" :key="item.id" border>{{item.level_name}}</el-radio>
       </div>
+      <div class="tag text">
+        计费说明：{{remarks}}
+      </div>
+    </div>
+    <div class="footer" v-show="footerShow">
+      <div class="money">
+        订单金额：￥<span>{{money}}</span>
+      </div>
+      <el-button type="primary" @click="onSubmit" round>立即付款</el-button>
     </div>
   </div>
 </template>
@@ -108,10 +107,13 @@ export default {
         params.company_pid = agent_id;
       }
 
-          console.log(that.$root)
       this.$http.fetch('prices/getPrice', params)
         .then(res => {
-          that.prices = res.data
+          that.prices = res.data;
+
+          if (res.data.length > 0) {
+            that.radio = res.data[0].id;
+          }
         })
     },
   	// 立即付款
@@ -212,6 +214,8 @@ export default {
   background-size: 100% 100%;
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  padding-top: 3.5rem;
 
   .box {
 
@@ -220,27 +224,40 @@ export default {
       overflow: hidden;
     }
     .input {
-    	margin-bottom: 0.5rem;
+    	margin-bottom: 1.5rem;
+      height: 2.2rem;
+      position: relative;
+    }
+    .number {
+      width: 7.4rem;
+      height: 2.2rem;
+      position: absolute;
+      right: 0rem;
+      top: 50%;
+      transform: translate(0, -50%);
     }
     .tag {
       display: inline-block;
-      font-size: 0.7rem;
-      color: #fff;
-      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: rgba(51,51,51,1);
+      line-height: 2.2rem;
 
       &.text {
         font-size: 0.6rem;
-        margin-bottom: 0.8rem;
+        font-weight: bold;
+        color: rgba(51,51,51,1);
+        line-height: 0.85rem;
       }
     }
     .suffix {
-      line-height: 2rem;
+      line-height: 2.3rem;
       padding-right: 0.5rem;
-      color: #fff;
+      color: #333333;
     }
   }
   .money {
-    color: #fff;
+    color: #333333;
     font-size: 0.7rem;
 
   	span {
@@ -263,8 +280,8 @@ export default {
       margin-top: 0.75rem;
       font-size: 0.9rem;
       width: 100%;
-      background: #5E43FA;
-      border-color: #5E43FA;
+      background: #79D4E4;
+      border-color: #79D4E4;
     }
   }
 }

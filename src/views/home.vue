@@ -1,6 +1,6 @@
 <template>
 
-  <div id="home" :autoresize="true" v-lazy:background-image="background" style="height: none !important;" v-loading="loading">
+  <div id="home" :autoresize="true" v-lazy:background-image="background" style="height: none !important;" ref="home" :class="{full: size > 3.2}" v-loading="loading">
    <!-- <div class="background_top"></div> -->
    <!-- <div class="background_center"></div> -->
    <div class="background_bottom">
@@ -39,7 +39,7 @@
   <div>
   </div>
 </div>
-    <iframe :src="src" frameborder="0"></iframe>
+    <!-- <iframe :src="src" frameborder="0" sandbox="allow-scripts allow-top-navigation allow-same-origin"></iframe> -->
 </div>
 
 </template>
@@ -93,6 +93,7 @@
           }
         },
         load: false,
+        size: false,
         // ip or openid
         codeType: 'ip',
          // 显示按钮
@@ -136,9 +137,7 @@
         background: 'rgba(0, 0, 0, 0.7)'
       });
       
-      TOOL.alert(TOOL.getFacility())
       if (TOOL.getFacility() == 'Weixin') {
-        TOOL.alert('weixin')
         let openid = this.getUrlKey("openid");
         TOOL.alert('url openid = ' + openid)
         if(openid){
@@ -148,12 +147,19 @@
             TOOL.alert('openid = ' + openid)
             this.getId(openid, 'openid');
          }else{
-            this.accredit();
+            // this.accredit();
+            alert('openid获取失败，请刷新重试')
          }
       } else {
         TOOL.alert('ip')
         this.getIp();
       }
+    },
+    mounted() {
+      let offsetHeight = this.$refs.home.offsetHeight;
+      let offsetWidth = this.$refs.home.offsetWidth;
+      console.log(offsetHeight, offsetWidth)
+      this.size = offsetHeight / offsetWidth;
     },
     methods:{
       //获取url参数
@@ -276,6 +282,8 @@
           localStorage.setItem('access_token', res.access_token);
           that.custom();
         }
+      }).catch(err => {
+        console.log(err)
       })
     },
     // 微信授权
@@ -366,9 +374,14 @@
   height: 58.4rem;
   margin: 0 auto;
   position: relative;
-  // background: url(../assets/img/background.png);
-  background-size: 100% 100%;
+  background-size: cover;
+  background-position: center;
   top: 2rem;
+
+  &.full {
+    background-size: 100% 100% !important;
+  }
+
   iframe {
     display: none;
   }
@@ -399,7 +412,7 @@
     overflow: hidden;
   }
 }
-/deep/.van-swipe__indicators{
+.van-swipe__indicators{
   background: #29224e !important;
 }
 .footer {

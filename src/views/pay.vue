@@ -22,11 +22,11 @@
       </div>
       <div class="infoBox">
         <div v-for="item in bank" :key="item.id" class="duigong" v-show="form.pay_mode == 3">
-          <p>开户行：{{item.bank_name}}</p>
-          <p>账  号：{{item.card_number}}</p>
-          <p>名  称：{{item.account_name}}</p>
-          <p>税  号：{{item.address}}</p>
-          <p>地  址：{{item.address}}</p>
+          <p>开户行：<span>{{item.bank_name}}</span></p>
+          <p>账<i></i>号：<span>{{item.card_number}}</span></p>
+          <p>名<i></i>称：<span>{{item.account_name}}</span></p>
+          <p>税<i></i>号：<span>{{item.address}}</span></p>
+          <p>地<i></i>址：<span>{{item.address}}</span></p>
         </div>
       </div>
     </div>
@@ -204,42 +204,54 @@ export default {
 
 <style lang="scss" scoped>
 #pay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // flex-wrap: wrap;
 
   .text {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     padding: 1.5rem 0rem;
-    font-family:PingFang-SC-Bold,PingFang-SC;
-    font-weight:bold;
-    color:rgba(255,255,255,1);
+    font-family: 'PingFang-SC-Bold','PingFang-SC';
+    font-weight: bold;
+    color:rgba(51,51,51,1);
+    line-height: 1.1rem;
   }
   .infoBox {
     min-height: 4rem;
 
     .duigong{
-      font-size: .6rem;
-      padding: 0.25rem 0.75rem;
+      font-size: .7rem;
       line-height:0.85rem;
-      border-bottom: solid 0.02rem #F2F2F2;
       text-align: left;
-      font-family:PingFang-SC-Regular,PingFang-SC;
-      font-weight:400;
-      color:rgba(255,255,255,1);
+      font-family: 'PingFang-SC-Bold','PingFang-SC';
+      color: #757575;
+      font-weight: 400;
+      line-height: 1rem;
+
+      p{
+        padding-bottom: 0.5rem;
+
+        span{
+          display: inline-block;
+          width: calc( 100% - 3.55rem );
+          vertical-align: top;
+          font-weight: 600;
+          color: #333333;
+        }
+        i{
+          padding-left: 0.7rem;
+        }
+      }
     }
   }
   .payBtn {
-    // padding: 0.4rem 0rem;
-    border: solid 0.05rem #CDCDCD;
-    border-radius: 0.3rem;
     font-size: 0.7rem;
     width: 12.05rem;
     text-align: center;
     margin: auto;
-    margin-bottom: 1rem;
-    height: 2.7rem;
+    margin-bottom: 1.03rem;
+    height: 2.6rem;
     box-sizing: border-box;
     position: relative;
 
@@ -253,7 +265,7 @@ export default {
       height: 0.4rem;
       transform: rotate(45deg);
       z-index: 1;
-      background-color: #fff;
+      background-color: #F2F2F2;
     }
   }
   .weixinColor,.alipayColor,.duifongColor {
@@ -293,10 +305,10 @@ export default {
   .footer {
     width: calc( 100% - 1rem);
     margin: auto;
-    background:rgba(242,242,242,0.4);
+    // background:rgba(242,242,242,0.4);
     text-align: center;
     overflow: scroll;
-    padding: 1.25rem 0.75rem;
+    padding: 0rem 0.5rem;
     box-sizing: border-box;
 
     button {
