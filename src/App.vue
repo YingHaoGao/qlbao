@@ -37,6 +37,24 @@ html{
     letter-spacing: 0.05rem;
   }
 
+  .el-table .cell {
+    padding: 0px !important;
+  }
+  th:first-child {
+    padding-left: 0.75rem;
+  }
+  th:last-child {
+    padding-right: 0.75rem;
+  }
+  td:first-child {
+    padding-left: 0.75rem;
+  }
+  td:last-child {
+    padding-right: 0.75rem;
+  }
+  #share {
+    padding: 1.45rem !important;
+  }
   #sign,
   #account,
   #pay,
@@ -45,7 +63,6 @@ html{
   #share {
     position: relative;
     height: 100%;
-    // padding: 3rem 0.5rem 1rem 0.5rem;
     padding: 2rem 1.6rem 1rem 1.6rem;
     box-sizing: border-box;
     overflow: auto;

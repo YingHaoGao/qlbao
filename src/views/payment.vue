@@ -23,7 +23,8 @@
         style="width: 100%;">
         <el-table-column
           prop="user_name"
-          label="姓名">
+          label="姓名"
+          min-width="50">
         </el-table-column>
         <el-table-column
           class-name="phone"
@@ -31,19 +32,21 @@
           align="center"
           prop="telephone"
           label="手机号"
-          :width="width">
+          min-width="104">
         </el-table-column>
         <el-table-column
-          header-align="right"
-          align="right"
+          header-align="center"
           prop="time"
-          label="开通时常">
+          label="开通时常"
+          align="center"
+          min-width="66">
         </el-table-column>
         <el-table-column
           header-align="right"
           align="right"
           prop="telephoneNc"
-          label="运营商">
+          label="运营商"
+          min-width="50">
         </el-table-column>
       </el-table>
     </div>

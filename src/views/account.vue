@@ -229,7 +229,8 @@ export default {
       position: relative;
     }
     .number {
-      width: 7.4rem;
+      width: calc( 100% - 8.2rem );
+      // width: 7.4rem;
       height: 2.2rem;
       position: absolute;
       right: 0rem;
@@ -242,6 +243,8 @@ export default {
       font-weight: 400;
       color: rgba(51,51,51,1);
       line-height: 2.2rem;
+      display: inline-block;
+      width: 8rem;
 
       &.text {
         font-size: 0.6rem;

@@ -422,14 +422,14 @@
   bottom: 1.5rem;
   transform: translate(-50%, 0);
   .open{
-    background:linear-gradient(270deg,rgba(253,59,68,1) 0%,rgba(254,119,45,1) 100%);
+    background: linear-gradient(360deg,rgba(64,173,194,1) 0%,rgba(172,231,242,1) 100%);
     box-shadow:0px 4px 4px 0px rgba(0,0,0,0.3);
   }
   .view{
     background: #FE772D;
   }
   .continue{
-    background:rgba(253,59,68,1);
+    background: linear-gradient(360deg,rgba(64,173,194,1) 0%,rgba(172,231,242,1) 100%);
   }
 }
 }

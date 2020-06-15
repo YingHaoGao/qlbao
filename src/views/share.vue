@@ -1,13 +1,9 @@
 <template>
   <div id="share">
-  	<div class="text">
-  		请长按图片保存，分享给好友
-  	</div>
   	<div class="img">
-      <div class="info">
-        <p>{{company}}</p>
-        <p>{{name}}</p>
-      </div>
+      <div class="title">邀请您开通企业视频彩铃</div>
+      <div class="company">{{company}}</div>
+      <div class="name">{{name}}</div>
       <div id="QRCodeNone"></div>
       <a id="img" href="javascript:void(0);" v-if="isIOS">
         <div id="qrcode" ref="qrcode"></div>
@@ -17,7 +13,8 @@
       </div>
   	</div>
   	<div class="buttons">
-  		<el-button type="primary" round>把二维码分享给员工填写号码</el-button>
+      <el-button type="primary" round>把二维码分享给员工填写号码</el-button>
+  		<el-button class="b" type="primary" round>请长按图片保存，分享给员工</el-button>
   	</div>
   </div>
 </template>
@@ -130,14 +127,22 @@ export default {
   .img {
   	position: relative;
   	text-align: center;
-  	height: 21.2rem;
-  	width: 11.95rem;
+  	height: 8.15rem;
+  	width: 15.85rem;
+    max-width: 100%;
     margin: auto;
-    margin-top: 0.75rem;
-    margin-bottom: 1rem;
+    margin-top: 1.45rem;
+    margin-bottom: 1.25rem;
     background-image: url('../../static/icon/share_bg.png');
     background-size: cover;
 
+    .title {
+      position: absolute;
+      top: 0.8rem;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 100%;
+    }
     .info {
       position: absolute;
       top: 50%;
@@ -148,10 +153,28 @@ export default {
       font-size: 0.9rem;
       text-align: left;
     }
+    .company {
+      position: absolute;
+      bottom: 3.35rem;
+      left: 0.75rem;
+      width: 9.35rem;
+      text-align: left;
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .name {
+      position: absolute;
+      top: 5.3rem;
+      left: 0.75rem;
+    }
 
   	#qrcode,#QRCodeNone {
   		position: absolute;
-      bottom: 0.75rem;
+      top: 0;
+      left: 0;
       width: 100%;
   	}
     #QRCodeNone {
@@ -159,10 +182,9 @@ export default {
     }
     #img {
       position: absolute;
-      bottom: 0.75rem;
+      top: 2.9rem;
+      right: 0.75rem;
       width: 4.25rem;
-      left: 50%;
-      transform: translate(-50%,0%);
       img {
         width: 100%;
       }
@@ -174,9 +196,20 @@ export default {
   		margin: auto;
   		margin-bottom: 1rem;
       border: none;
-      padding: 0.45rem 1.25rem;
-      background: linear-gradient( 270deg, rgba(253,59,68,1) 0%, rgba(254,119,45,1) 100%);
+      padding: 0.45rem 1.2rem;
+      background:rgba(64,173,194,1);
+      border-radius:0.2rem;
+      font-size: 0.8rem;
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height: 1.1rem;
+      margin-bottom: 0.8rem; 
   	}
+    .b {
+      border: 0.05rem solid rgba(64,173,194,1);
+      background: #fff;
+      color: #40ADC2;
+    }
   }
 }
 </style>

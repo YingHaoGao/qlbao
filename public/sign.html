@@ -59,7 +59,7 @@
     	html {
     		font-size: 20px;
             height: 100%;
-            background-image: url('./background.png');
+            /*background-image: url('./background.png');*/
             background-size: cover;
             background-position: 0 2rem;
     	}
@@ -101,14 +101,10 @@
             text-align: center;
         }
     	.box {
-          position: absolute;
-          top: 3.5rem;
-          left: 0.5rem;
-          width: calc(100% - 1rem);
+          width: 100%;
           box-sizing: border-box;
           margin: auto;
-          padding: 1.25rem .75rem;
-          background-color: hsla(0,0%,94.9%,.4);
+          padding: 1.5rem 1.6rem;
     	}
     	.box .btns {
     		width: 100%;
@@ -123,25 +119,27 @@
             margin-bottom: 1.25rem;
             line-height: 2.4rem;
     		text-align: center;
-    		border: solid 0.05rem rgba(0,0,0,.2);
+    		border: solid 0.05rem transparent;
             float: left;
             background:rgba(242,242,242,1);
             border-radius:4px;
     	}
         .box .btns .btn.active {
-            background: rgba(43,95,195);
-            color: #fff;
+            background: rgba(121,212,228, 0.8);
+        }
+        .box .btns .btn:nth-child(2) {
+            background-image: url("./lt.png");
+            background-size: 100% 100%;
         }
     	.box .btns .btn:first-child {
     		margin-right: 0.3rem;
+            background-image: url("./yd.png");
+            background-size: 100% 100%;
     	}
     	.box .btns .btn:last-child {
     		margin-left: 0.3rem;
-    	}
-    	.box .btns .btn.active {
-    		color: #fff;
-    		background: #5E43FA;
-    		border-color: #5E43FA;
+            background-image: url("./dx.png");
+            background-size: 100% 100%;
     	}
     	.box .inputs {
     		width: 100%;
@@ -164,19 +162,19 @@
             line-height: 0.6rem;
             padding: 0.65rem 0.5rem;
     		box-sizing: border-box;
-            border-radius: 1.25rem;
-            border: 1px solid rgba(255,255,255,1);
-            color: #fff;
-            background: none;
+            border: none;
+            color: #999999;
+            background:rgba(242,242,242,1);
+            border-radius: 0.2rem;
     	}
         .box .inputs input::-webkit-input-placeholder {
-            color: #fff;
+            color: #999999;
         }
         .box .inputs input::-moz-placeholder {
-            color: #fff;
+            color: #999999;
         }
         .box .inputs input::-ms-input-placeholder {
-            color: #fff;
+            color: #999999;
         }
         .box .inputs .codeInput {
             text-align: left;
@@ -191,19 +189,19 @@
             float: left;
         }
         .box .inputs .sendCode {
-            color: #FD3B44;
             width: 4.6rem;
             margin-left: 0.3rem;
             text-align: center;
             float: left;
             font-size: .6rem;
-            background: none;
             height: 2.3rem;
             font-size: 0.6rem;
             padding: 0.65rem 0.5rem;
             box-sizing: border-box;
-            border-radius: 1.25rem;
-            border: 1px solid rgba(255,255,255,1);
+            color: #FFFFFF !important;
+            background: #79D4E4;
+            border: solid 0.05rem #fff;
+            border-radius: 0.2rem;
         }
         .box .inputs .sendCode.hide {
             display: none;
@@ -224,7 +222,7 @@
             margin: auto;
             border-radius: 2.6rem;
     		text-align: center;
-    		background: #5E43FA;
+            background:rgba(121,212,228,1);
     		color: #fff;
     		padding: .4rem;
             font-size: 0.8rem;
@@ -245,9 +243,9 @@
 </div>
 <div class="box">
 	<div class="btns">
-		<div class="btn active" name="1">移动</div>
-		<div class="btn" name="2">联通</div>
-		<div class="btn" name="3">电信</div>
+		<div class="btn active" name="1"></div>
+		<div class="btn" name="2"></div>
+		<div class="btn" name="3"></div>
 	</div>
 	<div class="inputs">
 		<div class="item">

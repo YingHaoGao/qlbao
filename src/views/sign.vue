@@ -2,7 +2,7 @@
   <div id="sign" v-loading="loading" :style="{ height: clientHeight + 'px' }">
     <!-- <div class="vessel" ref="vessel" :style="{ height: height + 'px' }"> -->
     <div class="logoBox">
-      <img src="../../static/icon/duigong.png">
+      <img src="../../static/icon/logo.png">
     </div>
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item>
