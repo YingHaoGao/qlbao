@@ -1,9 +1,10 @@
 <template>
   <div id="share">
   	<div class="img">
-      <div class="title">邀请您开通企业视频彩铃</div>
-      <div class="company">{{company}}</div>
-      <div class="name">{{name}}</div>
+      <div class="box">
+        <div class="company">{{company}}</div>
+        <div class="name">{{name}}</div>
+      </div>
       <div id="QRCodeNone"></div>
       <a id="img" href="javascript:void(0);" v-if="isIOS">
         <div id="qrcode" ref="qrcode"></div>
@@ -13,9 +14,13 @@
       </div>
   	</div>
   	<div class="buttons">
-      <el-button type="primary" round>把二维码分享给员工填写号码</el-button>
-  		<el-button class="b" type="primary" round>请长按图片保存，分享给员工</el-button>
+      <div round>请分享邀请卡给员工填写号码</div>
+  		<div class="b" type="primary" round>请长按图片保存</div>
   	</div>
+    <div class="guide" v-if="guide && isWx" @click="()=>{guide = false}">
+      <img src="../../static/icon/guide.png"/>
+      <div class="text">点击分享按钮，分享给员工</div>
+    </div>
   </div>
 </template>
 
@@ -40,6 +45,8 @@ export default {
       this.isIOS = false;
     }
     this.getCompanyInfo()
+
+    this.isWx = TOOL.getFacility() == 'Weixin';
   },
   mounted() {
     this.$nextTick(() => {
@@ -55,7 +62,9 @@ export default {
   		code: '',
       isIOS: true,
       name: '',
-      company: ''
+      company: '',
+      guide: true,
+      isWx: false
   	}
   },
   methods: {
@@ -153,12 +162,21 @@ export default {
       font-size: 0.9rem;
       text-align: left;
     }
-    .company {
+    .box {
       position: absolute;
-      bottom: 3.35rem;
-      left: 0.75rem;
-      width: 9.35rem;
+      width: 50%;
+      top: 50%;
+      left: 0.6rem;
       text-align: left;
+      transform: translate(0, -50%);
+    }
+    .company {
+      // position: absolute;
+      // bottom: 3.55rem;
+      // left: 0.75rem;
+      // width: 9.35rem;
+      // text-align: left;
+      margin-bottom: 0.5rem;
       overflow : hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
@@ -166,14 +184,14 @@ export default {
       -webkit-box-orient: vertical;
     }
     .name {
-      position: absolute;
-      top: 5.3rem;
-      left: 0.75rem;
+      // position: absolute;
+      // bottom: 1.8rem;
+      // left: 0.75rem;
     }
 
   	#qrcode,#QRCodeNone {
   		position: absolute;
-      top: 0;
+      bottom: 0;
       left: 0;
       width: 100%;
   	}
@@ -182,7 +200,7 @@ export default {
     }
     #img {
       position: absolute;
-      top: 2.9rem;
+      bottom: 1.8rem;
       right: 0.75rem;
       width: 4.25rem;
       img {
@@ -191,12 +209,12 @@ export default {
     }
   }
   .buttons {
-  	button {
+  	div {
   		display: block;
   		margin: auto;
   		margin-bottom: 1rem;
       border: none;
-      padding: 0.45rem 1.2rem;
+      padding: 0.45rem 0rem;
       background:rgba(64,173,194,1);
       border-radius:0.2rem;
       font-size: 0.8rem;
@@ -204,11 +222,37 @@ export default {
       color:rgba(255,255,255,1);
       line-height: 1.1rem;
       margin-bottom: 0.8rem; 
+      text-align: center;
   	}
     .b {
       border: 0.05rem solid rgba(64,173,194,1);
       background: #fff;
       color: #40ADC2;
+    }
+  }
+  .guide {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100000;
+    background:rgba(0,0,0,0.7);
+
+    img{
+      width: 144px;
+      height: 106px;
+      position: absolute;
+      top: 0.15rem;
+      right: 1.7rem;
+    }
+    .text {
+      font-size:18px;
+      color:rgba(255,255,255,1);
+      line-height:20px;
+      position: absolute;
+      top: 5.75rem;
+      right: 3.2rem;
     }
   }
 }

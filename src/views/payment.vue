@@ -46,7 +46,7 @@
           align="right"
           prop="telephoneNc"
           label="运营商"
-          min-width="50">
+          min-width="70">
         </el-table-column>
       </el-table>
     </div>
@@ -75,7 +75,9 @@ export default {
     this.btnWidth =  (clientWidth - 55) / 2 + 'px';
   },
   mounted () {
-    this.$alert('公司管理员可登陆 www.weuq.com 网页统一添加号码', '提示');
+    this.$alert('公司管理员可登陆 <a href="http://cailing.meisheapp.com">http://cailing.meisheapp.com</a> 网页统一添加号码', '提示', {
+          dangerouslyUseHTMLString: true
+        });
   },
   watch: {
   	type(val) {
@@ -318,7 +320,7 @@ export default {
     padding-top: 0.75rem; 
 
     .title {
-      width: 17.25rem;
+      width: 90%;
       height: 1.4rem;
       background:rgba(242,242,242,1);
       border-radius: 0.2rem;
