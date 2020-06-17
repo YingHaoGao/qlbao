@@ -461,7 +461,7 @@ export default {
   }
   .logoBox {
     width: 100%;
-    height: 7rem;
+    height: 5rem;
     position: relative;
 
     img {

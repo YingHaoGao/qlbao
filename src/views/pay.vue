@@ -36,6 +36,9 @@
 <script>
 import ICONdg from '../../static/icon/duigong.png'
 import TOOL from '../tools.js'
+import axios from 'axios';
+import $ from 'jquery'
+
 export default {
   name: 'pay',
   props: {
@@ -123,12 +126,6 @@ export default {
   	},
   	onDuiGong () {
       this.form.pay_mode = 3;
-
-      // if (this.isAdd) {
-      //   this.setOrder();
-      //   return
-      // }
-      // this.createOrder()
   	},
     // 根据临时用户id查询订单
     getOrder () {
@@ -161,10 +158,12 @@ export default {
               message: '创建订单成功',
               type: 'success'
             });
-            this.$router.replace({path: '/payment', query: {
-              order_id: res.data.order_id,
-              order_code: res.data.order_code
-            }});
+
+            that.getWxPay(res.data.order_id);
+            // this.$router.replace({path: '/payment', query: {
+            //   order_id: res.data.order_id,
+            //   order_code: res.data.order_code
+            // }});
           }
         })
     },
@@ -192,11 +191,88 @@ export default {
               message: '修改订单成功',
               type: 'success'
             });
-            this.$router.replace({path: '/payment', query: {
-              order_id: that.order_id
-            }});
+
+            that.getWxPay(that.order_id);
+            // this.$router.replace({path: '/payment', query: {
+            //   order_id: that.order_id
+            // }});
           }
         })
+    },
+    // 获取微信支付数据
+    getWxPay(orderid) {
+      let that = this;
+
+      this.$confirm('是否支付成功', {
+        showClose: false,
+        closeOnClickModal: false,
+        confirmButtonText: '成功',
+        cancelButtonText: '重新支付',
+        type: 'warning'
+      }).then(() => {
+        that.$router.replace({path: '/payment', query: {
+          order_id: orderid
+        }});
+      })
+
+      if(that.form.pay_mode == 2) {
+        // if(TOOL.getFacility() == 'Weixin') {
+          $.ajax({
+            type: 'post',
+            data: {
+              order: orderid,
+              money: that.form.price,
+              // openid: that.$root.parm,
+              openid: 'ov9BB0hesTEk61cSnFi60LdHF2E4',
+              attach: "from:qlb"
+            },
+            url: 'http://yms.yuchukeji.cn/pay/Index/wxpayJsapiParameters',
+            success(res) {
+              console.log(res)
+              if(res.errNo == 0) {
+                let params = JSON.parse(res.data.params)
+                that.toWxPay(params)
+              } else {
+                alert(res.msg)
+              }
+            },
+            error(err) {
+              console.log(err)
+            }
+          })
+        // } else {
+
+        // }
+      } 
+      else if(that.form.pay_mode == 1) {
+        alert('支付宝功能开通中...')
+      }
+    },
+    // 调用微信支付
+    toWxPay(form) {
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+            "appId": form.appId,  
+            "timeStamp": form.timeStamp,  
+            "nonceStr": form.nonceStr,  
+            "package": form.package,  
+            "signType": form.signType,  
+            "paySign": form.paySign,  
+            "notify_url": 'http://cailing.meisheapp.com/qlb/#/share'
+        },
+        function (res) {
+            alert("微信支付返回值:");
+            alert(res);
+
+            if (res.err_msg == "get_brand_wcpay_request:ok") {
+                // 使用以上方式判断前端返回,微信团队郑重提示：
+                //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                alert("get_brand_wcpay_request:ok");
+            }
+
+            alert(res.err_msg);
+            alert(res); // 显示是个 Object
+        });
     }
   }
 }
@@ -247,7 +323,7 @@ export default {
   }
   .payBtn {
     font-size: 0.7rem;
-    width: 12.05rem;
+    width: 100%;
     text-align: center;
     margin: auto;
     margin-bottom: 1.03rem;
@@ -277,7 +353,9 @@ export default {
   }
   .weixinColor {
     background-image: url("../../static/icon/weixin.png");
-    background-size: cover;
+    //background-size: cover;
+    background-size: contain;
+    background-position: center;
     .iconfont {
       color: #00C901;
       font-size: 1.7rem;
@@ -285,7 +363,9 @@ export default {
   }
   .alipayColor {
     background-image: url("../../static/icon/alipay.png");
-    background-size: cover;
+    //background-size: cover;
+    background-size: contain;
+    background-position: center;
     .iconfont {
       color: #00A2E9;
       font-size: 1.7rem;
@@ -293,7 +373,9 @@ export default {
   }
   .duifongColor {
     background-image: url("../../static/icon/accounts.png");
-    background-size: cover;
+    //background-size: cover;
+    background-size: contain;
+    background-position: center;
     img {
       width: 1.7rem;
       height: 1.7rem;
@@ -303,7 +385,7 @@ export default {
     }
   }
   .footer {
-    width: calc( 100% - 1rem);
+    width: 100%;
     margin: auto;
     // background:rgba(242,242,242,0.4);
     text-align: center;
