@@ -149,6 +149,7 @@ export default {
         price_id: radio,
         level_name: obj.level_name,
         price: obj.price,
+        remarks: obj.remarks,
         user_number: num,
         total_price: money,
         add: that.isAdd
@@ -169,7 +170,7 @@ export default {
 
           if (data) {
             let order_id = data.id;
-            let { price_id, level_name, price, user_number, total_price } = data;
+            let { price_id, level_name, price, user_number, total_price, remarks } = data;
 
             if (data.state == 0) {
               this.$confirm('存在未支付的订单, 是否去支付?', {
@@ -183,6 +184,7 @@ export default {
                   price_id: price_id,
                   level_name: level_name,
                   price: price,
+                  remarks: remarks,
                   user_number: user_number,
                   total_price: total_price,
                   add: true

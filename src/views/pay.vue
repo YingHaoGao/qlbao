@@ -52,6 +52,7 @@ export default {
     this.form.price = this.$route.query.price;
     this.form.user_number = this.$route.query.user_number;
     this.form.total_price = this.$route.query.total_price;
+    this.form.remarks = this.$route.query.remarks;
     this.isAdd = this.$route.query.add;
 
     this.getOrder()
@@ -76,6 +77,7 @@ export default {
         price: '',
         user_number: '',
         total_price: '',
+        remarks: '',
         pay_mode: '',
         tmp_uid: tmp_uid,
       },
@@ -217,29 +219,31 @@ export default {
 
       if(that.form.pay_mode == 2) {
         // if(TOOL.getFacility() == 'Weixin') {
-          $.ajax({
-            type: 'post',
-            data: {
-              order: orderid,
-              money: that.form.price,
-              // openid: that.$root.parm,
-              openid: 'ov9BB0hesTEk61cSnFi60LdHF2E4',
-              attach: "from:qlb"
-            },
-            url: 'http://yms.yuchukeji.cn/pay/Index/wxpayJsapiParameters',
-            success(res) {
-              console.log(res)
-              if(res.errNo == 0) {
-                let params = JSON.parse(res.data.params)
-                that.toWxPay(params)
-              } else {
-                alert(res.msg)
-              }
-            },
-            error(err) {
-              console.log(err)
-            }
-          })
+          window.location.href = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?orderid=${orderid}&openId=${that.$root.parm}&money=${that.form.price * 100}&remarks=${that.form.remarks}&level_name=${that.form.level_name}#path=/payment,order_id=${orderid}`
+
+          // $.ajax({
+          //   type: 'post',
+          //   data: {
+          //     order: orderid,
+          //     money: that.form.price,
+          //     // openid: that.$root.parm,
+          //     openid: 'ov9BB0hesTEk61cSnFi60LdHF2E4',
+          //     attach: "from:qlb"
+          //   },
+          //   url: 'http://yms.yuchukeji.cn/pay/Index/wxpayJsapiParameters',
+          //   success(res) {
+          //     console.log(res)
+          //     if(res.errNo == 0) {
+          //       let params = JSON.parse(res.data.params)
+          //       that.toWxPay(params)
+          //     } else {
+          //       alert(res.msg)
+          //     }
+          //   },
+          //   error(err) {
+          //     console.log(err)
+          //   }
+          // })
         // } else {
 
         // }
