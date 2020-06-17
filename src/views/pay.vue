@@ -44,7 +44,7 @@ export default {
   props: {
     
   },
-  created() {
+  mounted() {
     let that = this;
     
     this.form.price_id = this.$route.query.price_id;
@@ -110,6 +110,17 @@ export default {
     },
   	onWeiXin () {
       this.form.pay_mode = 2;
+      let that = this;
+      let jsonpayInfo = localStorage.getItem('payInfo');
+      
+      if(jsonpayInfo) {
+        let payInfo = JSON.parse(jsonpayInfo);
+
+        this.form = {
+          ...that.form,
+          ...payInfo
+        }
+      }
 
       if (this.isAdd) {
         this.setOrder();
@@ -219,7 +230,8 @@ export default {
 
       if(that.form.pay_mode == 2) {
         // if(TOOL.getFacility() == 'Weixin') {
-          window.location.href = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?orderid=${orderid}&openId=${that.$root.parm}&money=${that.form.price * 100}&remarks=${that.form.remarks}&level_name=${that.form.level_name}#path=/payment,order_id=${orderid}`
+        console.log(`http://cailing.meisheapp.com/wxpay/example/wxpay.php?orderid=${orderid}&openId=${that.$root.parm}&money=${that.form.total_price * 100}&remarks=${that.form.remarks}&level_name=${that.form.level_name}#path=/payment,order_id=${orderid}`)
+          window.location.href = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?orderid=${orderid}&openId=${that.$root.parm}&money=${that.form.total_price * 100}&remarks=${that.form.remarks}&level_name=${that.form.level_name}#path=/payment,order_id=${orderid}`
 
           // $.ajax({
           //   type: 'post',

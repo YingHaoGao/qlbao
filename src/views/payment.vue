@@ -78,6 +78,7 @@ export default {
     this.$alert('公司管理员可登陆 <a href="http://cailing.meisheapp.com">http://cailing.meisheapp.com</a> 网页统一添加号码', '提示', {
           dangerouslyUseHTMLString: true
         });
+    localStorage.setItem('payInfo', null)
   },
   watch: {
   	type(val) {
