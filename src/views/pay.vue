@@ -55,6 +55,8 @@ export default {
     this.form.remarks = this.$route.query.remarks;
     this.isAdd = this.$route.query.add;
 
+    console.log(JSON.stringify(this.form));
+
     this.getOrder()
     this.getBank()
     TOOL.setShare(that)
@@ -70,6 +72,7 @@ export default {
       active: 0,
       isAdd: false,
       order_id: '',
+      order_code: '',
       form: {
         // user_id: '',
         price_id: '',
@@ -151,6 +154,7 @@ export default {
         .then(res => {
           if (res.errNo == 0 && res.data) {
             that.order_id = res.data.id;
+            that.order_code = res.data.order_code;
           }
         })
     },
@@ -159,23 +163,23 @@ export default {
       let company_pid = this.$root.company_pid;
       let form = this.form;
       let that = this;
-      console.log(this.$root)
 
       this.$http.post('/Order/create', {
         ...form,
         company_id: company_pid
       }, that)
         .then(res => {
-          if (res.errNo == 0) {
+          if (res.errNo == 0 && res.data) {
             this.$message({
               message: '创建订单成功',
               type: 'success'
             });
 
-            that.getWxPay(res.data.order_id);
+            that.order_id = res.data.order_id;
+            that.order_code = res.data.order_code;
+            that.getWxPay();
             // this.$router.replace({path: '/payment', query: {
-            //   order_id: res.data.order_id,
-            //   order_code: res.data.order_code
+            //   order_id: res.data.order_id
             // }});
           }
         })
@@ -205,7 +209,7 @@ export default {
               type: 'success'
             });
 
-            that.getWxPay(that.order_id);
+            that.getWxPay();
             // this.$router.replace({path: '/payment', query: {
             //   order_id: that.order_id
             // }});
@@ -213,10 +217,10 @@ export default {
         })
     },
     // 获取微信支付数据
-    getWxPay(orderid) {
+    getWxPay() {
       let that = this;
 
-      this.$confirm('是否支付成功', {
+      /*this.$confirm('是否支付成功', {
         showClose: false,
         closeOnClickModal: false,
         confirmButtonText: '成功',
@@ -224,19 +228,20 @@ export default {
         type: 'warning'
       }).then(() => {
         that.$router.replace({path: '/payment', query: {
-          order_id: orderid
+          order_id: that.order_id
         }});
-      })
+      })*/
 
       if(that.form.pay_mode == 2) {
-        // if(TOOL.getFacility() == 'Weixin') {
-        console.log(`http://cailing.meisheapp.com/wxpay/example/wxpay.php?orderid=${orderid}&openId=${that.$root.parm}&money=${that.form.total_price * 100}&remarks=${that.form.remarks}&level_name=${that.form.level_name}#path=/payment,order_id=${orderid}`)
-          window.location.href = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?orderid=${orderid}&openId=${that.$root.parm}&money=${that.form.total_price * 100}&remarks=${that.form.remarks}&level_name=${that.form.level_name}#path=/payment,order_id=${orderid}`
+          // if(TOOL.getFacility() == 'Weixin') {
+          var payUrl = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?openid=${that.$root.parm}&orderid=${that.order_code}&money=${that.form.total_price * 100}&level_name=${encodeURIComponent(that.form.level_name)}&remarks=${encodeURIComponent(that.form.remarks)}#path=/payment,order_id=${that.order_id}`;
+          //alert(payUrl)
+          window.location.href = payUrl;
 
           // $.ajax({
           //   type: 'post',
           //   data: {
-          //     order: orderid,
+          //     order: that.order_id,
           //     money: that.form.price,
           //     // openid: that.$root.parm,
           //     openid: 'ov9BB0hesTEk61cSnFi60LdHF2E4',
@@ -277,17 +282,11 @@ export default {
             "notify_url": 'http://cailing.meisheapp.com/qlb/#/share'
         },
         function (res) {
-            alert("微信支付返回值:");
-            alert(res);
-
+            alert(res.err_msg);
             if (res.err_msg == "get_brand_wcpay_request:ok") {
                 // 使用以上方式判断前端返回,微信团队郑重提示：
                 //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                alert("get_brand_wcpay_request:ok");
             }
-
-            alert(res.err_msg);
-            alert(res); // 显示是个 Object
         });
     }
   }
