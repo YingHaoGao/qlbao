@@ -66,6 +66,9 @@ export default {
   created () {
     let that = this;
 
+    this.order_id = this.GetQueryValue1('order_id')
+    this.company_id = this.GetQueryValue1('company_id')
+
   	this.getInfo();
     this.getOrder();
     TOOL.setShare(that);
@@ -110,15 +113,26 @@ export default {
   		type: '',
   		typeNC: '',
       width: 0,
-      btnWidth: 0
+      btnWidth: 0,
+      order_id: 0,
+      company_id: 0
   	}
   },
   methods: {
+    GetQueryValue1(queryName) {
+     var reg = new RegExp("(^|&)" + queryName + "=([^&]*)(&|$)", "i");
+     var r = window.location.search.substr(1).match(reg);
+     if ( r != null ){
+        return decodeURI(r[2]);
+     }else{
+        return null;
+     }
+  },
   	// 获取信息
   	getInfo () {
       let that = this,
           params = {
-            company_id: that.$route.query.company_id
+            company_id: that.company_id
           };
 
   		this.$http.fetch('/user/getList',params)
@@ -139,9 +153,9 @@ export default {
       let that = this;
 
       // 通过订单id查询状态
-      if (that.$route.query.order_id && that.$route.query.order_id != "") {
+      if (that.order_id && that.order_id) {
         this.$http.fetch('/order/stateusByOrderId',{
-          order_id: that.$route.query.order_id
+          order_id: that.order_id
         })
         .then(function(res){
           if (res.errNo == 0 && res.data) {
@@ -153,7 +167,7 @@ export default {
       else if (that.$root.tmp_uid && that.$root.tmp_uid != "") {
         that.$http.fetch('/Order/stateus', {
           tmp_uid: that.$root.tmp_uid,
-          company_id: that.$route.query.company_id
+          company_id: that.company_id
         })
           .then(res => {
             if (res.errNo == 0) {
