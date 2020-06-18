@@ -234,7 +234,7 @@ export default {
 
       if(that.form.pay_mode == 2) {
           // if(TOOL.getFacility() == 'Weixin') {
-          var payUrl = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?openid=${that.$root.parm}&orderid=${that.order_code}&money=${that.form.total_price * 100}&level_name=${encodeURIComponent(that.form.level_name)}&remarks=${encodeURIComponent(that.form.remarks)}#path=/payment,order_id=${that.order_id}`;
+          var payUrl = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?openid=${that.$root.parm}&orderid=${that.order_code}&money=${that.form.total_price * 100}&level_name=${encodeURIComponent(that.form.level_name)}&remarks=${encodeURIComponent(that.form.remarks)}#path=/payment,order_id=${that.order_id},company_id=${that.$root.company_pid}`;
           //alert(payUrl)
           window.location.href = payUrl;
 

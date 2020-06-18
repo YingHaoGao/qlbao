@@ -41,6 +41,7 @@ npm run build
 		        remarks					价格说明
 	2、 /payment
 						order_id				订单id
+						company_id 		  企业id
 	3、 /account
 						order_id				订单id
 						add 						是否为追加订单

@@ -118,7 +118,7 @@ export default {
   	getInfo () {
       let that = this,
           params = {
-            company_id: that.$root.company_pid
+            company_id: that.$route.query.company_id
           };
 
   		this.$http.fetch('/user/getList',params)
@@ -153,7 +153,7 @@ export default {
       else if (that.$root.tmp_uid && that.$root.tmp_uid != "") {
         that.$http.fetch('/Order/stateus', {
           tmp_uid: that.$root.tmp_uid,
-          company_id: that.$root.company_pid
+          company_id: that.$route.query.company_id
         })
           .then(res => {
             if (res.errNo == 0) {
@@ -171,7 +171,7 @@ export default {
     },
   	// 添加新号码
   	onNewPhone () {
-      this.$router.push({path: '/account', query: {add: true}});
+      this.$router.push({path: '/account'});
   	},
   	// 生成我的邀请卡
   	onCreate () {

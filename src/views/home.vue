@@ -138,8 +138,8 @@
       });
       
       if (TOOL.getFacility() == 'Weixin') {
-        let openid = this.getUrlKey("openid");
-        // let openid = 'olWi6wv5MGVNfYTHb-dj86bFkqF8';
+        // let openid = this.getUrlKey("openid");
+        let openid = 'olWi6wv5MGVNfYTHb-dj86bFkqF8';
         TOOL.alert('url openid = ' + openid)
         if(openid){
             this.$root.parm = openid;
@@ -438,7 +438,7 @@
  width: 100%;
  height: 2rem;
  line-height: 2rem;
- font-size: 0.8rem;
+ font-size: 0.9rem;
  color: #fff;
  border-radius: 1rem;
  text-align: center;
