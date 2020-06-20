@@ -5,7 +5,7 @@
    <!-- <div class="background_center"></div> -->
    <div class="background_bottom">
     <div class="infoBox">
-      <van-swipe class="my-swipe" indicator-color="#FD3D43" @change="onChange" :loop="false">
+      <van-swipe class="my-swipe" indicator-color="#FD3D43" @change="onChange" :loop="false" :width="320">
         <van-swipe-item v-for="(item,index) in swiperList" :key="index" :class="seiperIndex == index ? 'active-item-one': 'videoPlayer1'">
           <div class="box-item">
             <p class="iphoneNum">{{item.phone}}</p>
@@ -31,7 +31,7 @@
      <div class="view" @click="viewNumber" v-if="btnType == 2">查看号码</div>  
    </div>
    <div class="item">
-     <div class="open" @click="openNow" v-if="btnType == 0">立即开通</div>
+     <div class="open" @click="openNow" v-if="btnType == 0">申请立即开通</div>
    </div>
    <div class="item">
     <div class="continue" @click="continueOpen" v-if="btnType == 1" >继续开通</div>
@@ -48,7 +48,7 @@
   import TOOL from '../tools.js'
   import CONFIG from "../../config/index.js";
   import axios from 'axios';
-  import Swiper from "swiper"
+  // import Swiper from "swiper"
   import Background from '../assets/img/background.png';
 
   const wx = require("weixin-js-sdk");
@@ -424,7 +424,8 @@
   transform: translate(-50%, 0);
   .open{
     background: linear-gradient(360deg,rgba(64,173,194,1) 0%,rgba(172,231,242,1) 100%);
-    box-shadow:0px 4px 4px 0px rgba(0,0,0,0.3);
+    font-weight: bold;
+    letter-spacing: 4px;
   }
   .view{
     background: #FE772D;
@@ -522,9 +523,8 @@
 .my-swipe{
   height: 100%;
   .van-swipe-item{
-    margin: 0 auto;
     .box-item{
-      margin: 0 auto;
+      margin: 0 0 0 24px;
     }
   }
 }
