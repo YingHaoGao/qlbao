@@ -13,10 +13,10 @@
         <div id="qrcode" ref="qrcode"></div>
       </div>
   	</div>
-  	<div class="buttons">
+  	<!-- <div class="buttons">
       <div round>请分享邀请卡给员工填写号码</div>
   		<div class="b" type="primary" round>请长按图片保存</div>
-  	</div>
+  	</div> -->
     <div class="guide" v-if="guide && isWx" @click="()=>{guide = false}">
       <img src="../../static/icon/guide.png"/>
       <div class="text">点击分享按钮，分享给员工</div>
@@ -139,11 +139,13 @@ export default {
   	height: 8.15rem;
   	width: 15.85rem;
     max-width: 100%;
-    margin: auto;
-    margin-top: 1.45rem;
-    margin-bottom: 1.25rem;
+    margin: 0 auto;
+    // margin-top: 1.45rem;
+    // margin-bottom: 1.25rem;
     background-image: url('../../static/icon/share_bg.png');
     background-size: cover;
+    top: 50%;
+    transform: translateY(-50%);
 
     .title {
       position: absolute;
