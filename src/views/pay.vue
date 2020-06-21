@@ -315,7 +315,7 @@ export default {
       font-size: .7rem;
       line-height:0.85rem;
       text-align: left;
-      font-family: 'PingFang-SC-Bold','PingFang-SC';
+      // font-family: 'PingFang-SC-Bold','PingFang-SC';
       color: #757575;
       font-weight: 400;
       line-height: 1rem;
@@ -338,13 +338,13 @@ export default {
   }
   .payBtn {
     font-size: 0.7rem;
-    width: 100%;
-    text-align: center;
-    margin: auto;
     margin-bottom: 1.03rem;
     height: 2.6rem;
     box-sizing: border-box;
     position: relative;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 
     &.active.duifongColor::after {
       content: '';
@@ -359,50 +359,19 @@ export default {
       background-color: #F2F2F2;
     }
   }
-  .weixinColor,.alipayColor,.duifongColor {
-    span {
-      position: relative;
-      top: -0.3rem;
-      left: 0.5rem;
-    }
-  }
+  
   .weixinColor {
     background-image: url("../../static/icon/weixin.png");
-    //background-size: cover;
-    background-size: contain;
-    background-position: center;
-    .iconfont {
-      color: #00C901;
-      font-size: 1.7rem;
-    }
   }
   .alipayColor {
     background-image: url("../../static/icon/alipay.png");
-    //background-size: cover;
-    background-size: contain;
-    background-position: center;
-    .iconfont {
-      color: #00A2E9;
-      font-size: 1.7rem;
-    }
   }
   .duifongColor {
     background-image: url("../../static/icon/accounts.png");
-    //background-size: cover;
-    background-size: contain;
-    background-position: center;
-    img {
-      width: 1.7rem;
-      height: 1.7rem;
-    }
-    span {
-      top: -0.5rem;
-    }
   }
   .footer {
     width: 100%;
     margin: auto;
-    // background:rgba(242,242,242,0.4);
     text-align: center;
     overflow: scroll;
     padding: 0rem 0.5rem;

@@ -211,6 +211,7 @@ html{
 
         .el-radio__label {
           color: #fff;
+          font-weight: bold;
         }
       }
 
