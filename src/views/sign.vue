@@ -37,7 +37,7 @@
     <div class="footer" v-show="footerShow">
       <el-checkbox v-model="form.deal" class="check">
         请勾选
-        <el-link type="primary"  @click="centerDialogVisible = true" style="font-size: 0.6rem">《云美摄直客协议》</el-link>
+        <el-link @click="centerDialogVisible = true" style="font-size: 0.6rem" :style="{ color: form.deal?'#333':'#999' }">《云美摄直客协议》</el-link>
         ，否则无法提交
       </el-checkbox>
       <el-button type="primary but" @click="onSubmit" :disabled="disabled" round>提交</el-button>
@@ -517,7 +517,7 @@ export default {
       font-size: .6rem;
     }
     .el-link.el-link--primary {
-      color: #999999;
+      // color: #999999;
     }
 
     button {

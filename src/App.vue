@@ -159,6 +159,12 @@ html{
       color: #999999;
       padding-left: 0.3rem;
     }
+    .el-checkbox__input.is-checked+.el-checkbox__label{
+      color: #333333;
+    }
+    .el-checkbox__input.is-focus .el-checkbox__inner {
+      border-color: #DCDFE6;
+    }
   }
 
   #account {
