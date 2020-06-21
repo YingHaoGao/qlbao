@@ -26,6 +26,7 @@
 
 <script>
 import TOOL from '../tools.js'
+import CONFIG from '../../config'
 export default {
   name: 'account',
   props: {
@@ -34,7 +35,7 @@ export default {
   created() {
     let that = this;
     
-    this.isAdd = this.$route.query.add
+    this.set = this.$route.query.set
     this.getPrices();
     this.orderStatus();
 
@@ -51,7 +52,7 @@ export default {
       remarks: '10元/人/月',
       prices: [],
       messageEvent: false,
-      isAdd: false,
+      set: false,
       footerShow: true,
       clientHeight: document.documentElement.clientHeight,
       height: 0
@@ -90,6 +91,15 @@ export default {
     }
   },
   methods: {
+    GetQueryValue1(name) {
+       let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      if(window.location.hash.indexOf("?") < 0){
+              return null;
+      }
+      let r = window.location.hash.split("?")[1].match(reg); 　　
+      if (r != null) return decodeURIComponent(r[2]); 
+  　　    return null;
+    },
     // 获得焦点后选中内容
     selectFocus(event) {
       event.currentTarget.select();
@@ -118,15 +128,16 @@ export default {
     },
   	// 立即付款
   	onSubmit () {
+      let company_id = this.GetQueryValue1('company_id')
+      let tmp_uid = this.GetQueryValue1('tmp_uid')
       let that = this,
           radio = that.radio,
           num = parseInt(that.num),
           money = that.money,
           type = that.$route.query.type == 1 ? 'append' : 'create',
-          company_pid = that.$root.company_pid,
           obj = that.prices.find(item => item.id == radio );
       const form = {
-        company_pid, type, radio, num, money
+        company_id, type, radio, num, money
       }
 
       if (radio == 0) {
@@ -152,7 +163,9 @@ export default {
         remarks: obj.remarks,
         user_number: num,
         total_price: money,
-        add: that.isAdd
+        set: that.set,
+        company_id: company_id,
+        tmp_uid: tmp_uid
       }));
       this.$router.replace({path: '/pay', query: {
         price_id: radio,
@@ -161,17 +174,22 @@ export default {
         remarks: obj.remarks,
         user_number: num,
         total_price: money,
-        add: that.isAdd
+        set: that.set,
+        company_id: company_id,
+        tmp_uid: tmp_uid
       }});
   	},
     //根据临时用户ID查询订单
     orderStatus() {
+      let company_id = this.GetQueryValue1('company_id')
+      let tmp_uid = this.GetQueryValue1('tmp_uid')
       let that = this,
           params = {
-            tmp_uid:that.$root.tmp_uid,
-            company_id: that.$root.company_pid
+            tmp_uid:tmp_uid,
+            company_id: company_id
           };
 
+TOOL.alert(' 根据临时用户ID查询订单 上传 = ' + JSON.stringify(params))
       this.$http.fetch('Order/stateus',params)
       .then(res => {
         if (res.errNo == 0) {
@@ -179,8 +197,9 @@ export default {
 
           if (data) {
             let order_id = data.id;
+            let order_code = data.order_code;
             let { price_id, level_name, price, user_number, total_price, remark } = data;
-
+TOOL.alert(' 根据临时用户ID查询订单 = ' + JSON.stringify(data))
             if (data.state == 0) {
               this.$confirm('存在未支付的订单, 是否去支付?', {
                 showClose: false,
@@ -197,7 +216,8 @@ export default {
                   remarks: remark,
                   user_number: user_number,
                   total_price: total_price,
-                  add: true
+                  set: true,
+                  company_id: company_id,
                 }));
                 that.$router.replace({path: '/pay', query: {
                   price_id: price_id,
@@ -206,10 +226,17 @@ export default {
                   remarks: remark,
                   user_number: user_number,
                   total_price: total_price,
-                  add: true
+                  company_id: company_id,
+                  tmp_uid: tmp_uid,
+                  set: true
                 }});
               }).catch(() => {
-                that.isAdd = true;
+                that.set = false;
+                TOOL.alert(' 删除订单 order_id = ' + order_id)
+                this.$http.fetch('Order/delOrderId',{ order_id: order_id}).then(res => {
+                  TOOL.alert(' 删除订单回调 = ' + JSON.stringify(res))
+                  window.location.href = CONFIG.SHARE;
+                })
               })
             }
           }

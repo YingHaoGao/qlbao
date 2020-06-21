@@ -70,7 +70,7 @@ export default new Router({
       component: Share,
       meta: {
         title: '我的邀请卡',
-        // isShare: true
+        isShare: true
       }
     }
   ]

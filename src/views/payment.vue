@@ -37,7 +37,7 @@
         <el-table-column
           header-align="center"
           prop="time"
-          label="开通时常"
+          label="开通时长"
           align="center"
           min-width="66">
         </el-table-column>
@@ -66,8 +66,21 @@ export default {
   created () {
     let that = this;
 
-    this.order_id = this.GetQueryValue1('order_id')
-    this.company_id = this.GetQueryValue1('company_id')
+    if(that.GetQueryValue1('order_id') && that.GetQueryValue1('order_id') != '') {
+      this.order_id = that.GetQueryValue1('order_id');
+    }else {
+      this.order_id = parseInt(that.getQueryStringByName('order_id'));
+    }
+    if(that.GetQueryValue1('company_id') && that.GetQueryValue1('company_id') != '') {
+      this.company_id = that.GetQueryValue1('company_id');
+    }else {
+      this.company_id = parseInt(that.getQueryStringByName('company_id'));
+    }
+    if(that.GetQueryValue1('tmp_uid') && that.GetQueryValue1('tmp_uid') != '') {
+      this.tmp_uid = that.GetQueryValue1('tmp_uid');
+    }else {
+      this.tmp_uid = parseInt(that.getQueryStringByName('tmp_uid'));
+    }
 
   	this.getInfo();
     this.getOrder();
@@ -115,19 +128,27 @@ export default {
       width: 0,
       btnWidth: 0,
       order_id: 0,
-      company_id: 0
+      company_id: 0,
+      tmp_uid: 0
   	}
   },
   methods: {
-    GetQueryValue1(queryName) {
-     var reg = new RegExp("(^|&)" + queryName + "=([^&]*)(&|$)", "i");
-     var r = window.location.search.substr(1).match(reg);
-     if ( r != null ){
-        return decodeURI(r[2]);
-     }else{
-        return null;
-     }
-  },
+    GetQueryValue1(name) {
+       let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      if(window.location.hash.indexOf("?") < 0){
+              return null;
+      }
+      let r = window.location.hash.split("?")[1].match(reg); 　　
+      if (r != null) return decodeURIComponent(r[2]); 
+  　　    return null;
+    },
+    getQueryStringByName(name) {
+      var result = location.href.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"));
+      if (result == null || result.length < 1) {
+          return "";
+      }
+      return result[1];
+    },
   	// 获取信息
   	getInfo () {
       let that = this,
@@ -154,6 +175,7 @@ export default {
 
       // 通过订单id查询状态
       if (that.order_id && that.order_id) {
+        TOOL.alert(' 更具订单id查询状态 = ' + that.order_id)
         this.$http.fetch('/order/stateusByOrderId',{
           order_id: that.order_id
         })
@@ -164,9 +186,10 @@ export default {
         });
       }
       // 通过临时用户id查询状态
-      else if (that.$root.tmp_uid && that.$root.tmp_uid != "") {
+      else if (that.tmp_uid && that.tmp_uid != "") {
+        TOOL.alert(' 通过临时用户id查询状态 = ' + that.tmp_uid + ',' + that.company_id)
         that.$http.fetch('/Order/stateus', {
-          tmp_uid: that.$root.tmp_uid,
+          tmp_uid: that.tmp_uid,
           company_id: that.company_id
         })
           .then(res => {
@@ -185,11 +208,20 @@ export default {
     },
   	// 添加新号码
   	onNewPhone () {
-      this.$router.push({path: '/account'});
+      let that = this;
+      TOOL.alert(' 添加新号码 tmp_uid = ' + that.tmp_uid)
+      this.$router.push({path: '/account', query: {
+        company_id: that.company_id,
+        tmp_uid: that.tmp_uid
+      }});
   	},
   	// 生成我的邀请卡
   	onCreate () {
-      this.$router.push({path: '/share'});
+      let that = this;
+      this.$router.push({path: '/share', query: {
+        'company_id': that.company_id,
+        tmp_uid: that.tmp_uid
+      }});
   	},
     // 运营商转换
     telepToNc (t) {

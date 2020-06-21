@@ -53,7 +53,7 @@ export default {
     this.form.user_number = this.$route.query.user_number;
     this.form.total_price = this.$route.query.total_price;
     this.form.remarks = this.$route.query.remarks;
-    this.isAdd = this.$route.query.add;
+    this.set = this.$route.query.set;
 
     console.log(JSON.stringify(this.form));
 
@@ -65,12 +65,12 @@ export default {
     this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
   },
   data() {
-    let tmp_uid = this.$root.tmp_uid;
+    let tmp_uid = this.GetQueryValue1('tmp_uid')
 
     return {
       ICONdg: ICONdg,
       active: 0,
-      isAdd: false,
+      set: false,
       order_id: '',
       order_code: '',
       form: {
@@ -100,6 +100,15 @@ export default {
     }
   },
   methods: {
+    GetQueryValue1(name) {
+       let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      if(window.location.hash.indexOf("?") < 0){
+              return null;
+      }
+      let r = window.location.hash.split("?")[1].match(reg); 　　
+      if (r != null) return decodeURIComponent(r[2]); 
+  　　    return null;
+    },
     // 获取对公转账信息
     getBank () {
       let that = this;
@@ -125,7 +134,7 @@ export default {
         }
       }
 
-      if (this.isAdd) {
+      if (this.set) {
         this.setOrder();
         return
       }
@@ -134,7 +143,7 @@ export default {
   	onAliPay () {
       this.form.pay_mode = 1;
 
-      if (this.isAdd) {
+      if (this.set) {
         this.setOrder();
         return
       }
@@ -146,13 +155,16 @@ export default {
     // 根据临时用户id查询订单
     getOrder () {
       let that = this;
+      let company_id = this.GetQueryValue1('company_id')
 
       that.$http.fetch('/Order/stateus', {
-        tmp_uid: that.$root.tmp_uid,
-        company_id: that.$root.company_pid
+        tmp_uid: that.form.tmp_uid,
+        company_id: company_id
       })
         .then(res => {
-          if (res.errNo == 0 && res.data) {
+
+TOOL.alert(' 根据临时用户ID查询订单 = ' + JSON.stringify(res.data))
+          if (res.errNo == 0 && res.data && res.data.state == 0) {
             that.order_id = res.data.id;
             that.order_code = res.data.order_code;
           }
@@ -160,13 +172,19 @@ export default {
     },
     // 创建订单
     createOrder () {
-      let company_pid = this.$root.company_pid;
+      let company_id = this.GetQueryValue1('company_id')
       let form = this.form;
       let that = this;
 
+
+TOOL.alert(' 创建订单 上传数据 = ' + JSON.stringify({
+        ...form,
+        company_id: company_id
+      }))
+
       this.$http.post('/Order/create', {
         ...form,
-        company_id: company_pid
+        company_id: company_id
       }, that)
         .then(res => {
           if (res.errNo == 0 && res.data) {
@@ -186,7 +204,7 @@ export default {
     },
     // 修改订单
     setOrder () {
-      let company_pid = this.$root.company_pid;
+      let company_id = this.GetQueryValue1('company_id')
       let form = this.form;
       let newForm = {};
       let that = this;
@@ -197,13 +215,22 @@ export default {
         }
       })
 
+TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
+        ...newForm,
+        company_id: company_id,
+        order_id: that.order_id
+      }))
+
       this.$http.post('/Order/update', {
         ...newForm,
-        company_id: company_pid,
+        company_id: company_id,
         order_id: that.order_id
       }, that)
         .then(res => {
           if (res.errNo == 0) {
+            TOOL.alert(' 修改订单 返回参数 = ' + JSON.stringify(res))
+            that.order_code = res.data.order_code;
+
             this.$message({
               message: '修改订单成功',
               type: 'success'
@@ -219,6 +246,8 @@ export default {
     // 获取微信支付数据
     getWxPay() {
       let that = this;
+      let company_id = this.GetQueryValue1('company_id')
+      let tmp_uid = this.GetQueryValue1('tmp_uid')
 
       /*this.$confirm('是否支付成功', {
         showClose: false,
@@ -233,9 +262,10 @@ export default {
       })*/
 
       if(that.form.pay_mode == 2) {
+          let openid = localStorage.getItem('openid');
           // if(TOOL.getFacility() == 'Weixin') {
-          var payUrl = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?openid=${that.$root.parm}&orderid=${that.order_code}&money=${that.form.total_price * 100}&level_name=${encodeURIComponent(that.form.level_name)}&remarks=${encodeURIComponent(that.form.remarks)}#path=/payment,order_id=${that.order_id},company_id=${that.$root.company_pid}`;
-          //alert(payUrl)
+          var payUrl = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?openid=${openid}&orderid=${that.order_code}&money=${that.form.total_price * 100}&level_name=${encodeURIComponent(that.form.level_name)}&remarks=${encodeURIComponent(that.form.remarks) || '暂无'}#path=/payment,order_id=${that.order_id},company_id=${company_id}&tmp_uid=${tmp_uid}`;
+          TOOL.alert(' 跳转支付 = ' + payUrl)
           window.location.href = payUrl;
 
           // $.ajax({

@@ -58,6 +58,7 @@
 
       data() {
         return {
+         company_id: false,
          tmp_uid: false,
          loading: true,
          background: Background,
@@ -144,15 +145,15 @@
         if(openid){
             this.$root.parm = openid;
             this.$root.browser = 'openid';
-
-            TOOL.alert('openid = ' + openid)
+            localStorage.setItem('openid', openid);
+            // TOOL.alert('openid = ' + openid)
             this.getId(openid, 'openid');
          }else{
             // this.accredit();
             alert('openid获取失败，请刷新重试')
          }
       } else {
-        TOOL.alert('ip')
+        // TOOL.alert('ip')
         this.getIp();
       }
     },
@@ -187,22 +188,23 @@
                    parm: parm,
                    type: type
                 }
-        TOOL.alert('根据 ' + type + ' = ' + parm + ' 开始获取tmp_uid')
+        // TOOL.alert('根据 ' + type + ' = ' + parm + ' 开始获取tmp_uid')
 
         this.$http.fetch('TmpUser/getTmpUserId',params)
         .then(res => {
           if (res.errNo == 0) {
             that.$root.tmp_uid = res.data.tmp_uid;
             that.tmp_uid = res.data.tmp_uid;
-            TOOL.alert('根据 ' + type + ' = ' + parm + ' 获取到tmp_uid = ' + that.$root.tmp_uid + ' ' + res.data.tmp_uid)
+            TOOL.alert('根据 ' + type + ' = ' + parm + ' 获取到company_id = ' + res.data.company_id)
               if (that.load) {
                 that.load.close();
               }
             if (res.data && res.data.company_id != null) {
               that.btnType = 1;
               this.userId =res.data.tmp_uid
-              that.$root.company_pid = res.data.company_id;
-              TOOL.alert('tmp_uid = ' + that.$root.tmp_uid + ', company_pid = ' + res.data.company_id)
+              that.$root.company_id = res.data.company_id;
+              this.company_id = res.data.company_id;
+              // TOOL.alert('tmp_uid = ' + that.$root.tmp_uid + ', company_id = ' + res.data.company_id)
               that.orderStatus();
             } else {
               // 初次开通
@@ -219,7 +221,7 @@
     // 查询用户注册状态
     inquireSign(fn) {
       let that = this;
-      TOOL.alert('根据 ' + that.$root.browser + ' = ' + that.$root.parm + ' 查询用户注册状态')
+      // TOOL.alert('根据 ' + that.$root.browser + ' = ' + that.$root.parm + ' 查询用户注册状态')
       that.$http.fetch('TmpUser/getTmpUserId', {
         parm: that.$root.parm,
         type: that.$root.browser
@@ -229,8 +231,10 @@
           if (res.data && !!fn && res.data.company_id != null) {
             that.btnType = 1;
             that.$root.tmp_uid = res.data.tmp_uid;
-            that.$root.company_pid = res.data.company_id;
-            TOOL.alert('tmp_uid = ' + res.data.tmp_uid + ', company_pid = ' + res.data.company_id)
+            that.tmp_uid = res.data.tmp_uid;
+            that.$root.company_id = res.data.company_id;
+            that.company_id = res.data.company_id;
+            TOOL.alert('company_id = ' + res.data.company_id)
             fn();
           } else {
             // 初次开通
@@ -244,7 +248,7 @@
       let that = this,
           params = {
             tmp_uid:that.userId,
-            company_id: that.$root.company_pid
+            company_id: that.company_id
           };
 
       TOOL.alert('tmp_uid = '+ params.tmp_uid)
@@ -254,7 +258,7 @@
           let data = res.data;
 
           if (data) {
-            TOOL.alert('订单id = '+ res.data.id)
+            TOOL.alert('订单id = '+ JSON.stringify(data))
             this.order_id = data.id;
 
             switch(data.state) {
@@ -348,20 +352,28 @@
         // this.$refs.videoPlayer1.player.pause();
      },  
      viewNumber() {
-      this.$router.push({ path: "/payment" ,query:{
-       order_id:this.order_id
-     } });
+      let that = this;
+     //  this.$router.push({ path: "/payment" ,query:{
+     //   order_id:this.order_id,
+     //   company_id: this.company_id
+     // } });
+     window.location.href = `${window.location.href.split('?')[0]}#/payment?company_id=${that.company_id}&order_id=${this.order_id}&company_id=${this.company_id}&tmp_uid=${that.tmp_uid}`
     },
     openNow() {
       let that = this;
-     this.$router.push({ path: "/sign", query: {
-      tmp_uid: that.tmp_uid
-     } });
+     // this.$router.push({ path: "/sign", query: {
+     //  tmp_uid: that.tmp_uid,
+     //   company_id: that.company_id
+     // } });
+     window.location.href = `${window.location.href.split('?')[0]}#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&company_id=${that.company_id}`
    },
    continueOpen() {
     let that = this;
 
-    this.$router.push({ path: "/account" });
+    // this.$router.push({ path: window.location.href.split('?')[0] + "/account", query: {
+    //    company_id: that.company_id
+    // } });
+    window.location.href = `${window.location.href.split('?')[0]}#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`
   },
 
   }

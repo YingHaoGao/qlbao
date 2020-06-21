@@ -38,6 +38,13 @@ export default {
     
   },
   created() {
+    let that = this;
+    if(that.GetQueryValue1('company_id') && that.GetQueryValue1('company_id') != '') {
+      this.company_id = that.GetQueryValue1('company_id');
+    }else {
+      this.company_id = parseInt(that.getQueryStringByName('company_id'));
+    }
+
     var u = navigator.userAgent;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
 
@@ -50,8 +57,8 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.custom();
       this.qrcode();
+      this.custom();
     });
     bus.$on('onShare', () => {
       // this.onShare()
@@ -64,21 +71,76 @@ export default {
       name: '',
       company: '',
       guide: true,
-      isWx: false
+      isWx: false,
+      company_id: 0
   	}
   },
   methods: {
+    GetQueryValue1(name) {
+       let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      if(window.location.hash.indexOf("?") < 0){
+              return null;
+      }
+      let r = window.location.hash.split("?")[1].match(reg); 　　
+      if (r != null) return decodeURIComponent(r[2]); 
+  　　    return null;
+    },
+    getQueryStringByName(name) {
+      var result = location.href.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"));
+      if (result == null || result.length < 1) {
+          return "";
+      }
+      return result[1];
+    },
     // 自定义分享配置
     custom () {
       console.log('share')
       let that = this;
+
+      // TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id)
+
+      that.$http.fetch('/v1/weixin/getShareInfo/', {
+        access_token: localStorage.getItem('access_token'),
+        url: location.href.split('#')[0],
+        type: 2
+      }, that, true).then(res => {
+        that.$wx.config({
+          debug: true,
+          appId: res.data.appId,
+          timestamp: res.data.timestamp,
+          nonceStr: res.data.nonceStr,
+          signature: res.data.signature,
+          jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone'
+          ]
+        });
+        TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id)
+      })
+      
       // let share = {
-      //   imgUrl: '',
-      //   title: '我的邀请卡',
-      //   desc: '我的邀请卡',
-      //   link: CONFIG.SHARE + "/sign.html?company_pid=" + that.$root.company_pid
+      //     imgUrl: '',
+      //     title: '我的邀请卡',
+      //     desc: '我的邀请卡',
+      //     link: CONFIG.SHARE + "/sign.html?company_id=" + that.GetQueryValue1('company_id'),
+      //     success: function () {
+      //       TOOL.alert('分享成功')
+      //     },
+      //     fail: function (e) {
+      //       TOOL.alert('分享失败' + JSON.stringify(e))
+      //     },
+      //     complete: function () {
+              
+      //     }
       // };
-      TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_pid=" + that.$root.company_pid)
+      // console.log(share)
+      // wx.ready(function () {
+      //   wx.onMenuShareAppMessage(share) // 分享给好友
+      //   wx.onMenuShareTimeline(share) // 分享到朋友圈
+      // })
   	},
     // 生成二维码参数
     qrcode () {
@@ -95,7 +157,7 @@ export default {
       var qrcodeNode = document.getElementById('qrcode');
       var img = that.convertCanvasToImage(myCanvas);
       qrcodeNode.appendChild(img);
-      console.log('分享链接： ' + CONFIG.SHARE + "/sign.html?company_pid=" + this.$root.company_pid)
+      console.log('分享链接： ' + CONFIG.SHARE + "/sign.html?company_pid=" + that.GetQueryValue1('company_id'))
     },
     //将canvas返回的图片添加到image里
     convertCanvasToImage(canvas){
@@ -108,7 +170,7 @@ export default {
       let that = this;
 
       that.$http.fetch('Company/getCompanyInfo', {
-        company_id: that.$distributorId
+        company_id: that.GetQueryValue1('company_id')
       })
       .then(res => {
         if (res.errNo == 0) {

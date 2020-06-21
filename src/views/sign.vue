@@ -198,6 +198,15 @@ export default {
     }
   },
   methods: {
+    GetQueryValue1(name) {
+       let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      if(window.location.hash.indexOf("?") < 0){
+              return null;
+      }
+      let r = window.location.hash.split("?")[1].match(reg); 　　
+      if (r != null) return decodeURIComponent(r[2]); 
+  　　    return null;
+    },
     // 获取验证码
     getCode() {
       let that = this;
@@ -242,7 +251,7 @@ export default {
                     callback() {
                       that.$router.replace({path: page.url, query: {
                         order_id: that.order_id,
-                        add: !!that.order_id
+                        set: !!that.order_id
                       }});
                     }
                   });
@@ -253,7 +262,7 @@ export default {
                   callback() {
                     that.$router.replace({path: '/account', query: {
                       order_id: that.order_id,
-                      add: !!that.order_id
+                      set: !!that.order_id
                     }});
                   }
                 });
@@ -359,7 +368,10 @@ export default {
               message: '提交成功！',
               type: 'success'
             });
-            this.$router.replace({path: '/account'});
+            this.$router.replace({path: '/account', query: {
+              company_id: res.data.company_id,
+              tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid
+            }});
           }
         })
     },
@@ -422,7 +434,7 @@ export default {
           };
       this.$http.fetch('Order/stateus',params)
         .then(res => {
-          if (res.errNo == 0 && res.data) {
+          if (res.errNo == 0 && res.data && res.data.state == 0) {
             that.order_state = res.data.state;
             that.order_id = res.data.id
           }

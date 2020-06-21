@@ -39,6 +39,7 @@ npm run build
 		        user_number 		开通用户数量
 		        total_price 		总价
 		        remarks					价格说明
+						company_id 		  企业id
 	2、 /payment
 						order_id				订单id
 						company_id 		  企业id
