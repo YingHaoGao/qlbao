@@ -119,7 +119,7 @@ export default {
       TOOL.alert('分享 = ' + JSON.stringify(shareDate))
       that.$http.fetch('/v1/weixin/getShareInfo/', shareDate, that, true).then(res => {
         that.$wx.config({
-          debug: true,
+          // debug: true,
           appId: res.data.appId,
           timestamp: res.data.timestamp,
           nonceStr: res.data.nonceStr,
