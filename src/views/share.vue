@@ -13,13 +13,23 @@
         <div id="qrcode" ref="qrcode"></div>
       </div>
   	</div>
-  	<div class="buttons">
+  	<!-- <div class="buttons">
       <div round>请分享邀请卡给员工填写号码</div>
   		<div class="b" type="primary" round>请长按图片保存</div>
-  	</div>
+  	</div> -->
     <div class="guide" v-if="guide && isWx" @click="()=>{guide = false}">
-      <img src="../../static/icon/guide.png"/>
-      <div class="text">点击分享按钮，分享给员工</div>
+      <div class="guideInner" ref="guide"></div>
+      <div class="img1">
+        <img src="../../static/icon/箭头1.png" />
+        <div>点击分享按钮，分享给员工</div>
+      </div>
+      <div class="img2" ref="guideImg2">
+        <div>长按二维码保存</div>
+        <img src="../../static/icon/箭头2.png" />
+      </div>
+      <div class="img3">
+        <img src="../../static/icon/我知道了.png" />
+      </div>
     </div>
   </div>
 </template>
@@ -162,6 +172,12 @@ export default {
       var img = that.convertCanvasToImage(myCanvas);
       qrcodeNode.appendChild(img);
       console.log('分享链接： ' + CONFIG.SHARE + "/sign.html?company_pid=" + that.GetQueryValue1('company_id'))
+
+      let top = this.$refs.qrcode.getBoundingClientRect().top;
+      let left = this.$refs.qrcode.getBoundingClientRect().left;
+      this.$refs.guide.style.borderTopWidth = top - 10 + "px";
+      this.$refs.guide.style.borderLeftWidth = left - 8 + "px";
+      this.$refs.guideImg2.style.top = top - 80 + "px";
     },
     //将canvas返回的图片添加到image里
     convertCanvasToImage(canvas){
@@ -200,16 +216,18 @@ export default {
     font-size: 0.9rem;
   }
   .img {
-  	position: relative;
-  	text-align: center;
-  	height: 8.15rem;
-  	width: 15.85rem;
+    position: relative;
+    text-align: center;
+    height: 8.15rem;
+    width: 15.85rem;
     max-width: 100%;
-    margin: auto;
-    margin-top: 1.45rem;
-    margin-bottom: 1.25rem;
-    background-image: url('../../static/icon/share_bg.png');
+    margin: 0 auto;
+    // margin-top: 1.45rem;
+    // margin-bottom: 1.25rem;
+    background-image: url("../../static/icon/share_bg.png");
     background-size: cover;
+    top: 50%;
+    transform: translateY(-50%);
 
     .title {
       position: absolute;
@@ -303,22 +321,65 @@ export default {
     right: 0;
     bottom: 0;
     z-index: 100000;
-    background:rgba(0,0,0,0.7);
-
-    img{
-      width: 144px;
-      height: 106px;
+    background: transparent;
+    .guideInner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+      box-sizing: content-box;
+      width: 102px;
+      height: 102px;
+      border-color: rgba(0, 0, 0, 0.7);
+      border-style: solid;
+      border-width: 350px 1500px 1500px 238px;
+      background: transparent;
+    }
+    .img1 {
       position: absolute;
       top: 0.15rem;
-      right: 1.7rem;
+      right: 0;
+      left: 0;
+      text-align: right;
+      img {
+        width: 66px;
+        margin-right: 1.7rem;
+      }
+      div {
+        text-align: center;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+      }
     }
-    .text {
-      font-size:18px;
-      color:rgba(255,255,255,1);
-      line-height:20px;
+    .img2 {
       position: absolute;
-      top: 5.75rem;
-      right: 3.2rem;
+      right: 0;
+      left: 0;
+      text-align: right;
+      img {
+        width: 45px;
+        margin-right: 4.6rem;
+      }
+      div {
+        text-align: center;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+      }
+    }
+
+    .img3 {
+      position: absolute;
+      bottom: 1rem;
+      right: 0;
+      left: 0;
+      text-align: center;
+      img {
+        width: 166px;
+      }
     }
   }
 }
