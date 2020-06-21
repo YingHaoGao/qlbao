@@ -8,7 +8,7 @@
           <span>微信支付</span> -->
         </div>
       </div>
-      <div class="item">
+      <div class="item" v-if="isAliPay">
         <div class="payBtn alipayColor" :class="form.pay_mode == 1 ? 'active' : ''" @click="onAliPay">
           <!-- <i class="iconfont">&#xe629;</i>
           <span>支付宝</span> -->
@@ -44,6 +44,13 @@ export default {
   props: {
     
   },
+  created() {
+    if (TOOL.getFacility() == "Weixin") {
+      this.isAliPay = false;
+    } else {
+      this.isAliPay = true;
+    }
+  },
   mounted() {
     let that = this;
     
@@ -68,6 +75,7 @@ export default {
     let tmp_uid = this.GetQueryValue1('tmp_uid')
 
     return {
+      isAliPay: true,
       ICONdg: ICONdg,
       active: 0,
       set: false,

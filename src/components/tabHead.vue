@@ -32,8 +32,9 @@ export default {
 
   	if (TOOL.getFacility() == "Weixin") {
   		this.isClose = false;
-  	} else {
   		this.isShare = false;
+  	} else {
+  		this.isShare = true;
   	}
   },
   data () {

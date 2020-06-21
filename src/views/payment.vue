@@ -58,6 +58,7 @@
 
 <script>
 import TOOL from '../tools.js'
+import CONFIG from "../../config/index.js";
 export default {
   name: 'payment',
   props: {
@@ -218,10 +219,11 @@ export default {
   	// 生成我的邀请卡
   	onCreate () {
       let that = this;
-      this.$router.push({path: '/share', query: {
-        'company_id': that.company_id,
-        tmp_uid: that.tmp_uid
-      }});
+      // this.$router.push({path: '/share', query: {
+      //   'company_id': that.company_id,
+      //   tmp_uid: that.tmp_uid
+      // }});
+     window.location.href = `${CONFIG.SHARE}/#/share?company_id=${that.company_id}&&tmp_uid=${that.tmp_uid}`
   	},
     // 运营商转换
     telepToNc (t) {
