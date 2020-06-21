@@ -285,7 +285,7 @@
       }, that, true).then(res => {
         if (res.errNo == 0) {
           localStorage.setItem('access_token', res.access_token);
-          that.custom();
+          // that.custom();
         }
       }).catch(err => {
         console.log(err)
@@ -297,34 +297,6 @@
 
       that.src = `http://api.meisheapp.com/v1/weixin/authorize?access_token=${localStorage.getItem('access_token')}&redirect=${encodeURIComponent(location.href.split('#')[0])}`;
       TOOL.alert(that.src)
-    },
-
-    // 自定义分享配置
-    custom () {
-      console.log('share')
-      let that = this;
-
-      that.$http.fetch('/v1/weixin/getShareInfo/', {
-        access_token: localStorage.getItem('access_token'),
-        url: location.href.split('#')[0],
-        type: 2
-      }, that, true).then(res => {
-        that.$wx.config({
-          debug: process.env.VUE_APP_DEBUG === "true",
-          appId: res.data.appId,
-          timestamp: res.data.timestamp,
-          nonceStr: res.data.nonceStr,
-          signature: res.data.signature,
-          jsApiList: [
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage',
-            'onMenuShareQQ',
-            'onMenuShareWeibo',
-            'onMenuShareQZone'
-          ]
-        });
-        TOOL.setShare(that)
-      })
     },
 
   onTouchStart (e) {

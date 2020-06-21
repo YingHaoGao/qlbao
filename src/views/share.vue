@@ -98,12 +98,16 @@ export default {
       let that = this;
 
       // TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id)
-      
-      that.$http.fetch('/v1/weixin/getShareInfo/', {
+
+      let shareDate = {
         access_token: localStorage.getItem('access_token'),
-        url: location.href.split('#')[0],
+        // url: location.href.split('#')[0],
+        url: CONFIG.SHARE + "/" ,
         type: 2
-      }, that, true).then(res => {
+      };
+
+      TOOL.alert('分享 = ' + JSON.stringify(shareDate))
+      that.$http.fetch('/v1/weixin/getShareInfo/', shareDate, that, true).then(res => {
         that.$wx.config({
           debug: true,
           appId: res.data.appId,
