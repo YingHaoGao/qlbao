@@ -98,7 +98,7 @@ export default {
       let that = this;
 
       // TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id)
-
+      
       that.$http.fetch('/v1/weixin/getShareInfo/', {
         access_token: localStorage.getItem('access_token'),
         url: location.href.split('#')[0],

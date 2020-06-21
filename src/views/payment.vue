@@ -24,7 +24,7 @@
         <el-table-column
           prop="user_name"
           label="姓名"
-          min-width="50">
+          min-width="80">
         </el-table-column>
         <el-table-column
           class-name="phone"
