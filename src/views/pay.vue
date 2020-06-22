@@ -384,28 +384,37 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
     background-position: center;
     background-repeat: no-repeat;
 
-    &.active.duifongColor::after {
-      content: '';
-      display: block;
-      position: absolute;
-      bottom: -0.2rem;
-      left: 5.6rem;
-      width: 0.4rem;
-      height: 0.4rem;
-      transform: rotate(45deg);
-      z-index: 1;
-      background-color: #F2F2F2;
-    }
+    // &.active.duifongColor::after {
+    //   content: '';
+    //   display: block;
+    //   position: absolute;
+    //   bottom: -0.2rem;
+    //   left: 5.6rem;
+    //   width: 0.4rem;
+    //   height: 0.4rem;
+    //   transform: rotate(45deg);
+    //   z-index: 1;
+    //   background-color: #F2F2F2;
+    // }
   }
   
   .weixinColor {
     background-image: url("../../static/icon/weixin.png");
   }
+  .weixinColor.active {
+    background-image: url("../../static/icon/编组备份.png");
+  }
   .alipayColor {
     background-image: url("../../static/icon/alipay.png");
   }
+  .alipayColor.active {
+    background-image: url("../../static/icon/编组2备份.png");
+  }
   .duifongColor {
     background-image: url("../../static/icon/accounts.png");
+  }
+  .duifongColor.active {
+    background-image: url("../../static/icon/编组3备份.png");
   }
   .footer {
     width: 100%;
