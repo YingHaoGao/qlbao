@@ -17,7 +17,7 @@
       <div round>请分享邀请卡给员工填写号码</div>
   		<div class="b" type="primary" round>请长按图片保存</div>
   	</div> -->
-    <div class="guide" v-if="guide && isWx" @click="()=>{guide = false}">
+    <div class="guide" v-if="guide" @click="()=>{guide = false}">
       <div class="guideInner" ref="guide"></div>
       <div class="img1">
         <img src="../../static/icon/箭头1.png" />
@@ -176,7 +176,7 @@ export default {
       let top = this.$refs.qrcode.getBoundingClientRect().top;
       let left = this.$refs.qrcode.getBoundingClientRect().left;
       console.log(top, left)
-      // this.$refs.guide.style.borderTopWidth = top - 20 + "px";
+      this.$refs.guide.style.borderTopWidth = top - 10 + "px";
       this.$refs.guide.style.borderLeftWidth = left - 8 + "px";
       // this.$refs.guide.style.top = top - 10 + "px";
       this.$refs.guideImg2.style.top = top - 141 + "px";
@@ -325,14 +325,14 @@ export default {
     z-index: 100000;
     background: transparent;
     .guideInner {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      // position: fixed;
-      // top: 0;
+      // position: absolute;
+      // top: 50%;
+      // transform: translateY(-50%);
+      position: fixed;
+      top: 0;
       left: 0;
       right: 0;
-      // bottom: 0;
+      bottom: 0;
       z-index: 0;
       box-sizing: content-box;
       width: 102px;
@@ -378,10 +378,11 @@ export default {
 
     .img3 {
       position: absolute;
-      bottom: 1rem;
+      top: 75%;
       right: 0;
       left: 0;
       text-align: center;
+      transform: translateY(-25%);
       img {
         width: 166px;
       }
