@@ -54,6 +54,11 @@ export default {
     }else {
       this.company_id = parseInt(that.getQueryStringByName('company_id'));
     }
+    if(that.GetQueryValue1('order_id') && that.GetQueryValue1('order_id') != '') {
+      this.order_id = that.GetQueryValue1('order_id');
+    }else {
+      this.order_id = parseInt(that.getQueryStringByName('order_id'));
+    }
 
     var u = navigator.userAgent;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
@@ -82,7 +87,8 @@ export default {
       company: '',
       guide: true,
       isWx: false,
-      company_id: 0
+      company_id: 0,
+      order_id: 0
   	}
   },
   methods: {
@@ -107,11 +113,8 @@ export default {
       console.log('share')
       let that = this;
 
-      // TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id)
-
       let shareDate = {
         access_token: localStorage.getItem('access_token'),
-        // url: location.href.split('#')[0],
         url: CONFIG.SHARE + "/" ,
         type: 2
       };
@@ -119,7 +122,6 @@ export default {
       TOOL.alert('分享 = ' + JSON.stringify(shareDate))
       that.$http.fetch('/v1/weixin/getShareInfo/', shareDate, that, true).then(res => {
         that.$wx.config({
-          // debug: true,
           appId: res.data.appId,
           timestamp: res.data.timestamp,
           nonceStr: res.data.nonceStr,
@@ -134,27 +136,6 @@ export default {
         });
         TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id)
       })
-      
-      // let share = {
-      //     imgUrl: '',
-      //     title: '我的邀请卡',
-      //     desc: '我的邀请卡',
-      //     link: CONFIG.SHARE + "/sign.html?company_id=" + that.GetQueryValue1('company_id'),
-      //     success: function () {
-      //       TOOL.alert('分享成功')
-      //     },
-      //     fail: function (e) {
-      //       TOOL.alert('分享失败' + JSON.stringify(e))
-      //     },
-      //     complete: function () {
-              
-      //     }
-      // };
-      // console.log(share)
-      // wx.ready(function () {
-      //   wx.onMenuShareAppMessage(share) // 分享给好友
-      //   wx.onMenuShareTimeline(share) // 分享到朋友圈
-      // })
   	},
     // 生成二维码参数
     qrcode () {
@@ -165,17 +146,16 @@ export default {
       let qrcode = new QRCode("QRCodeNone", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
-          text: CONFIG.SHARE + "/sign.html?company_pid=" + that.$root.company_pid
+          text: CONFIG.SHARE + "/sign.html?company_pid=" + that.company_pid + "&order_id=" + that.order_id
         });
       var myCanvas = document.getElementsByTagName('canvas')[0];
       var qrcodeNode = document.getElementById('qrcode');
       var img = that.convertCanvasToImage(myCanvas);
       qrcodeNode.appendChild(img);
-      console.log('分享链接： ' + CONFIG.SHARE + "/sign.html?company_pid=" + that.GetQueryValue1('company_id'))
 
       let top = this.$refs.qrcode.getBoundingClientRect().top;
       let left = this.$refs.qrcode.getBoundingClientRect().left;
-      console.log(top, left)
+
       this.$refs.guide.style.borderTopWidth = top - 10 + "px";
       this.$refs.guide.style.borderLeftWidth = left - 8 + "px";
       // this.$refs.guide.style.top = top - 10 + "px";
@@ -325,11 +305,9 @@ export default {
     z-index: 100000;
     background: transparent;
     .guideInner {
-      // position: absolute;
-      // top: 50%;
-      // transform: translateY(-50%);
-      position: fixed;
-      top: 0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(calc( -50% - 0.15rem ));
       left: 0;
       right: 0;
       bottom: 0;

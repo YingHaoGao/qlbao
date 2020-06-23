@@ -38,7 +38,7 @@
         </el-table-column>
         <el-table-column
           header-align="center"
-          prop="time"
+          prop="level_name"
           label="开通时长"
           align="center"
           min-width="66">
@@ -225,7 +225,7 @@ export default {
       //   'company_id': that.company_id,
       //   tmp_uid: that.tmp_uid
       // }});
-     window.location.href = `${CONFIG.SHARE}/#/share?company_id=${that.company_id}&&tmp_uid=${that.tmp_uid}`
+     window.location.href = `${CONFIG.SHARE}/#/share?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&order_id=${that.order_id}`
   	},
     // 运营商转换
     telepToNc (t) {

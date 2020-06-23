@@ -377,11 +377,7 @@ export default {
       //   order_id:this.order_id,
       //   company_id: this.company_id
       // } });
-      window.location.href = `${
-        window.location.href.split("?")[0]
-      }#/payment?company_id=${that.company_id}&order_id=${
-        this.order_id
-      }&company_id=${this.company_id}&tmp_uid=${that.tmp_uid}`;
+      window.location.href = `${CONFIG.SHARE}/#/payment?company_id=${that.company_id}&order_id=${this.order_id}&company_id=${this.company_id}&tmp_uid=${that.tmp_uid}`;
     },
     openNow() {
       let that = this;
@@ -389,11 +385,7 @@ export default {
       //  tmp_uid: that.tmp_uid,
       //   company_id: that.company_id
       // } });
-      window.location.href = `${
-        window.location.href.split("?")[0]
-      }#/sign?company_id=${that.company_id}&tmp_uid=${
-        that.tmp_uid
-      }&company_id=${that.company_id}`;
+      window.location.href = `${CONFIG.SHARE}/#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&company_id=${that.company_id}`
     },
     continueOpen() {
       let that = this;
@@ -401,9 +393,10 @@ export default {
       // this.$router.push({ path: window.location.href.split('?')[0] + "/account", query: {
       //    company_id: that.company_id
       // } });
-      window.location.href = `${
-        window.location.href.split("?")[0]
-      }#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
+      window.location.href = `${CONFIG.SHARE}/#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`
+      // window.location.href = `${
+      //   window.location.href.split("?")[0]
+      // }#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
     }
   }
 };
@@ -522,10 +515,10 @@ export default {
   display: inline-block;
   height: 8px;
   width: 8px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 50%;
   margin-right: 10px;
-  &:last-child{
+  &:last-child {
     margin-right: 0;
   }
 }

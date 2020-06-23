@@ -40,7 +40,9 @@
         <el-link @click="centerDialogVisible = true" style="font-size: 0.6rem" :style="{ color: form.deal?'#333':'#999' }">《云美摄直客协议》</el-link>
         ，否则无法提交
       </el-checkbox>
-      <el-button type="primary but" @click="onSubmit" :disabled="disabled" round>提交</el-button>
+      <el-button type="primary but" @click="onSubmit"
+        :disabled="disabled.name || disabled.contacts || disabled.phone || !form.deal"
+        round>提交</el-button>
     </div>
     <el-dialog
       title="云美摄直客协议"
@@ -69,9 +71,12 @@ export default {
         ringtone: ['是否为联系人自动开通'],
         deal: false
       },
+      disabled: {
+        name: true,
+        contacts: true,
+        phone: true
+      },
       centerDialogVisible: false,
-      disabled: true,
-      // graphics: '',
       checkInterval: '',
       codeTime: 60,
       coded: false,
@@ -124,73 +129,24 @@ export default {
       }
     },
     'form.name'(val) {
-      let form = this.form;
-      if (
-        val != '' && val &&
-        form.contacts != '' && form.contacts &&
-        form.phone != '' && form.phone &&
-        form.code != '' && form.code 
-        // && form.graphics != '' && form.graphics
-        ) {
-        this.disabled = false;
+      if (val == '' || !val || !TOOL.detection(1, val) || val.length > 16) {
+        this.disabled.name = true;
       } else {
-        this.disabled = true;
+        this.disabled.name = false;
       }
     },
     'form.contacts'(val) {
-      let form = this.form;
-      if (
-        val != '' && val &&
-        form.name != '' && form.name &&
-        form.phone != '' && form.phone &&
-        form.code != '' && form.code 
-        // && form.graphics != '' && form.graphics
-        ) {
-        this.disabled = false;
+      if (val == '' || !val || !TOOL.detection(1, val) || val.length > 8) {
+        this.disabled.contacts = true;
       } else {
-        this.disabled = true;
+        this.disabled.contacts = false;
       }
     },
     'form.phone'(val) {
-      let form = this.form;
-      if (
-        val != '' && val &&
-        form.contacts != '' && form.contacts &&
-        form.name != '' && form.name &&
-        form.code != '' && form.code 
-        // && form.graphics != '' && form.graphics
-        ) {
-        this.disabled = false;
+      if (!TOOL.detection(0, val)) {
+        this.disabled.phone = true;
       } else {
-        this.disabled = true;
-      }
-    },
-    'form.code'(val) {
-      let form = this.form;
-      if (
-        val != '' && val &&
-        form.contacts != '' && form.contacts &&
-        form.phone != '' && form.phone &&
-        form.name != '' && form.name 
-        // && form.graphics != '' && form.graphics
-        ) {
-        this.disabled = false;
-      } else {
-        this.disabled = true;
-      }
-    },
-    'form.graphics'(val) {
-      let form = this.form;
-      if (
-        val != '' && val &&
-        form.contacts != '' && form.contacts &&
-        form.phone != '' && form.phone &&
-        form.code != '' && form.code &&
-        form.graphics != '' && form.graphics
-        ) {
-        this.disabled = false;
-      } else {
-        this.disabled = true;
+        this.disabled.phone = false;
       }
     },
     showBtn(val) {
