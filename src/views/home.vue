@@ -414,10 +414,14 @@
     letter-spacing: 4px;
   }
   .view{
-    background: #FE772D;
+    background: linear-gradient(360deg,rgba(64,173,194,1) 0%,rgba(172,231,242,1) 100%);
+    font-weight: bold;
+    letter-spacing: 4px;
   }
   .continue{
     background: linear-gradient(360deg,rgba(64,173,194,1) 0%,rgba(172,231,242,1) 100%);
+    font-weight: bold;
+    letter-spacing: 4px;
   }
 }
 }
