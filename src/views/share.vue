@@ -327,7 +327,7 @@ export default {
     .guideInner {
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
+      transform: translateY(calc( -50% - 0.15rem ));
       // position: fixed;
       // top: 0;
       left: 0;
