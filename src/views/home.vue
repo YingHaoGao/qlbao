@@ -4,7 +4,7 @@
    <!-- <div class="background_top"></div> -->
    <!-- <div class="background_center"></div> -->
    <div class="background_bottom">
-    <div class="infoBox">
+    <div class="infoBox" ref="infoBox">
       <van-swipe class="my-swipe" indicator-color="#FD3D43" @change="onChange" :loop="false" :width="320">
         <van-swipe-item v-for="(item,index) in swiperList" :key="index" :class="seiperIndex == index ? 'active-item-one': 'videoPlayer1'">
           <div class="box-item">
@@ -162,6 +162,8 @@
       let offsetWidth = this.$refs.home.offsetWidth;
       console.log(offsetHeight, offsetWidth)
       this.size = offsetHeight / offsetWidth;
+      this.$refs.infoBox.style.paddingLeft = (offsetWidth-288)/2  + 'px';
+      this.$refs.infoBox.style.paddingRight = (offsetWidth-288)/2  + 'px';
     },
     methods:{
       //获取url参数
@@ -329,7 +331,7 @@
      //   order_id:this.order_id,
      //   company_id: this.company_id
      // } });
-     window.location.href = `${window.location.href.split('?')[0]}#/payment?company_id=${that.company_id}&order_id=${this.order_id}&company_id=${this.company_id}&tmp_uid=${that.tmp_uid}`
+     window.location.href = `${CONFIG.SHARE}/#/payment?company_id=${that.company_id}&order_id=${this.order_id}&company_id=${this.company_id}&tmp_uid=${that.tmp_uid}`
     },
     openNow() {
       let that = this;
@@ -337,7 +339,7 @@
      //  tmp_uid: that.tmp_uid,
      //   company_id: that.company_id
      // } });
-     window.location.href = `${window.location.href.split('?')[0]}#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&company_id=${that.company_id}`
+     window.location.href = `${CONFIG.SHARE}/#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&company_id=${that.company_id}`
    },
    continueOpen() {
     let that = this;
@@ -345,7 +347,7 @@
     // this.$router.push({ path: window.location.href.split('?')[0] + "/account", query: {
     //    company_id: that.company_id
     // } });
-    window.location.href = `${window.location.href.split('?')[0]}#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`
+    window.location.href = `${CONFIG.SHARE}/#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`
   },
 
   }
@@ -392,7 +394,7 @@
     position: absolute;
     top: 26.5rem;
     left: 0;
-    width: 100%;
+    right: 0;
     height: 25.75rem;
     overflow: hidden;
   }
@@ -506,10 +508,5 @@
 
 .my-swipe{
   height: 100%;
-  .van-swipe-item{
-    .box-item{
-      margin: 0 0 0 24px;
-    }
-  }
 }
 </style>

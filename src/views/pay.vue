@@ -2,23 +2,17 @@
   <div id="pay" :style="{ height: clientHeight + 'px' }">
   	<div class="footer" :style="{ height: height + 'px' }">
       <div class="text">请选择支付方式</div>
-      <div class="item">
-        <div class="payBtn weixinColor" :class="form.pay_mode == 2 ? 'active' : ''" @click="onWeiXin">
-          <!-- <i class="iconfont">&#xe607;</i>
-          <span>微信支付</span> -->
-        </div>
+      <div class="item" @click="onWeiXin">
+        <img v-if="form.pay_mode == 2" class="payBtn" src="../../static/icon/编组备份.png" alt="">
+        <img v-if="form.pay_mode != 2" class="payBtn" src="../../static/icon/weixin.png" alt="">
       </div>
-      <div class="item" v-if="isAliPay">
-        <div class="payBtn alipayColor" :class="form.pay_mode == 1 ? 'active' : ''" @click="onAliPay">
-          <!-- <i class="iconfont">&#xe629;</i>
-          <span>支付宝</span> -->
-        </div>
+      <div class="item" v-if="isAliPay" @click="onAliPay">
+        <img v-if="form.pay_mode == 1" class="payBtn" src="../../static/icon/编组2备份.png" alt="">
+        <img v-if="form.pay_mode != 1" class="payBtn" src="../../static/icon/alipay.png" alt="">
       </div>
-      <div class="item">
-        <div class="payBtn duifongColor" :class="form.pay_mode == 3 ? 'active' : ''" @click="onDuiGong">
-          <!-- <img :src="ICONdg"/>
-          <span>对公转账</span> -->
-        </div>
+      <div class="item" @click="onDuiGong">
+        <img v-if="form.pay_mode == 3" class="payBtn" src="../../static/icon/编组3备份.png" alt="">
+        <img v-if="form.pay_mode != 3" class="payBtn" src="../../static/icon/accounts.png" alt="">
       </div>
       <div class="infoBox">
         <div v-for="item in bank" :key="item.id" class="duigong" v-show="form.pay_mode == 3">
@@ -377,35 +371,13 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
   .payBtn {
     font-size: 0.7rem;
     margin-bottom: 1.03rem;
-    height: 2.6rem;
+    width: 240px;
+    // height: 2.6rem;
     box-sizing: border-box;
     position: relative;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-
-    &.active.duifongColor::after {
-      content: '';
-      display: block;
-      position: absolute;
-      bottom: -0.2rem;
-      left: 5.6rem;
-      width: 0.4rem;
-      height: 0.4rem;
-      transform: rotate(45deg);
-      z-index: 1;
-      background-color: #F2F2F2;
-    }
-  }
-  
-  .weixinColor {
-    background-image: url("../../static/icon/weixin.png");
-  }
-  .alipayColor {
-    background-image: url("../../static/icon/alipay.png");
-  }
-  .duifongColor {
-    background-image: url("../../static/icon/accounts.png");
   }
   .footer {
     width: 100%;

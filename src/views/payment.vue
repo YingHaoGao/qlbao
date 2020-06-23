@@ -9,9 +9,11 @@
         <img src="../../static/icon/book.png">
       </div> -->
     </div>
-    <div class="buttons">
-      <el-button @click="onNewPhone" :style="{ width: btnWidth }" round>追加开通新号码</el-button>
-      <el-button @click="onCreate" :style="{ width: btnWidth }" round>生成我的邀请卡</el-button>
+    <div class="buttons-outer">
+      <div class="buttons">
+        <el-button @click="onNewPhone" :style="{ width: btnWidth }" round>追加开通新号码</el-button>
+        <el-button @click="onCreate" :style="{ width: btnWidth }" round>生成我的邀请卡</el-button>
+      </div>
     </div>
     <div class="tab">
       <div class="title">
@@ -36,7 +38,7 @@
         </el-table-column>
         <el-table-column
           header-align="center"
-          prop="time"
+          prop="level_name"
           label="开通时长"
           align="center"
           min-width="66">
@@ -223,7 +225,7 @@ export default {
       //   'company_id': that.company_id,
       //   tmp_uid: that.tmp_uid
       // }});
-     window.location.href = `${CONFIG.SHARE}/#/share?company_id=${that.company_id}&&tmp_uid=${that.tmp_uid}`
+     window.location.href = `${CONFIG.SHARE}/#/share?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&order_id=${that.order_id}`
   	},
     // 运营商转换
     telepToNc (t) {
@@ -256,7 +258,7 @@ export default {
 #payment {
   box-sizing: border-box;
   padding: 2rem 0rem 0rem 0rem;
-  background-color: #F2F2F2;
+  // background-color: #F2F2F2;
 
   .pay-status-box{
     width: 100%;
@@ -297,6 +299,11 @@ export default {
         margin-left: 35%;
       }
     }
+  }
+  .buttons-outer{
+    width: 100%;
+    background-color: #F2F2F2;
+    padding-bottom: 0.5rem;
   }
 
 	.buttons {
@@ -365,7 +372,7 @@ export default {
 	}
   .tab {
     background: #fff;
-    margin-top: 0.5rem;
+    
     padding-top: 0.75rem; 
 
     .title {

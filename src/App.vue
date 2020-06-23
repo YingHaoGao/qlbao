@@ -201,6 +201,8 @@ html{
       padding: 0rem;
       background: rgba(242,242,242,1);
       border: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      -webkit-tap-highlight-color: transparent;
 
       &:not(:last-child) {
         margin-right: 3.33%;
@@ -218,9 +220,6 @@ html{
       .el-radio__label {
         padding: 0rem;
       }
-    }
-    .el-radio.is-bordered.is-checked {
-      background: #79D4E4;
     }
   }
   #payment {
