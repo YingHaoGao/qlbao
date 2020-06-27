@@ -16,7 +16,7 @@
           class="my-swipe"
           indicator-color="#79D4E4"
           @change="onChange"
-          :loop="false"
+          :loop="true"
           :width="320"
         >
           <van-swipe-item
@@ -367,8 +367,21 @@ export default {
     //页面滑动视频停止播放
     onChange(index) {
       this.seiperIndex = index;
-      console.log(this.$refs.videoPlayer1[0]);
-      this.$refs.videoPlayer1[0].player.pause();
+      // console.log(this.$refs.videoPlayer1[0]);
+      if(this.seiperIndex === 1){
+        this.$refs.videoPlayer1[0].player.pause();
+        this.$refs.videoPlayer3[0].player.pause();
+      }else if(this.seiperIndex === 2){
+        this.$refs.videoPlayer2[0].player.pause();
+        this.$refs.videoPlayer4[0].player.pause();
+      }else if(this.seiperIndex === 3){
+        this.$refs.videoPlayer3[0].player.pause();
+        this.$refs.videoPlayer1[0].player.pause();
+      }else if(this.seiperIndex === 0){
+        this.$refs.videoPlayer2[0].player.pause();
+        this.$refs.videoPlayer[0].player.pause();
+      }
+      
       // this.$refs.videoPlayer1.player.pause();
     },
     viewNumber() {
