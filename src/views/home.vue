@@ -371,15 +371,19 @@ export default {
       if(this.seiperIndex === 1){
         this.$refs.videoPlayer1[0].player.pause();
         this.$refs.videoPlayer3[0].player.pause();
+        this.$refs.videoPlayer4[0].player.pause();
       }else if(this.seiperIndex === 2){
+        this.$refs.videoPlayer1[0].player.pause();
         this.$refs.videoPlayer2[0].player.pause();
         this.$refs.videoPlayer4[0].player.pause();
       }else if(this.seiperIndex === 3){
         this.$refs.videoPlayer3[0].player.pause();
         this.$refs.videoPlayer1[0].player.pause();
+        this.$refs.videoPlayer2[0].player.pause();
       }else if(this.seiperIndex === 0){
         this.$refs.videoPlayer2[0].player.pause();
-        this.$refs.videoPlayer[0].player.pause();
+        this.$refs.videoPlayer3[0].player.pause();
+        this.$refs.videoPlayer4[0].player.pause();
       }
       
       // this.$refs.videoPlayer1.player.pause();
