@@ -17,7 +17,7 @@
     </div>
     <div class="tab">
       <div class="title">
-        目前已添加{{list.length}}人，剩余可添加{{10}}人
+        目前已添加{{list.length}}人，剩余可添加{{surplusAdd}}人
       </div>
       <el-table
         :data="list"
@@ -52,9 +52,9 @@
         </el-table-column>
       </el-table>
     </div>
-  	<!-- <div class="code">
-  		二维码分享给员工填写号码
-  	</div> -->
+    <!-- <div class="code">
+      二维码分享给员工填写号码
+    </div> -->
   </div>
 </template>
 
@@ -85,9 +85,10 @@ export default {
       this.tmp_uid = parseInt(that.getQueryStringByName('tmp_uid'));
     }
 
-  	this.getInfo();
+    this.getInfo();
     this.getOrder();
     TOOL.setShare(that);
+    this.getSurpulsAdd();
 
     var clientWidth = document.documentElement.clientWidth;
     this.width = 13 * 10*(clientWidth / 320);
@@ -100,9 +101,9 @@ export default {
     localStorage.setItem('payInfo', null)
   },
   watch: {
-  	type(val) {
-  		let typeNC = ''
-  		switch(val) {
+    type(val) {
+      let typeNC = ''
+      switch(val) {
         case 0:
           typeNC = '未支付';
           break;
@@ -118,22 +119,24 @@ export default {
         case 4:
           typeNC = '已退款';
           break;
-  		}
+      }
 
-  		this.typeNC = typeNC;
-  	}
+      this.typeNC = typeNC;
+    }
   },
   data () {
-  	return {
-  		list: [],
-  		type: '',
-  		typeNC: '',
+    return {
+      list: [],
+      type: '',
+      typeNC: '',
       width: 0,
       btnWidth: 0,
       order_id: 0,
       company_id: 0,
-      tmp_uid: 0
-  	}
+      tmp_uid: 0,
+      //剩余可添加
+      surplusAdd:0
+    }
   },
   methods: {
     GetQueryValue1(name) {
@@ -152,14 +155,14 @@ export default {
       }
       return result[1];
     },
-  	// 获取信息
-  	getInfo () {
+    // 获取信息
+    getInfo () {
       let that = this,
           params = {
             company_id: that.company_id
           };
 
-  		this.$http.fetch('/user/getList',params)
+      this.$http.fetch('/user/getList',params)
         .then(function(res){
           // that.list = res.data;
           let newList = [];
@@ -170,8 +173,8 @@ export default {
             })
           });
           that.list = newList;
-  	    });
-  	},
+        });
+    },
     // 查询订单状态
     getOrder () {
       let that = this;
@@ -209,24 +212,37 @@ export default {
         this.typeNC = '获取失败'
       }
     },
-  	// 添加新号码
-  	onNewPhone () {
+    // 添加新号码
+    onNewPhone () {
       let that = this;
       TOOL.alert(' 添加新号码 tmp_uid = ' + that.tmp_uid)
       this.$router.push({path: '/account', query: {
         company_id: that.company_id,
         tmp_uid: that.tmp_uid
       }});
-  	},
-  	// 生成我的邀请卡
-  	onCreate () {
+    },
+    //剩余可添加人数
+    getSurpulsAdd(){
+      let that = this;
+      params = {
+            company_id: that.company_id
+          };
+      this.$http.fetch('/Company/getUserNum',params)
+        .then(function(res){
+          // that.list = res.data;
+          that.surplusAdd = res.buy_max - res.use_max;
+        });
+    },
+
+    // 生成我的邀请卡
+    onCreate () {
       let that = this;
       // this.$router.push({path: '/share', query: {
       //   'company_id': that.company_id,
       //   tmp_uid: that.tmp_uid
       // }});
      window.location.href = `${CONFIG.SHARE}/#/share?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&order_id=${that.order_id}`
-  	},
+    },
     // 运营商转换
     telepToNc (t) {
       let typeNC = ''
@@ -306,7 +322,7 @@ export default {
     padding-bottom: 0.5rem;
   }
 
-	.buttons {
+  .buttons {
     width: 100%;
     padding: 1rem 0.75rem;
     box-sizing: border-box;
@@ -315,8 +331,8 @@ export default {
     color: #FFFFFF;
     overflow: hidden;
 
-		button {
-			// width: 8rem;
+    button {
+      // width: 8rem;
       display: inline-block;
       color: #fff;
       height: 2rem;
@@ -329,18 +345,18 @@ export default {
         background: linear-gradient(180deg,rgba(124,193,253,1) 0%,rgba(127,119,254,1) 100%);
         float: right;
       }
-		}
-	}
+    }
+  }
 
-	.names {
-		background:rgba(255,255,255,1);
+  .names {
+    background:rgba(255,255,255,1);
     width: 100%;
     // height: 4.2rem;
     padding: .75rem;
     box-sizing: border-box;
 
-		.name {
-			font-size: 0.8rem;
+    .name {
+      font-size: 0.8rem;
       font-family:PingFangSC-Regular,PingFang SC;
       font-weight:400;
       color:rgba(51,51,51,1);
@@ -359,17 +375,17 @@ export default {
         width: 5.2rem;
         margin: 0 1.5rem 0 1rem
       }
-		}
-	}
-	.type {
-		padding: 2rem 0rem;
-		text-align: center;
-		font-size: 1.4rem;
-	}
-	.code {
-		text-align: center;
-		font-size: 0.8rem;
-	}
+    }
+  }
+  .type {
+    padding: 2rem 0rem;
+    text-align: center;
+    font-size: 1.4rem;
+  }
+  .code {
+    text-align: center;
+    font-size: 0.8rem;
+  }
   .tab {
     background: #fff;
     
