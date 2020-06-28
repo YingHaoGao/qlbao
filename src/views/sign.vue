@@ -429,7 +429,7 @@ export default {
   }
   .logoBox {
     width: 100%;
-    height: 5rem;
+    height: 8rem;
     position: relative;
 
     img {
