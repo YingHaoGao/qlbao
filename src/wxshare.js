@@ -64,7 +64,7 @@ export const wxshare = {
 				/*eslint-disable */
 				let share_config = {
 					'share': {
-						'imgUrl': msg.imgUrl, // 分享图，默认当相对路径处理，所以使用绝对路径的的话，“http://”协议前缀必须在。
+						'imgUrl': './assets/img/weixin.png', // 分享图，默认当相对路径处理，所以使用绝对路径的的话，“http://”协议前缀必须在。
 						'desc': msg.desc, // 摘要,如果分享到朋友圈的话，不显示摘要。
 						'title': msg.title, // 分享卡片标题
 						'link': msg.link, // 分享出去后的链接，这里可以将链接设置为另一个页面。
