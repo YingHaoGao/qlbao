@@ -118,7 +118,7 @@ html{
       height: 2.2rem;
       color: #333333;
       font-size: 0.7rem;
-      line-height: 0.7rem;
+      line-height: normal;
       letter-spacing: 0.05rem;
 
       background: rgba(242,242,242,1);
@@ -126,7 +126,7 @@ html{
 
       &::-webkit-input-placeholder {
         color: #999999;
-        line-height: 0.7rem;
+        line-height: normal;
       }
       &::-moz-placeholder {
         color: #999999;
