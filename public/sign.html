@@ -275,7 +275,7 @@ $(function() {
 
     var code = '',
         operator = $('.btn.active').attr('name'),
-        company_pid = getUrlParam('company_pid'),
+        company_id = getUrlParam('company_id'),
         order_id = getUrlParam('order_id'),
         clientHeight = document.documentElement.clientHeight,
         clientWidth = document.documentElement.clientWidth;
@@ -381,7 +381,7 @@ $(function() {
             telephone: $('#phone').val(),
             verification_code: $('#code').val(),
             telephone_type: operator,
-            company_id: company_pid,
+            company_id: company_id,
             order_id: order_id
         };
 

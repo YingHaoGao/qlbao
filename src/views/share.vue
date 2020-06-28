@@ -134,7 +134,7 @@ export default {
             'onMenuShareQZone'
           ]
         });
-        TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id)
+        TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id)
       })
   	},
     // 生成二维码参数
@@ -146,7 +146,7 @@ export default {
       let qrcode = new QRCode("QRCodeNone", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
-          text: CONFIG.SHARE + "/sign.html?company_pid=" + that.company_pid + "&order_id=" + that.order_id
+          text: CONFIG.SHARE + "/sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id
         });
       var myCanvas = document.getElementsByTagName('canvas')[0];
       var qrcodeNode = document.getElementById('qrcode');
