@@ -224,13 +224,12 @@ export default {
     //剩余可添加人数
     getSurpulsAdd(){
       let that = this;
-      params = {
+      let params = {
             company_id: that.company_id
           };
       this.$http.fetch('/Company/getUserNum',params)
         .then(function(res){
-          // that.list = res.data;
-          that.surplusAdd = res.buy_max - res.use_max;
+          that.surplusAdd = res.data.buy_max - res.data.use_max;
         });
     },
 

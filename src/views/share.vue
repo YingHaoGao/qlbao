@@ -135,6 +135,7 @@ export default {
           ]
         });
         TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id)
+        console.log(that.order_id)
       })
   	},
     // 生成二维码参数
