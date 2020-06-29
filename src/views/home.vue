@@ -17,7 +17,7 @@
           indicator-color="#79D4E4"
           @change="onChange"
           :loop="true"
-          :width="320"
+          :width="310"
         >
           <van-swipe-item
             v-for="(item,index) in swiperList"

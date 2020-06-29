@@ -156,7 +156,7 @@ export default {
       let top = this.$refs.qrcode.getBoundingClientRect().top;
       let left = this.$refs.qrcode.getBoundingClientRect().left;
 
-      this.$refs.guide.style.borderTopWidth = top - 10 + "px";
+      // this.$refs.guide.style.borderTopWidth = top - 10 + "px";
       this.$refs.guide.style.borderLeftWidth = left - 8 + "px";
       // this.$refs.guide.style.top = top - 10 + "px";
       this.$refs.guideImg2.style.top = top - 141 + "px";
@@ -305,6 +305,19 @@ export default {
     z-index: 100000;
     background: transparent;
     .guideInner {
+      // position: fixed;
+      // top: 0;
+      // left: 0;
+      // right: 0;
+      // bottom: 0;
+      // z-index: 0;
+      // box-sizing: content-box;
+      // width: 102px;
+      // height: 102px;
+      // border-color: rgba(0, 0, 0, 0.7);
+      // border-style: solid;
+      // border-width: 350px 1500px 1500px 238px;
+      // background: transparent;
       position: absolute;
       top: 50%;
       transform: translateY(calc( -50% - 0.15rem ));

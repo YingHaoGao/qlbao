@@ -196,7 +196,7 @@ html{
       margin: 0rem;
       margin-bottom: 0.75rem;
       height: 2.4rem;
-      line-height: 2.3rem;
+      line-height: 2.4rem;
       float: left;
       padding: 0rem;
       background: rgba(242,242,242,1);
