@@ -274,6 +274,7 @@ $(function() {
     var codeInterval;
 
     var code = '',
+        isSubmit = false,
         operator = $('.btn.active').attr('name'),
         company_id = getUrlParam('company_id'),
         order_id = getUrlParam('order_id'),
@@ -376,6 +377,10 @@ $(function() {
 
     // 提交
     $('.submit').on('click', function() {
+        if(isSubmit) {
+            alert('已提交')
+            return;
+        }
         var data = {
             user_name: $('#name').val(),
             telephone: $('#phone').val(),
@@ -409,6 +414,7 @@ $(function() {
             success(res) {
                 if (res.errNo == 0) {
                     alert('已提交')
+                    isSubmit = true;
                 } else {
                     alert(res.message)
                 }

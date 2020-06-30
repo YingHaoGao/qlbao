@@ -4,7 +4,7 @@
     <div class="box">
       <div class="input">
         <span class="tag">请输入开通号码数量:</span>
-        <el-input v-model="num" class="number" type="number" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通号码数量" v-focus @focus="selectFocus($event)">
+        <el-input v-model="num" class="number" type="number" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通数量" v-focus @focus="selectFocus($event)">
           <span slot="suffix" class="suffix">个</span>
         </el-input>
       </div>
@@ -48,7 +48,7 @@ export default {
   	return {
   		money: 0,
   		radio: 0,
-  		num: 0,
+  		num: '',
       remarks: '10元/人/月',
       prices: [],
       messageEvent: false,
@@ -146,6 +146,10 @@ export default {
       }
       if (this.num == '' || isNaN(this.num)) {
         this.messageErr('请输入开通号码数量');
+        return
+      }
+      if (this.num <= 0) {
+        this.messageErr('开通号码数量必须大于0');
         return
       }
       if (this.num >= 200) {

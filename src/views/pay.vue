@@ -349,7 +349,7 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
       text-align: left;
       // font-family: 'PingFang-SC-Bold','PingFang-SC';
       color: #757575;
-      font-weight: 400;
+      font-weight: 600;
       line-height: 1rem;
 
       p{

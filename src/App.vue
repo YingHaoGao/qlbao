@@ -52,6 +52,17 @@ html{
   td:last-child {
     padding-right: 0.75rem;
   }
+
+  .el-input__inner:focus {
+    outline: none !important;
+    -webkit-appearance: none !important;
+    -webkit-tap-highlight-color:rgba(0,0,0,0) !important;
+  }
+  .el-input__inner {
+    -webkit-appearance: none !important;
+    -webkit-tap-highlight-color:rgba(0,0,0,0) !important;
+  }
+
   #share {
     padding: 1.45rem !important;
   }

@@ -167,8 +167,22 @@ export default {
           // that.list = res.data;
           let newList = [];
           res.data.map(item => {
+            let user_name = '';
+
+            if(item.user_name && item.user_name.length > 4) {
+              for(let i = 0; i < item.user_name.length; i++) {
+                if(i!= 0 && i%4 == 0) {
+                  user_name += '\r\n'
+                }
+                user_name += item.user_name[i]
+              }
+            }else {
+              user_name = item.user_name
+            }
+
             newList.push({
               ...item,
+              user_name: user_name,
               telephoneNc: that.telepToNc(item.telephone_type)
             })
           });

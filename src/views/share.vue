@@ -2,7 +2,7 @@
   <div id="share">
   	<div class="img">
       <div class="box">
-        <div class="company">{{company}}</div>
+        <div class="company" v-html="company"></div>
         <div class="name">{{name}}</div>
       </div>
       <div id="QRCodeNone"></div>
@@ -177,7 +177,20 @@ export default {
       })
       .then(res => {
         if (res.errNo == 0) {
-          that.company = res.data.company_name;
+          let  company = '';
+          res.data.company_name = '哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈'
+          if(res.data.company_name && res.data.company_name.length > 10) {
+            for(let i = 0; i < res.data.company_name.length; i++) {
+              if(i!= 0 && i%10 == 0) {
+                company += '<br/>'
+              }
+              company += res.data.company_name[i]
+            }
+          }else {
+            company = res.data.company_name
+          }
+
+          that.company = company;
           that.name = res.data.contact_name;
         }
       }) 
@@ -231,24 +244,17 @@ export default {
     }
     .box {
       position: absolute;
-      width: 50%;
+      width: 80%;
       top: 50%;
       left: 0.6rem;
       text-align: left;
+      font-size: .9rem;
       transform: translate(0, -50%);
     }
     .company {
-      // position: absolute;
-      // bottom: 3.55rem;
-      // left: 0.75rem;
-      // width: 9.35rem;
-      // text-align: left;
       margin-bottom: 0.5rem;
-      overflow : hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      word-wrap:break-word;
+      word-break:normal; 
     }
     .name {
       // position: absolute;
