@@ -185,46 +185,6 @@ export default {
               that.codeTime -= 1
             }, 1000)
           }
-          if (res.errNo == 400 && res.message.indexOf('手机号已注册') > -1) {
-            that.getUserInfo(() => {
-              if (that.isBack) {
-                let page = { url: '', name: '' };
-
-                switch(that.order_state) {
-                  case 0:
-                    page.url = '/account';
-                    page.name = '我的号码';
-                    break;
-                  case 1 || 2 || 3 || 4:
-                    page.url = '/payment';
-                    page.name = '我的号码';
-                    break;
-                };
-
-                if (page.url != '' && page.name != '') {
-                  that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
-                    showClose: false,
-                    callback() {
-                      that.$router.replace({path: page.url, query: {
-                        order_id: that.order_id,
-                        set: !!that.order_id
-                      }});
-                    }
-                  });
-                }
-              } else {
-                that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
-                  showClose: false,
-                  callback() {
-                    that.$router.replace({path: '/account', query: {
-                      order_id: that.order_id,
-                      set: !!that.order_id
-                    }});
-                  }
-                });
-              }
-            })
-          }
         })
       })
     },
@@ -328,6 +288,46 @@ export default {
               company_id: res.data.company_id,
               tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid
             }});
+          }
+          else if (res.errNo == 400 && res.company_id !== null) {
+            that.getUserInfo(() => {
+              if (that.isBack) {
+                let page = { url: '', name: '' };
+
+                switch(that.order_state) {
+                  case 0:
+                    page.url = '/account';
+                    page.name = '我的号码';
+                    break;
+                  case 1 || 2 || 3 || 4:
+                    page.url = '/payment';
+                    page.name = '我的号码';
+                    break;
+                };
+
+                if (page.url != '' && page.name != '') {
+                  that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
+                    showClose: false,
+                    callback() {
+                      that.$router.replace({path: page.url, query: {
+                        order_id: that.order_id,
+                        set: !!that.order_id
+                      }});
+                    }
+                  });
+                }
+              } else {
+                that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
+                  showClose: false,
+                  callback() {
+                    that.$router.replace({path: '/account', query: {
+                      order_id: that.order_id,
+                      set: !!that.order_id
+                    }});
+                  }
+                });
+              }
+            })
           }
         })
     },
