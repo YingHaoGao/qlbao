@@ -8,39 +8,40 @@
     :class="{full: size > 3.2}"
     v-loading="loading"
   >
+    <img style="width: 100%" src="../assets/img/background1.png" alt="">
     <!-- <div class="background_top"></div> -->
     <!-- <div class="background_center"></div> -->
-    <div class="background_bottom">
-      <div class="infoBox" ref="infoBox">
-        <van-swipe
-          class="my-swipe"
-          indicator-color="#79D4E4"
-          @change="onChange"
-          :loop="true"
-          :width="310"
+    <!-- <div class="background_bottom"> -->
+    <div class="infoBox" ref="infoBox">
+      <van-swipe
+        class="my-swipe"
+        indicator-color="#79D4E4"
+        @change="onChange"
+        :loop="true"
+        :width="310"
+      >
+        <van-swipe-item
+          v-for="(item,index) in swiperList"
+          :key="index"
+          :class="seiperIndex == index ? 'active-item-one': 'videoPlayer1'"
         >
-          <van-swipe-item
-            v-for="(item,index) in swiperList"
-            :key="index"
-            :class="seiperIndex == index ? 'active-item-one': 'videoPlayer1'"
-          >
-            <div class="box-item">
-              <p class="iphoneNum">{{item.phone}}</p>
-              <p class="text">{{item.text}}</p>
-              <video-player
-                class="video-player vjs-custom-skin"
-                :ref="item.ref"
-                :playsinline="true"
-                :options="playerOptions[index]"
-                x5-video-player-type="h5"
-                x5-video-orientation="portraint"
-                webkit-playsinline="true"
-              ></video-player>
-            </div>
-          </van-swipe-item>
-        </van-swipe>
-      </div>
+          <div class="box-item">
+            <p class="iphoneNum">{{item.phone}}</p>
+            <p class="text">{{item.text}}</p>
+            <video-player
+              class="video-player vjs-custom-skin"
+              :ref="item.ref"
+              :playsinline="true"
+              :options="playerOptions[index]"
+              x5-video-player-type="h5"
+              x5-video-orientation="portraint"
+              webkit-playsinline="true"
+            ></video-player>
+          </div>
+        </van-swipe-item>
+      </van-swipe>
     </div>
+    <!-- </div> -->
 
     <div class="footer">
       <div class="item">
@@ -63,7 +64,7 @@ import TOOL from "../tools.js";
 import CONFIG from "../../config/index.js";
 import axios from "axios";
 // import Swiper from "swiper"
-import Background from "../assets/img/background.png";
+import Background from "../assets/img/background0.png";
 
 const wx = require("weixin-js-sdk");
 
@@ -495,12 +496,13 @@ export default {
 #home {
   box-sizing: border-box;
   width: 100%;
-  height: 58.4rem;
+  // height: 58.4rem;
   margin: 0 auto;
   position: relative;
   background-size: cover;
-  background-position: center;
+  // background-position: center;
   top: 2rem;
+  overflow: hidden;
 
   &.full {
     background-size: 100% 100% !important;
@@ -521,30 +523,37 @@ export default {
     height: 4.35rem;
     width: 100%;
   }
-  .background_bottom {
-    // background: url(../assets/img/background_botom.png) no-repeat center;
-    background-size: cover;
-    width: 100%;
-    height: 28.25rem;
-    position: relative;
-    .infoBox {
-      position: absolute;
-      top: 26.5rem;
-      left: 0;
-      right: 0;
-      height: 27rem;
-      overflow: hidden;
-    }
+  // .background_bottom {
+  //   // background: url(../assets/img/background_botom.png) no-repeat center;
+  //   background-size: cover;
+  //   width: 100%;
+  //   height: 28.25rem;
+  //   position: relative;
+  //   .infoBox {
+  //     position: absolute;
+  //     top: 26.5rem;
+  //     left: 0;
+  //     right: 0;
+  //     height: 27rem;
+  //     overflow: hidden;
+  //   }
+  // }
+
+  .infoBox{
+    padding-top: 20px;
   }
   .van-swipe__indicators {
     background: #29224e !important;
   }
   .footer {
     width: 14rem;
-    position: absolute;
-    left: 50%;
-    bottom: 1.5rem;
-    transform: translate(-50%, 0);
+    margin: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    // position: absolute;
+    // left: 50%;
+    // bottom: 1.5rem;
+    // transform: translate(-50%, 0);
     .open {
       background: linear-gradient(
         360deg,
