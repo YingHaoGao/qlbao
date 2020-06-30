@@ -90,7 +90,9 @@ export default {
       order_id: false,
       footerShow: true,
       clientHeight: document.documentElement.clientHeight,
-      height: 0
+      height: 0,
+      company_id: false,
+      tmp_uid: false
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -207,7 +209,9 @@ export default {
                     callback() {
                       that.$router.replace({path: page.url, query: {
                         order_id: that.order_id,
-                        set: !!that.order_id
+                        set: !!that.order_id,
+                        company_id: that.company_id,
+                        tmp_uid: that.tmp_uid
                       }});
                     }
                   });
@@ -218,7 +222,9 @@ export default {
                   callback() {
                     that.$router.replace({path: '/account', query: {
                       order_id: that.order_id,
-                      set: !!that.order_id
+                      set: !!that.order_id,
+                      company_id: that.company_id,
+                      tmp_uid: that.tmp_uid
                     }});
                   }
                 });
@@ -236,6 +242,8 @@ export default {
           if(res.errNo == 0) {
             that.$root.company_pid = res.data.company_id;
             that.$root.tmp_uid = res.data.user_id;
+            that.company_id = res.data.company_id;
+            that.tmp_uid = res.data.user_id;
 
             if (fn) {
               fn()
@@ -317,6 +325,7 @@ export default {
         .then(res => {
           if (res.errNo == 0) {
             this.$root.company_pid = res.data.company_id;
+            this.company_id = res.data.company_id;
             
             that.getAccessToken();
 
@@ -386,7 +395,7 @@ export default {
       let that = this,
           params = {
             tmp_uid: that.$root.tmp_uid,
-            company_id: that.$root.company_pid
+            company_id: that.company_id
           };
       this.$http.fetch('Order/stateus',params)
         .then(res => {
@@ -429,7 +438,7 @@ export default {
   }
   .logoBox {
     width: 100%;
-    height: 8rem;
+    height: 6rem;
     position: relative;
 
     img {
@@ -473,7 +482,7 @@ export default {
     background: #F2F2F2;
   }
   .ringtone {
-    line-height: 2rem;
+    line-height: 1rem;
     border-bottom: none;
   }
   .footer {
