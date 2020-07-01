@@ -68,25 +68,21 @@ export default {
   },
   created () {
     let that = this;
+    let company_id = this.GetQueryValue1('company_id');
+    let tmp_uid = this.GetQueryValue1('tmp_uid');
 
-    if(that.GetQueryValue1('order_id') && that.GetQueryValue1('order_id') != '') {
-      this.order_id = that.GetQueryValue1('order_id');
-    }else {
-      this.order_id = parseInt(that.getQueryStringByName('order_id'));
-    }
-    if(that.GetQueryValue1('company_id') && that.GetQueryValue1('company_id') != '') {
-      this.company_id = that.GetQueryValue1('company_id');
+    if(company_id != null && company_id != '') {
+      this.company_id = company_id;
     }else {
       this.company_id = parseInt(that.getQueryStringByName('company_id'));
     }
-    if(that.GetQueryValue1('tmp_uid') && that.GetQueryValue1('tmp_uid') != '') {
-      this.tmp_uid = that.GetQueryValue1('tmp_uid');
+    if(tmp_uid != null && tmp_uid != '') {
+      this.tmp_uid = tmp_uid;
     }else {
       this.tmp_uid = parseInt(that.getQueryStringByName('tmp_uid'));
     }
 
-    this.getInfo();
-    this.getOrder();
+    this.getOrder(this.getInfo);
     TOOL.setShare(that);
     this.getSurpulsAdd();
 
@@ -95,47 +91,30 @@ export default {
     this.btnWidth =  (clientWidth - 55) / 2 + 'px';
   },
   mounted () {
-    this.$alert('公司管理员可登陆 <a href="http://cailing.meisheapp.com">http://cailing.meisheapp.com</a> 网页统一添加号码', '提示', {
-          dangerouslyUseHTMLString: true
-        });
+    this.$alert('公司管理员可登陆 <u>http://cailing.meisheapp.com</u> 统一添加号码', '提示', {
+      dangerouslyUseHTMLString: true
+    });
     localStorage.setItem('payInfo', null)
-  },
-  watch: {
-    type(val) {
-      let typeNC = ''
-      switch(val) {
-        case 0:
-          typeNC = '未支付';
-          break;
-        case 1:
-          typeNC = '已支付';
-          break;
-        case 2:
-          typeNC = '支付失败';
-          break;
-        case 3:
-          typeNC = '退款中';
-          break;
-        case 4:
-          typeNC = '已退款';
-          break;
-      }
-
-      this.typeNC = typeNC;
-    }
   },
   data () {
     return {
       list: [],
-      type: '',
-      typeNC: '',
+      type: 0,
       width: 0,
       btnWidth: 0,
-      order_id: 0,
       company_id: 0,
       tmp_uid: 0,
+      order_users: {
+        order_id: ''
+      },
       //剩余可添加
       surplusAdd:0
+    }
+  },
+  computed: {
+    typeNC: function() {
+      let values = ['未支付', '已支付', '支付失败', '退款中', '已退款'];
+      return values[this.type];
     }
   },
   methods: {
@@ -166,7 +145,7 @@ export default {
         .then(function(res){
           // that.list = res.data;
           let newList = [];
-          res.data.map(item => {
+          res.data.forEach(item => {
             let user_name = '';
 
             if(item.user_name && item.user_name.length > 4) {
@@ -185,46 +164,43 @@ export default {
               user_name: user_name,
               telephoneNc: that.telepToNc(item.telephone_type)
             })
+
+            let user_counter = that.order_users[item.order_id];
+            if (user_counter) {
+              ++user_counter.count;
+              if (user_counter.count < user_counter.max_count)
+                that.order_users.order_id = item.order_id;
+              else if (that.order_users.order_id == item.order_id)
+                that.order_users.order_id = '';
+            }
           });
           that.list = newList;
         });
     },
     // 查询订单状态
-    getOrder () {
+    getOrder (callback) {
       let that = this;
 
-      // 通过订单id查询状态
-      if (that.order_id && that.order_id) {
-        TOOL.alert(' 更具订单id查询状态 = ' + that.order_id)
-        this.$http.fetch('/order/stateusByOrderId',{
-          order_id: that.order_id
-        })
-        .then(function(res){
-          if (res.errNo == 0 && res.data) {
-            that.type = res.data.state;
+      this.type = 0;
+      TOOL.alert(' 通过临时用户id查询状态 = ' + this.tmp_uid + ',' + this.company_id)
+      this.$http.fetch('/Order/stateus', {
+        tmp_uid: that.tmp_uid,
+        company_id: that.company_id
+      })
+        .then(res => {
+          if (res.errNo == 0 && res.data && res.data.length > 0) {
+            res.data.forEach((order) => {
+              if (order.state == 1) {
+                that.type = 1;
+                that.order_users[order.id] = {
+                  max_count: order.user_number,
+                  count: 0
+                };
+              }
+            });
           }
-        });
-      }
-      // 通过临时用户id查询状态
-      else if (that.tmp_uid && that.tmp_uid != "") {
-        TOOL.alert(' 通过临时用户id查询状态 = ' + that.tmp_uid + ',' + that.company_id)
-        that.$http.fetch('/Order/stateus', {
-          tmp_uid: that.tmp_uid,
-          company_id: that.company_id
+          callback.call(that);
         })
-          .then(res => {
-            if (res.errNo == 0) {
-              that.type = res.data.state;
-            }
-          })
-      }
-      else if (process.env.NODE_ENV === "development") {
-        this.$message.error({
-          showClose: true,
-          message: '获取订单id、用户id失败'
-        });
-        this.typeNC = '获取失败'
-      }
     },
     // 添加新号码
     onNewPhone () {
@@ -250,11 +226,10 @@ export default {
     // 生成我的邀请卡
     onCreate () {
       let that = this;
-      // this.$router.push({path: '/share', query: {
-      //   'company_id': that.company_id,
-      //   tmp_uid: that.tmp_uid
-      // }});
-     window.location.href = `${CONFIG.SHARE}/#/share?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&order_id=${that.order_id}`
+      if (that.order_users.order_id != '')
+        window.location.href = `${CONFIG.SHARE}/#/share?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&order_id=${that.order_users.order_id}`
+      else
+        this.$alert("目前可添加手机号数量已满，请追加开通新号码");
     },
     // 运营商转换
     telepToNc (t) {
@@ -270,7 +245,6 @@ export default {
           typeNC = '电信';
           break;
       }
-
       return typeNC
     },
     tableRowClassName({row, rowIndex}) {

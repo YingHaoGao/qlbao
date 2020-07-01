@@ -1,6 +1,6 @@
 <template>
   <div id="pay" :style="{ height: clientHeight + 'px' }">
-  	<div class="footer" :style="{ height: height + 'px' }">
+    <div class="footer" :style="{ height: height + 'px' }">
       <div class="text">请选择支付方式</div>
       <div class="item" @click="onWeiXin">
         <img v-if="form.pay_mode == 2" class="payBtn" src="../../static/icon/编组备份.png" alt="">
@@ -47,18 +47,16 @@ export default {
   },
   mounted() {
     let that = this;
-    
+
     this.form.price_id = this.$route.query.price_id;
     this.form.level_name = this.$route.query.level_name;
     this.form.price = this.$route.query.price;
     this.form.user_number = this.$route.query.user_number;
     this.form.total_price = this.$route.query.total_price;
     this.form.remarks = this.$route.query.remarks;
-    this.set = this.$route.query.set;
 
     console.log(JSON.stringify(this.form));
 
-    this.getOrder()
     this.getBank()
     TOOL.setShare(that)
 
@@ -66,13 +64,10 @@ export default {
     this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
   },
   data() {
-    let tmp_uid = this.GetQueryValue1('tmp_uid')
-
     return {
       isAliPay: true,
       ICONdg: ICONdg,
       active: 0,
-      set: false,
       order_id: '',
       order_code: '',
       form: {
@@ -84,7 +79,6 @@ export default {
         total_price: '',
         remarks: '',
         pay_mode: '',
-        tmp_uid: tmp_uid,
       },
       clientHeight: document.documentElement.clientHeight,
       height: 0,
@@ -122,7 +116,7 @@ export default {
           that.bank = res.data
         })
     },
-  	onWeiXin () {
+    onWeiXin () {
       this.form.pay_mode = 2;
       let that = this;
       let jsonpayInfo = localStorage.getItem('payInfo');
@@ -136,40 +130,51 @@ export default {
         }
       }
 
-      if (this.set) {
-        this.setOrder();
-        return
-      }
-      this.createOrder()
-  	},
-  	onAliPay () {
+      this.getOrder(()=>{
+        if (that.order_id != '') {
+          that.setOrder();
+        } else {
+          that.createOrder();
+        }
+      });
+    },
+    onAliPay () {
       this.form.pay_mode = 1;
 
-      if (this.set) {
-        this.setOrder();
-        return
-      }
-      this.createOrder()
-  	},
-  	onDuiGong () {
+      this.getOrder(()=>{
+        if (that.order_id != '') {
+          that.setOrder();
+        } else {
+          that.createOrder();
+        }
+      });
+    },
+    onDuiGong () {
       this.form.pay_mode = 3;
-  	},
+    },
     // 根据临时用户id查询订单
-    getOrder () {
+    getOrder (callback) {
       let that = this;
       let company_id = this.GetQueryValue1('company_id')
+      let tmp_uid = this.GetQueryValue1('tmp_uid')
 
-      that.$http.fetch('/Order/stateus', {
-        tmp_uid: that.form.tmp_uid,
+      this.order_id = '';
+      this.$http.fetch('/Order/stateus', {
+        tmp_uid: tmp_uid,
         company_id: company_id
       })
         .then(res => {
-
 TOOL.alert(' 根据临时用户ID查询订单 = ' + JSON.stringify(res.data))
-          if (res.errNo == 0 && res.data && res.data.state == 0) {
-            that.order_id = res.data.id;
-            that.order_code = res.data.order_code;
+          if (res.errNo == 0 && res.data && res.data.length > 0) {
+            res.data.some((order) => {
+              if (order.state == 0) {
+                that.order_id = order.id;
+                return true;
+              }
+              return false;
+            });
           }
+          callback();
         })
     },
     // 创建订单
@@ -190,17 +195,14 @@ TOOL.alert(' 创建订单 上传数据 = ' + JSON.stringify({
       }, that)
         .then(res => {
           if (res.errNo == 0 && res.data) {
-            this.$message({
+            /*this.$message({
               message: '创建订单成功',
               type: 'success'
-            });
+            });*/
 
             that.order_id = res.data.order_id;
             that.order_code = res.data.order_code;
             that.getWxPay();
-            // this.$router.replace({path: '/payment', query: {
-            //   order_id: res.data.order_id
-            // }});
           }
         })
     },
@@ -233,15 +235,12 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
             TOOL.alert(' 修改订单 返回参数 = ' + JSON.stringify(res))
             that.order_code = res.data.order_code;
 
-            this.$message({
+            /*this.$message({
               message: '修改订单成功',
               type: 'success'
-            });
+            });*/
 
             that.getWxPay();
-            // this.$router.replace({path: '/payment', query: {
-            //   order_id: that.order_id
-            // }});
           }
         })
     },

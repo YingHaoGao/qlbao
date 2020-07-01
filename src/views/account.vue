@@ -34,8 +34,7 @@ export default {
   },
   created() {
     let that = this;
-    
-    this.set = this.$route.query.set
+
     this.getPrices();
     this.orderStatus();
 
@@ -45,18 +44,17 @@ export default {
     TOOL.setShare(that)
   },
   data() {
-  	return {
-  		money: 0,
-  		radio: 0,
-  		num: '',
+    return {
+      money: 0,
+      radio: 0,
+      num: '',
       remarks: '10元/人/月',
       prices: [],
       messageEvent: false,
-      set: false,
       footerShow: true,
       clientHeight: document.documentElement.clientHeight,
       height: 0
-  	}
+    }
   },
   watch: {
     radio(val) {
@@ -126,8 +124,8 @@ export default {
           }
         })
     },
-  	// 立即付款
-  	onSubmit () {
+    // 立即付款
+    onSubmit () {
       let company_id = this.GetQueryValue1('company_id')
       let tmp_uid = this.GetQueryValue1('tmp_uid')
       let that = this,
@@ -160,29 +158,50 @@ export default {
         if (this.messageEvent) this.messageEvent.close()
       }
 
-      localStorage.setItem('payInfo', JSON.stringify({
+      let payInfo = {
         price_id: radio,
         level_name: obj.level_name,
         price: obj.price,
         remarks: obj.remarks,
         user_number: num,
         total_price: money,
-        set: that.set,
         company_id: company_id,
         tmp_uid: tmp_uid
-      }));
-      this.$router.replace({path: '/pay', query: {
-        price_id: radio,
-        level_name: obj.level_name,
-        price: obj.price,
-        remarks: obj.remarks,
-        user_number: num,
-        total_price: money,
-        set: that.set,
-        company_id: company_id,
-        tmp_uid: tmp_uid
-      }});
-  	},
+      }
+      localStorage.setItem('payInfo', JSON.stringify(payInfo));
+      this.$router.replace({path: '/pay', query: payInfo});
+    },
+    payOrder(order) {
+      this.$confirm('存在未支付的订单, 是否去支付?', {
+        showClose: false,
+        closeOnClickModal: false,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let company_id = this.GetQueryValue1('company_id')
+        let tmp_uid = this.GetQueryValue1('tmp_uid')
+        let payInfo = {
+          price_id: order.price_id,
+          level_name: order.level_name,
+          price: order.price,
+          remarks: order.remark,
+          user_number: order.user_number,
+          total_price: order.total_price,
+          company_id: company_id,
+          tmp_uid: tmp_uid
+        }
+        localStorage.setItem('payInfo', JSON.stringify(payInfo));
+        that.$router.replace({path: '/pay', query: payInfo});
+      }).catch(() => {
+        TOOL.alert(' 删除订单 order_id = ' + order.id);
+        this.$http.fetch('Order/delOrderId',{ order_id: order.id}).then(res => {
+          TOOL.alert(' 删除订单回调 = ' + JSON.stringify(res));
+          localStorage.setItem('payInfo', null);
+          window.location.href = CONFIG.SHARE;
+        });
+      });
+    },
     //根据临时用户ID查询订单
     orderStatus() {
       let company_id = this.GetQueryValue1('company_id')
@@ -196,56 +215,17 @@ export default {
 TOOL.alert(' 根据临时用户ID查询订单 上传 = ' + JSON.stringify(params))
       this.$http.fetch('Order/stateus',params)
       .then(res => {
-        if (res.errNo == 0) {
-          let data = res.data;
-
-          if (data) {
-            let order_id = data.id;
-            let order_code = data.order_code;
-            let { price_id, level_name, price, user_number, total_price, remark } = data;
-TOOL.alert(' 根据临时用户ID查询订单 = ' + JSON.stringify(data))
-            if (data.state == 0) {
-              this.$confirm('存在未支付的订单, 是否去支付?', {
-                showClose: false,
-                closeOnClickModal: false,
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }).then(() => {
-
-                localStorage.setItem('payInfo', JSON.stringify({
-                  price_id: price_id,
-                  level_name: level_name,
-                  price: price,
-                  remarks: remark,
-                  user_number: user_number,
-                  total_price: total_price,
-                  set: true,
-                  company_id: company_id,
-                }));
-                that.$router.replace({path: '/pay', query: {
-                  price_id: price_id,
-                  level_name: level_name,
-                  price: price,
-                  remarks: remark,
-                  user_number: user_number,
-                  total_price: total_price,
-                  company_id: company_id,
-                  tmp_uid: tmp_uid,
-                  set: true
-                }});
-              }).catch(() => {
-                that.set = false;
-                TOOL.alert(' 删除订单 order_id = ' + order_id)
-                this.$http.fetch('Order/delOrderId',{ order_id: order_id}).then(res => {
-                  TOOL.alert(' 删除订单回调 = ' + JSON.stringify(res))
-                  window.location.href = CONFIG.SHARE;
-                })
-              })
+        if (res.errNo == 0 && res.data && res.data.length > 0) {
+          res.data.some((order) => {
+            if (order.state == 0) {
+              payOrder(order);
+              return true;
             }
-          }
+            return false;
+          });
+TOOL.alert(' 根据临时用户ID查询订单 = ' + JSON.stringify(data))
         }
-      }) 
+      });
     },
     // 错误提示
     messageErr(msg) {
@@ -272,11 +252,11 @@ TOOL.alert(' 根据临时用户ID查询订单 = ' + JSON.stringify(data))
   .box {
 
     .radio {
-    	text-align: center;
+      text-align: center;
       overflow: hidden;
     }
     .input {
-    	margin-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
       height: 2.2rem;
       position: relative;
     }
@@ -315,10 +295,10 @@ TOOL.alert(' 根据临时用户ID查询订单 = ' + JSON.stringify(data))
     color: #333333;
     font-size: 0.7rem;
 
-  	span {
-  		color: red;
+    span {
+      color: red;
       font-size: 1rem;
-  	}
+    }
   }
   .footer {
     font-size: 0.7rem;

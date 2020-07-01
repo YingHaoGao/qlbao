@@ -86,8 +86,6 @@ export default {
       showBtn: true,
       loading: false,
       isBack: false,
-      order_state: 0,
-      order_id: false,
       footerShow: true,
       clientHeight: document.documentElement.clientHeight,
       height: 0,
@@ -110,7 +108,6 @@ export default {
   created() {
     let that = this;
 
-    this.orderStatus();
     TOOL.setShare(that)
 
     var clientWidth = document.documentElement.clientWidth;
@@ -187,50 +184,6 @@ export default {
               that.codeTime -= 1
             }, 1000)
           }
-          // if (res.errNo == 400 && res.message.indexOf('手机号已注册') > -1) {
-          //   that.getUserInfo(() => {
-          //     if (that.isBack) {
-          //       let page = { url: '', name: '' };
-
-          //       switch(that.order_state) {
-          //         case 0:
-          //           page.url = '/account';
-          //           page.name = '我的号码';
-          //           break;
-          //         case 1 || 2 || 3 || 4:
-          //           page.url = '/payment';
-          //           page.name = '我的号码';
-          //           break;
-          //       };
-
-          //       if (page.url != '' && page.name != '') {
-          //         that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
-          //           showClose: false,
-          //           callback() {
-          //             that.$router.replace({path: page.url, query: {
-          //               order_id: that.order_id,
-          //               set: !!that.order_id,
-          //               company_id: that.company_id,
-          //               tmp_uid: that.tmp_uid
-          //             }});
-          //           }
-          //         });
-          //       }
-          //     } else {
-          //       that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
-          //         showClose: false,
-          //         callback() {
-          //           that.$router.replace({path: '/account', query: {
-          //             order_id: that.order_id,
-          //             set: !!that.order_id,
-          //             company_id: that.company_id,
-          //             tmp_uid: that.tmp_uid
-          //           }});
-          //         }
-          //       });
-          //     }
-          //   })
-          // }
         })
       })
     },
@@ -338,46 +291,37 @@ export default {
             }});
           } else if (res.errNo == 400 && res.data && res.data.company_id !== null) {
             that.$root.company_pid = that.company_id = res.data.company_id;
-            if (that.isBack) {
-              let page = { url: '', name: '' };
-
-              switch(that.order_state) {
-                case 0:
-                  page.url = '/account';
-                  page.name = '我的号码';
-                  break;
-                case 1 || 2 || 3 || 4:
-                  page.url = '/payment';
-                  page.name = '我的号码';
-                  break;
+            that.orderStatus({
+              tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid,
+              company_id: res.data.company_id
+            }, (data) => {
+              let page = {
+                  url: '/payment',
+                  name: '我的号码'
               };
+              if (data && data.length > 0) {
+                data.some((order) => {
+                  if (order.state == 0) {
+                    page.url = '/account';
+                    page.name = '创建订单';
+                    return true;
+                  }
+                  return false;
+                });
+              }
 
               if (page.url != '' && page.name != '') {
-                that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
+                that.$alert('检测到您已完成注册，将自动进入' + page.name + '页', '', {
                   showClose: false,
                   callback() {
                     that.$router.replace({path: page.url, query: {
-                      order_id: that.order_id,
-                      set: !!that.order_id,
                       company_id: that.company_id,
                       tmp_uid: that.tmp_uid
                     }});
                   }
                 });
               }
-            } else {
-              that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
-                showClose: false,
-                callback() {
-                  that.$router.replace({path: '/account', query: {
-                    order_id: that.order_id,
-                    set: !!that.order_id,
-                    company_id: that.company_id,
-                    tmp_uid: that.tmp_uid
-                  }});
-                }
-              });
-            }
+            });
           } else {
             that.messageErr(res.message || res.data.message);
           }
@@ -434,19 +378,13 @@ export default {
       });
     },
     //根据临时用户ID查询订单
-    orderStatus(){
-      let that = this,
-          params = {
-            tmp_uid: that.$root.tmp_uid,
-            company_id: that.company_id
-          };
+    orderStatus(params, callback){
       this.$http.fetch('Order/stateus',params)
         .then(res => {
-          if (res.errNo == 0 && res.data && res.data.state == 0) {
-            that.order_state = res.data.state;
-            that.order_id = res.data.id
-          }
-        }) 
+          callback(
+            (res.errNo == 0 && res.data) ? res.data : []
+          );
+        });
     },
     // 
     toTxt() {

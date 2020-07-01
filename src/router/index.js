@@ -44,7 +44,7 @@ export default new Router({
       name: 'Account',
       component: Account,
       meta: {
-        title: '我的号码'
+        title: '创建订单'
       }
     },
     {

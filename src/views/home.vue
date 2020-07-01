@@ -82,7 +82,6 @@ export default {
       userIp: "",
       userId: "",
       usertype: "",
-      order_id: "",
       playerOptions: [
         {
           playbackRates: false, //播放速度
@@ -363,24 +362,18 @@ export default {
 
       TOOL.alert("tmp_uid = " + params.tmp_uid);
       this.$http.fetch("Order/stateus", params).then(res => {
-        if (res.errNo == 0) {
-          let data = res.data;
+        if (res.errNo == 0 && res.data && res.data.length > 0) {
+          TOOL.alert("订单id = " + JSON.stringify(res.data));
 
-          if (data) {
-            TOOL.alert("订单id = " + JSON.stringify(data));
-            this.order_id = data.id;
-
-            switch (data.state) {
+          this.btnType = 2;
+          res.data.some((order) => {
+            if (order.state == 0) {
               // 未支付
-              case 0:
-                this.btnType = 1;
-                break;
-              // 已完成支付
-              case 1 || 2 || 3 || 4:
-                this.btnType = 2;
-                break;
+              this.btnType = 1;
+              return true;
             }
-          }
+            return false;
+          });
         }
       });
     },
@@ -464,10 +457,9 @@ export default {
     viewNumber() {
       let that = this;
       //  this.$router.push({ path: "/payment" ,query:{
-      //   order_id:this.order_id,
       //   company_id: this.company_id
       // } });
-      window.location.href = `${CONFIG.SHARE}/#/payment?company_id=${that.company_id}&order_id=${this.order_id}&company_id=${this.company_id}&tmp_uid=${that.tmp_uid}`;
+      window.location.href = `${CONFIG.SHARE}/#/payment?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
     },
     openNow() {
       let that = this;
@@ -475,7 +467,7 @@ export default {
       //  tmp_uid: that.tmp_uid,
       //   company_id: that.company_id
       // } });
-      window.location.href = `${CONFIG.SHARE}/#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&company_id=${that.company_id}`
+      window.location.href = `${CONFIG.SHARE}/#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`
     },
     continueOpen() {
       let that = this;
