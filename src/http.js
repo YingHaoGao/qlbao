@@ -19,10 +19,6 @@ axios.interceptors.request.use(
 
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {
-  if (response.data && response.data.errNo == 400) {
-    Message({message: response.data.message, type: "error"})
-  }
-
   return response
 }, err => {
     if (err && err.response) {

@@ -321,8 +321,7 @@ export default {
         open_user: form.isRingtone ? 1 : 0,
         company_pid: form.company_pid,
         tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid
-      }, that)
-        .then(res => {
+      }, that).then(res => {
           if (res.errNo == 0) {
             this.$root.company_pid = res.data.company_id;
             this.company_id = res.data.company_id;
@@ -337,41 +336,27 @@ export default {
               company_id: res.data.company_id,
               tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid
             }});
-          }
-          else if (res.errNo == 400 && res.company_id !== null) {
-            that.getUserInfo(() => {
-              if (that.isBack) {
-                let page = { url: '', name: '' };
+          } else if (res.errNo == 400 && res.data && res.data.company_id !== null) {
+            that.$root.company_pid = that.company_id = res.data.company_id;
+            if (that.isBack) {
+              let page = { url: '', name: '' };
 
-                switch(that.order_state) {
-                  case 0:
-                    page.url = '/account';
-                    page.name = '我的号码';
-                    break;
-                  case 1 || 2 || 3 || 4:
-                    page.url = '/payment';
-                    page.name = '我的号码';
-                    break;
-                };
+              switch(that.order_state) {
+                case 0:
+                  page.url = '/account';
+                  page.name = '我的号码';
+                  break;
+                case 1 || 2 || 3 || 4:
+                  page.url = '/payment';
+                  page.name = '我的号码';
+                  break;
+              };
 
-                if (page.url != '' && page.name != '') {
-                  that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
-                    showClose: false,
-                    callback() {
-                      that.$router.replace({path: page.url, query: {
-                        order_id: that.order_id,
-                        set: !!that.order_id,
-                        company_id: that.company_id,
-                        tmp_uid: that.tmp_uid
-                      }});
-                    }
-                  });
-                }
-              } else {
-                that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
+              if (page.url != '' && page.name != '') {
+                that.$alert('检测到您刚刚已完成注册，将自动进入' + page.name + '页', '', {
                   showClose: false,
                   callback() {
-                    that.$router.replace({path: '/account', query: {
+                    that.$router.replace({path: page.url, query: {
                       order_id: that.order_id,
                       set: !!that.order_id,
                       company_id: that.company_id,
@@ -380,7 +365,21 @@ export default {
                   }
                 });
               }
-            })
+            } else {
+              that.$alert('检测到您已完成注册，将自动进入我的号码页', '', {
+                showClose: false,
+                callback() {
+                  that.$router.replace({path: '/account', query: {
+                    order_id: that.order_id,
+                    set: !!that.order_id,
+                    company_id: that.company_id,
+                    tmp_uid: that.tmp_uid
+                  }});
+                }
+              });
+            }
+          } else {
+            that.messageErr(res.message || res.data.message);
           }
         })
     },
