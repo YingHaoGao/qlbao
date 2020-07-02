@@ -274,7 +274,7 @@ $(function() {
     var codeInterval;
 
     var code = '',
-        isSubmit = false,
+        isSubmit = localStorage.getItem('submitted_my_phone'),
         operator = $('.btn.active').attr('name'),
         company_id = getUrlParam('company_id'),
         order_id = getUrlParam('order_id'),
@@ -415,6 +415,8 @@ $(function() {
                 if (res.errNo == 0) {
                     alert('已提交')
                     isSubmit = true;
+                    localStorage.setItem('submitted_my_phone', 'true');
+                    location.href = location.origin + location.pathname.replace('sign.html', '?no_btn=1#/home');
                 } else {
                     alert(res.message)
                 }

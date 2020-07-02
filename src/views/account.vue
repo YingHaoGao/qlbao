@@ -4,7 +4,7 @@
     <div class="box">
       <div class="input">
         <span class="tag">请输入开通号码数量:</span>
-        <el-input v-model="num" class="number" type="number" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入开通数量" v-focus @focus="selectFocus($event)">
+        <el-input v-model="num" class="number" type="number" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="号码数量" v-focus @focus="selectFocus($event)">
           <span slot="suffix" class="suffix">个</span>
         </el-input>
       </div>

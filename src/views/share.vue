@@ -178,7 +178,6 @@ export default {
       .then(res => {
         if (res.errNo == 0) {
           let  company = '';
-          res.data.company_name = '哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈'
           if(res.data.company_name && res.data.company_name.length > 10) {
             for(let i = 0; i < res.data.company_name.length; i++) {
               if(i!= 0 && i%10 == 0) {

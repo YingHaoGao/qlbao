@@ -43,12 +43,12 @@
     </div>
     <!-- </div> -->
 
-    <div class="footer">
+    <div class="footer" v-if="!noBtn">
       <div class="item">
         <div class="view" @click="viewNumber" v-if="btnType == 2">查看号码</div>
       </div>
       <div class="item">
-        <div class="open" @click="openNow" v-if="btnType == 0">申请立即开通</div>
+        <div class="open" @click="openNow" v-if="btnType == 0">立即开通</div>
       </div>
       <div class="item">
         <div class="continue" @click="continueOpen" v-if="btnType == 1">继续开通</div>
@@ -188,6 +188,7 @@ export default {
       // 显示按钮
       btnType: 0,
       src: "",
+      noBtn: false,
 
       // Boxin Star
       seiperIndex: 0,
@@ -221,8 +222,11 @@ export default {
     });
   },
   created() {
-    let agent_id = this.getUrlKey("agent_id");
+    let agent_id = this.getUrlKey("id");
     this.$root.agent_id = agent_id;
+
+    this.noBtn = this.getUrlKey('no_btn');
+    if (this.noBtn) return;
 
     this.load = this.$loading({
       lock: true,

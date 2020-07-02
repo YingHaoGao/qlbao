@@ -36,7 +36,7 @@ export default new Router({
       name: 'Sign',
       component: Sign,
       meta: {
-        title: '注册'
+        title: '注册企业信息'
       }
     },
     {
@@ -44,7 +44,7 @@ export default new Router({
       name: 'Account',
       component: Account,
       meta: {
-        title: '创建订单'
+        title: '预订开通号码数量'
       }
     },
     {
@@ -52,7 +52,7 @@ export default new Router({
       name: 'Payment',
       component: Payment,
       meta: {
-        title: '我的号码',
+        title: '已添加的手机号',
         // isShare: true
       }
     },
@@ -69,7 +69,7 @@ export default new Router({
       name: 'Share',
       component: Share,
       meta: {
-        title: '我的邀请卡',
+        title: '邀请员工添加手机号',
         // isShare: true
       }
     }
