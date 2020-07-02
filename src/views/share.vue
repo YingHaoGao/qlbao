@@ -115,7 +115,7 @@ export default {
 
       let shareDate = {
         access_token: localStorage.getItem('access_token'),
-        url: CONFIG.SHARE + "/" ,
+        url: CONFIG.SHARE,
         type: 2
       };
 
@@ -134,8 +134,11 @@ export default {
             'onMenuShareQZone'
           ]
         });
-        TOOL.setShare(that, CONFIG.SHARE + "/sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id)
-        console.log(that.order_id)
+        TOOL.setShare(
+          CONFIG.SHARE + "sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id,
+          that.company.replace(/<br\/>/g,''),
+          '请您填写手机号，开通视频彩铃'
+        );
       })
   	},
     // 生成二维码参数
@@ -147,7 +150,7 @@ export default {
       let qrcode = new QRCode("QRCodeNone", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
-          text: CONFIG.SHARE + "/sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id
+          text: CONFIG.SHARE + "sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id
         });
       var myCanvas = document.getElementsByTagName('canvas')[0];
       var qrcodeNode = document.getElementById('qrcode');

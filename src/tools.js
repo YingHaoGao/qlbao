@@ -90,11 +90,11 @@ const tools = {
         }
     },
     // 设置分享
-    setShare(that, link) {
+    setShare(link, title, desc) {
         let share = {
-            imgUrl: '',
-            title: that.$route.meta.title,
-            desc: that.$route.meta.title,
+            imgUrl: './assets/img/weixin.png',
+            title: title,
+            desc: desc,
             link: link || location.href.split('#')[0]
         };
         console.log(share)

@@ -463,7 +463,7 @@ export default {
       //  this.$router.push({ path: "/payment" ,query:{
       //   company_id: this.company_id
       // } });
-      window.location.href = `${CONFIG.SHARE}/#/payment?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
+      window.location.href = `${CONFIG.SHARE}#/payment?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
     },
     openNow() {
       let that = this;
@@ -471,7 +471,7 @@ export default {
       //  tmp_uid: that.tmp_uid,
       //   company_id: that.company_id
       // } });
-      window.location.href = `${CONFIG.SHARE}/#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`
+      window.location.href = `${CONFIG.SHARE}#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`
     },
     continueOpen() {
       let that = this;
@@ -479,7 +479,7 @@ export default {
       // this.$router.push({ path: window.location.href.split('?')[0] + "/account", query: {
       //    company_id: that.company_id
       // } });
-      window.location.href = `${CONFIG.SHARE}/#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`
+      window.location.href = `${CONFIG.SHARE}#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`
       // window.location.href = `${
       //   window.location.href.split("?")[0]
       // }#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;

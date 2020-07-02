@@ -227,7 +227,7 @@ export default {
     onCreate () {
       let that = this;
       if (that.order_users.order_id != '')
-        window.location.href = `${CONFIG.SHARE}/#/share?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&order_id=${that.order_users.order_id}`
+        window.location.href = `${CONFIG.SHARE}#/share?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&order_id=${that.order_users.order_id}`
       else
         this.$alert("目前可添加手机号数量已满，请追加开通新号码");
     },
