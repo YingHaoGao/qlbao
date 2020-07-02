@@ -368,7 +368,7 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
     }
   }
   .payBtn {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     margin-bottom: 1.03rem;
     width: 240px;
     // height: 2.6rem;

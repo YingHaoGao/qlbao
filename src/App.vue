@@ -58,11 +58,28 @@ html{
     -webkit-appearance: none !important;
     -webkit-tap-highlight-color:rgba(0,0,0,0) !important;
   }
-  .el-input__inner {
+  button, .el-input__inner {
     -webkit-appearance: none !important;
     -webkit-tap-highlight-color:rgba(0,0,0,0) !important;
   }
 
+  #account {
+    .number>input::-webkit-input-placeholder {
+      font-size: 0.5rem;
+    }
+
+    .number>input::-moz-placeholder {
+      font-size: 0.5rem;
+    }
+
+    .number>input:-ms-input-placeholder {
+      font-size: 0.5rem;
+    }
+
+    .number>input:-moz-placeholder {
+      font-size: 0.5rem;
+    }
+  }
   #share {
     padding: 1.45rem !important;
   }

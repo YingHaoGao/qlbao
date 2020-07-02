@@ -63,6 +63,7 @@
 import TOOL from "../tools.js";
 import CONFIG from "../../config/index.js";
 import axios from "axios";
+import $ from 'jquery';
 // import Swiper from "swiper"
 import Background from "../assets/img/background0.png";
 
@@ -146,7 +147,6 @@ export default {
               src: require("../assets/mp4/燕之屋.mp4")                 // 本地
             },
           ],
-          // poster: "../../static/video.png", //你的封面地址
           width: document.documentElement.clientWidth,
           notSupportedMessage: "此视频暂无法播放，请稍后再试", //允许覆盖Video.js无法播放媒体源时显示的默认信息。
           controlBar: {
@@ -170,7 +170,6 @@ export default {
               src: require("../assets/mp4/分众传媒.mp4")                 // 本地
             },
           ],
-          // poster: "../../static/video.png", //你的封面地址
           width: document.documentElement.clientWidth,
           notSupportedMessage: "此视频暂无法播放，请稍后再试", //允许覆盖Video.js无法播放媒体源时显示的默认信息。
           controlBar: {
@@ -455,7 +454,16 @@ export default {
         this.$refs.videoPlayer3[0].player.pause();
         this.$refs.videoPlayer4[0].player.pause();
       }
-      
+      console.log(index, $('.van-swipe__track'))
+      if(index == 0) {
+        setTimeout(() => {
+          let w1 = $('.van-swipe__track').width();
+          let w2 = $('.active-item-one').width();
+          console.log(w1, w2)
+          $('.van-swipe__track').attr('style', 'width:' + w1 + 'px;transform: translateX(0px)')
+          $('.active-item-one').attr('style', 'width:' + w2 + 'px;transform: translateX(0px)')
+        }, 300)
+      }
       // this.$refs.videoPlayer1.player.pause();
     },
     viewNumber() {
