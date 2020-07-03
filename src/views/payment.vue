@@ -24,7 +24,7 @@
         :row-class-name="tableRowClassName"
         style="width: 100%;">
         <el-table-column
-          prop="user_name"
+          prop="real_name"
           label="姓名"
           min-width="80">
         </el-table-column>
@@ -82,7 +82,9 @@ export default {
       this.tmp_uid = parseInt(that.getQueryStringByName('tmp_uid'));
     }
 
-    this.getOrder(this.getInfo);
+    this.getOrder(() => {
+      this.getInfo();
+    });
     TOOL.setShare(that);
     this.getSurpulsAdd();
 
@@ -146,34 +148,37 @@ export default {
           // that.list = res.data;
           let newList = [];
           res.data.forEach(item => {
-            let user_name = '';
+            let real_name = '';
 
-            if(item.user_name && item.user_name.length > 4) {
-              for(let i = 0; i < item.user_name.length; i++) {
+            if(item.real_name && item.real_name.length > 4) {
+              for(let i = 0; i < item.real_name.length; i++) {
                 if(i!= 0 && i%4 == 0) {
-                  user_name += '\r\n'
+                  real_name += '\r\n';
                 }
-                user_name += item.user_name[i]
+                real_name += item.real_name[i];
               }
             }else {
-              user_name = item.user_name
+              real_name = item.real_name;
             }
 
             newList.push({
               ...item,
-              user_name: user_name,
+              real_name: real_name,
               telephoneNc: that.telepToNc(item.telephone_type)
             })
 
             let user_counter = that.order_users[item.order_id];
-            if (user_counter) {
-              ++user_counter.count;
-              if (user_counter.count < user_counter.max_count)
-                that.order_users.order_id = item.order_id;
-              else if (that.order_users.order_id == item.order_id)
-                that.order_users.order_id = '';
-            }
+            if (user_counter) ++user_counter.count;
           });
+          for (let k in that.order_users) {
+            if (k != 'order_id') {
+              let user_counter = that.order_users[k];
+              if (user_counter.count < user_counter.max_count) {
+                that.order_users.order_id = k;
+                break;
+              }
+            }
+          }
           that.list = newList;
         });
     },
@@ -187,7 +192,7 @@ export default {
         tmp_uid: that.tmp_uid,
         company_id: that.company_id
       })
-        .then(res => {
+        .then((res) => {
           if (res.errNo == 0 && res.data && res.data.length > 0) {
             res.data.forEach((order) => {
               if (order.state == 1) {
@@ -199,7 +204,7 @@ export default {
               }
             });
           }
-          callback.call(that);
+          callback();
         })
     },
     // 添加新号码
@@ -262,6 +267,12 @@ export default {
   box-sizing: border-box;
   padding: 2rem 0rem 0rem 0rem;
   // background-color: #F2F2F2;
+
+  .el-table {
+    .cell {
+      font-size: .75rem;
+    }
+  }
 
   .pay-status-box{
     width: 100%;

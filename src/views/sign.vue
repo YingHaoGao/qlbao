@@ -279,12 +279,10 @@ export default {
             this.$root.company_pid = res.data.company_id;
             this.company_id = res.data.company_id;
             
-            that.getAccessToken();
-
-            this.$message({
+            /*this.$message({
               message: '提交成功！',
               type: 'success'
-            });
+            });*/
             this.$router.replace({path: '/account', query: {
               company_id: res.data.company_id,
               tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid
@@ -326,19 +324,6 @@ export default {
             that.messageErr(res.message || res.data.message);
           }
         })
-    },
-    // 获取access_token
-    getAccessToken () {
-      let that = this;
-
-      that.$http.fetch('/accessToken', {
-        client_id: that.$root.client_id,
-        secret: that.$root.secret
-      }).then(res => {
-        if (res.errNo == 0) {
-          TOOL.setStorage('access_token', res.access_token);
-        }
-      })
     },
     // 验证企业名称
     checkName() {
