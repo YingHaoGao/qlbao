@@ -31,6 +31,7 @@
         <img src="../../static/icon/我知道了.png" />
       </div>
     </div>
+    <vue-canvas-poster :widthPixels="1000" :painting="painting" @success="success" @fail="fail"></vue-canvas-poster>
   </div>
 </template>
 

@@ -8,12 +8,13 @@ import CONFIG from '../config'
 import { Swipe, SwipeItem } from 'vant'
 import VideoPlayer from 'vue-video-player'
 import { Lazyload } from 'vant';
+import VueCanvasPoster from 'vue-canvas-poster'
 
 import 'element-ui/lib/theme-chalk/index.css'
 
 const wx = require("weixin-js-sdk");
 require('./mock/index.js');
-require('video.js/dist/video-js.css');
+require('video.js/dist/video-js.css')
 
 Vue.config.productionTip = false
 
@@ -22,6 +23,7 @@ Vue.use(VideoPlayer);
 Vue.use(Swipe);
 Vue.use(SwipeItem);
 Vue.use(Lazyload);
+Vue.use(VueCanvasPoster)
 
 Vue.prototype.$wx = wx;
 Vue.prototype.$http = http;

@@ -5,14 +5,19 @@
         <div class="status-name">状态</div>
         <div class="status-type">{{typeNC}}</div>
       </div>
+      <div class="ba">查看管理网址 <img src="../../static/icon/back.png"></div>
       <!-- <div class="status-img-right">
         <img src="../../static/icon/book.png">
       </div> -->
     </div>
     <div class="buttons-outer">
       <div class="buttons">
-        <el-button @click="onNewPhone" :style="{ width: btnWidth }" round>追加开通新号码</el-button>
-        <el-button @click="onCreate" :style="{ width: btnWidth }" round>生成我的邀请卡</el-button>
+        <el-button @click="onNewPhone" :style="{ width: btnWidth }" round>
+        <img src="../../static/icon/user.png">
+        追加开通新号码</el-button>
+        <el-button @click="onCreate" :style="{ width: btnWidth }" round>
+        <img src="../../static/icon/code.png">
+        生成我的邀请卡</el-button>
       </div>
     </div>
     <div class="tab">
@@ -27,6 +32,7 @@
           prop="real_name"
           label="姓名"
           min-width="80">
+          <div slot-scope="scope" v-html="scope.row.real_name"></div>
         </el-table-column>
         <el-table-column
           class-name="phone"
@@ -55,6 +61,16 @@
     <!-- <div class="code">
       二维码分享给员工填写号码
     </div> -->
+    <div class="fixBtn">
+      <div class="fixItem" @click="copy(phone)">
+        <img src="../assets/img/phone-icon.png"/>
+        <span>{{phone}}</span>
+      </div>
+      <div class="fixItem" @click="copy(weixin)">
+        <img src="../assets/img/weixin-icon.png"/>
+        <span>{{weixin}}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -100,6 +116,8 @@ export default {
   },
   data () {
     return {
+      phone: '010-88447940',
+      weixin: 'z13521561449',
       list: [],
       type: 0,
       width: 0,
@@ -120,6 +138,19 @@ export default {
     }
   },
   methods: {
+    // 复制
+    copy(msg){
+      var input = document.createElement("input");  
+      input.value = msg;
+      document.body.appendChild(input);
+      input.select(); 
+      document.execCommand("Copy");  
+      document.body.removeChild(input); 
+      this.$message({
+        message: '复制成功',
+        type: 'success'
+      })
+    },
     GetQueryValue1(name) {
        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
       if(window.location.hash.indexOf("?") < 0){
@@ -153,7 +184,7 @@ export default {
             if(item.real_name && item.real_name.length > 4) {
               for(let i = 0; i < item.real_name.length; i++) {
                 if(i!= 0 && i%4 == 0) {
-                  real_name += '\r\n';
+                  real_name += '<br/>';
                 }
                 real_name += item.real_name[i];
               }
@@ -210,11 +241,14 @@ export default {
     // 添加新号码
     onNewPhone () {
       let that = this;
-      TOOL.alert(' 添加新号码 tmp_uid = ' + that.tmp_uid)
-      this.$router.push({path: '/account', query: {
-        company_id: that.company_id,
-        tmp_uid: that.tmp_uid
-      }});
+
+      if (that.order_users.order_id != '')
+        this.$router.push({path: '/account', query: {
+          company_id: that.company_id,
+          tmp_uid: that.tmp_uid
+        }});
+      else
+        this.$alert("目前可添加手机号数量已满，请追加开通新号码");
     },
     //剩余可添加人数
     getSurpulsAdd(){
@@ -269,6 +303,8 @@ export default {
   // background-color: #F2F2F2;
 
   .el-table {
+    padding-bottom: 60px;
+
     .cell {
       font-size: .75rem;
     }
@@ -278,13 +314,14 @@ export default {
     width: 100%;
     height: 5.8rem;
     padding: 0 0.75rem;
-    // background:linear-gradient(228deg,rgba(210,210,255,1) 0%,rgba(161,161,249,1) 100%);
     background-image: url('../../static/icon/payment_head.png');
     background-size: cover;
     background-position: right;
     box-sizing: border-box;
     display: flex;
     align-items: center;
+    position: relative;
+    border-bottom: solid 1px #fff;
 
     .status-left{
       width: 50%;
@@ -334,7 +371,7 @@ export default {
       display: inline-block;
       color: #fff;
       height: 2rem;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
 
       &:first-child {
         background: linear-gradient(180deg,rgba(253,188,124,1) 0%,rgba(254,121,119,1) 100%);
@@ -342,6 +379,13 @@ export default {
       &:last-child {
         background: linear-gradient(180deg,rgba(124,193,253,1) 0%,rgba(127,119,254,1) 100%);
         float: right;
+      }
+
+      img {
+        width: 0.9rem;
+        height: 0.9rem;
+        vertical-align: middle;
+        margin-right: 0.25rem;
       }
     }
   }
@@ -368,6 +412,9 @@ export default {
         overflow: hidden;
         text-overflow:ellipsis;
         white-space: nowrap;
+        box-sizing: border-box;
+        background: transparent;
+        border: solid 1px #999999;
       }
       .name-phone{
         width: 5.2rem;
@@ -400,6 +447,60 @@ export default {
       line-height: 1.4rem;
       margin: auto;
       text-align: center;
+    }
+  }
+  .ba {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translate(0, -50%);
+    vertical-align: middle;
+    font-size: 0.7rem;
+    color: #757575;
+
+    img {
+      transform: rotate(180deg);
+      width: 1rem;
+      height: 1rem;
+      vertical-align: middle;
+    }
+  }
+  .fixBtn {
+    position: fixed;
+    bottom: 10px;
+    left: 15px;
+    right: 15px;
+    box-sizing: border-box;
+    padding: 10px 0px;
+    height:40px;
+    background:rgba(121,212,228,1);
+    border-radius:4px;
+    overflow: hidden;
+
+    .fixItem {
+      width: calc( 50% - 1px );
+      height: 100%;
+      box-sizing: border-box;
+      padding: 0px 0.8rem;
+      color: #fff;
+      font-size: 0.5rem;
+      float: left;
+      text-align: center;
+
+      img{
+        width: 26px;
+        height: 22px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 0.2rem;
+      }
+      span{ 
+        vertical-align: middle;
+      }
+
+      &:first-child{
+        border-right: solid 1px #fff;
+      }
     }
   }
 }

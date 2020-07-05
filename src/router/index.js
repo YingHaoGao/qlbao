@@ -6,6 +6,7 @@ import Account from '../views/account.vue'
 import Pay from '../views/pay.vue'
 import Payment from '../views/payment.vue'
 import Share from '../views/share.vue'
+import newShare from '../views/newShare.vue'
 import Home from '../views/home.vue'
 import Loading from '../views/loading.vue'
 
@@ -52,7 +53,7 @@ export default new Router({
       name: 'Payment',
       component: Payment,
       meta: {
-        title: '已添加的手机号',
+        title: '查看号码',
         // isShare: true
       }
     },
@@ -67,7 +68,7 @@ export default new Router({
     {
       path: '/share',
       name: 'Share',
-      component: Share,
+      component: newShare,
       meta: {
         title: '邀请员工添加手机号',
         // isShare: true

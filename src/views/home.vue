@@ -659,32 +659,24 @@ export default {
   .footer {
     width: 14rem;
     margin: auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    position: fixed;
+    bottom: 0.8rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 10;
+
     .open {
-      background: linear-gradient(
-        360deg,
-        rgba(64, 173, 194, 1) 0%,
-        rgba(172, 231, 242, 1) 100%
-      );
+      background: #FE772D;
       font-weight: bold;
       letter-spacing: 4px;
     }
     .view {
-      background: linear-gradient(
-        360deg,
-        rgba(64, 173, 194, 1) 0%,
-        rgba(172, 231, 242, 1) 100%
-      );
+      background: #FE772D;
       font-weight: bold;
       letter-spacing: 4px;
     }
     .continue {
-      background: linear-gradient(
-        360deg,
-        rgba(64, 173, 194, 1) 0%,
-        rgba(172, 231, 242, 1) 100%
-      );
+      background: #FE772D;
       font-weight: bold;
       letter-spacing: 4px;
     }

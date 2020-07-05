@@ -20,6 +20,10 @@
   @import './assets/css/iconfont.css';
 </style>
 <style lang="scss">
+canvas.canvas {
+  position: relative !important;
+  top: 0px !important;
+}
 html{
   font-size: 20px;
   font-family: 'PingFangSC-Regular','PingFang SC';
@@ -66,18 +70,22 @@ html{
   #account {
     .number>input::-webkit-input-placeholder {
       font-size: 0.5rem;
+      line-height: 0.5rem;
     }
 
     .number>input::-moz-placeholder {
       font-size: 0.5rem;
+      line-height: 0.5rem;
     }
 
     .number>input:-ms-input-placeholder {
       font-size: 0.5rem;
+      line-height: 0.5rem;
     }
 
     .number>input:-moz-placeholder {
       font-size: 0.5rem;
+      line-height: 0.5rem;
     }
   }
   #share {
@@ -94,7 +102,7 @@ html{
     padding: 2rem 1.6rem 1rem 1.6rem;
     box-sizing: border-box;
     overflow: auto;
-  
+
     .vessel {
       position: absolute;
       top: 3.5rem;
