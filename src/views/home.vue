@@ -37,8 +37,8 @@
               x5-video-orientation="portraint"
               webkit-playsinline="true"
             ></video-player>
-            <div class="thumbnail" v-if="index == seiperIndex && thumbnailShow">
-              <img class="img" :src="require('../assets/img/thumbnail_' + index + '.png')">
+            <div class="thumbnail" v-if="index != seiperIndex || thumbnailShow">
+              <img class="img" :src="require('../assets/thumb/thumbnail_' + index + '.jpg')">
               <img class="play" src="../assets/img/play.png" @click="play(index)">
             </div>
           </div>
@@ -106,6 +106,10 @@ import axios from "axios";
 import $ from "jquery";
 // import Swiper from "swiper"
 import Background from "../assets/img/background0.png";
+import thumbnail_0 from "../assets/thumb/thumbnail_0.jpg";
+import thumbnail_1 from "../assets/thumb/thumbnail_1.jpg";
+import thumbnail_2 from "../assets/thumb/thumbnail_2.jpg";
+import thumbnail_3 from "../assets/thumb/thumbnail_3.jpg";
 
 const wx = require("weixin-js-sdk");
 
@@ -526,14 +530,14 @@ export default {
       }
       if (index == 0) {
         setTimeout(() => {
-          let w1 = $(".van-swipe__track").width();
-          let w2 = $(".active-item-one").width();
+          let w1 = $(".infoBox .van-swipe__track").width();
+          let w2 = $(".infoBox .active-item-one").width();
 
-          $(".van-swipe__track").attr(
+          $(".infoBox .van-swipe__track").attr(
             "style",
             "width:" + w1 + "px;transform: translateX(0px)"
           );
-          $(".active-item-one").attr(
+          $(".infoBox .active-item-one").attr(
             "style",
             "width:" + w2 + "px;transform: translateX(0px)"
           );
