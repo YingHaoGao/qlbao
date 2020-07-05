@@ -37,6 +37,10 @@
               x5-video-orientation="portraint"
               webkit-playsinline="true"
             ></video-player>
+            <div class="thumbnail" v-if="index == seiperIndex && thumbnailShow">
+              <img class="img" :src="require('../assets/img/thumbnail_' + index + '.png')">
+              <img class="play" src="../assets/img/play.png" @click="play(index)">
+            </div>
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -118,6 +122,7 @@ export default {
       paystate: "",
       userIp: "",
       userId: "",
+      thumbnailShow: true,
       usertype: "",
       playerOptions: [
         {
@@ -471,10 +476,36 @@ export default {
         this.handleShowPic(position);
       }
     },
+    // 点击缩略图
+    play(index) {
+      this.thumbnailShow = false;
 
+      if (index === 1) {
+        this.$refs.videoPlayer1[0].player.pause();
+        this.$refs.videoPlayer3[0].player.pause();
+        this.$refs.videoPlayer4[0].player.pause();
+        this.$refs.videoPlayer2[0].player.play();
+      } else if (index === 2) {
+        this.$refs.videoPlayer1[0].player.pause();
+        this.$refs.videoPlayer2[0].player.pause();
+        this.$refs.videoPlayer4[0].player.pause();
+        this.$refs.videoPlayer3[0].player.play();
+      } else if (index === 3) {
+        this.$refs.videoPlayer3[0].player.pause();
+        this.$refs.videoPlayer1[0].player.pause();
+        this.$refs.videoPlayer2[0].player.pause();
+        this.$refs.videoPlayer4[0].player.play();
+      } else if (index === 0) {
+        this.$refs.videoPlayer2[0].player.pause();
+        this.$refs.videoPlayer3[0].player.pause();
+        this.$refs.videoPlayer4[0].player.pause();
+        this.$refs.videoPlayer1[0].player.play();
+      }
+    },
     //页面滑动视频停止播放
     onChange(index) {
       this.seiperIndex = index;
+      this.thumbnailShow = true;
       // console.log(this.$refs.videoPlayer1[0]);
       if (this.seiperIndex === 1) {
         this.$refs.videoPlayer1[0].player.pause();
@@ -493,12 +524,11 @@ export default {
         this.$refs.videoPlayer3[0].player.pause();
         this.$refs.videoPlayer4[0].player.pause();
       }
-      console.log(index, $(".van-swipe__track"));
       if (index == 0) {
         setTimeout(() => {
           let w1 = $(".van-swipe__track").width();
           let w2 = $(".active-item-one").width();
-          console.log(w1, w2);
+
           $(".van-swipe__track").attr(
             "style",
             "width:" + w1 + "px;transform: translateX(0px)"
@@ -542,6 +572,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.thumbnail {
+  position: absolute;
+  top: 7.7rem;
+  left: .2rem;
+  width: 14rem;
+  height: 8rem;
+  margin: 0 auto;
+  z-index: 1;
+
+  .img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+  .play {
+    width: 2.5rem;
+    height: 2.5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+  }
+}
 #home {
   box-sizing: border-box;
   width: 100%;
