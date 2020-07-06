@@ -242,13 +242,10 @@ export default {
     onNewPhone () {
       let that = this;
 
-      if (that.order_users.order_id != '')
-        this.$router.push({path: '/account', query: {
-          company_id: that.company_id,
-          tmp_uid: that.tmp_uid
-        }});
-      else
-        this.$alert("目前可添加手机号数量已满，请追加开通新号码");
+      this.$router.push({path: '/account', query: {
+        company_id: that.company_id,
+        tmp_uid: that.tmp_uid
+      }});
     },
     //剩余可添加人数
     getSurpulsAdd(){
