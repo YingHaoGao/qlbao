@@ -24,6 +24,13 @@ canvas.canvas {
   position: relative !important;
   top: 0px !important;
 }
+.www {
+  font-size: 0.7rem;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(51,51,51,1);
+  line-height: 1rem;
+}
 html{
   font-size: 20px;
   font-family: 'PingFangSC-Regular','PingFang SC';

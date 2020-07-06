@@ -5,7 +5,14 @@
         <div class="status-name">状态</div>
         <div class="status-type">{{typeNC}}</div>
       </div>
-      <div class="ba">查看管理网址 <img src="../../static/icon/back.png"></div>
+      <el-popover
+        placement="bottom"
+        width="200"
+        v-model="visible"
+        trigger="click">
+        <div class="www" @click="copy(www)">{{www}}</div>
+        <div slot="reference" class="ba">查看管理网址 <img src="../../static/icon/back.png"></div>
+      </el-popover>
       <!-- <div class="status-img-right">
         <img src="../../static/icon/book.png">
       </div> -->
@@ -109,15 +116,17 @@ export default {
     this.btnWidth =  (clientWidth - 55) / 2 + 'px';
   },
   mounted () {
-    this.$alert('公司管理员可登陆 <u>http://cailing.meisheapp.com</u> 统一添加号码', '提示', {
-      dangerouslyUseHTMLString: true
-    });
     localStorage.setItem('payInfo', null)
+    this.$nextTick(() => {
+      this.visible = true;
+    })
   },
   data () {
     return {
       phone: '010-88447940',
       weixin: 'z13521561449',
+      visible: false,
+      www: '公司管理员可登陆 http://cailing.meisheapp.com 统一添加号码',
       list: [],
       type: 0,
       width: 0,
