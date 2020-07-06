@@ -250,7 +250,6 @@ export default {
       that.$http.fetch('/v1/weixin/getShareInfo/', shareDate, that, true).then(res => {
       	// alert(JSON.stringify(res.data))
         that.$wx.config({
-        	debug: true,
           appId: res.data.appId,
           timestamp: res.data.timestamp,
           nonceStr: res.data.nonceStr,
