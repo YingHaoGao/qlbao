@@ -215,7 +215,7 @@ export default {
           sources: [
             {
               type: "video/mp4",
-              src: require("../assets/mp4/分众传媒.mp4") // 本地
+              src: require("../assets/mp4/铭门盛宴.mp4") // 本地
             }
           ],
           width: document.documentElement.clientWidth,
@@ -791,6 +791,7 @@ export default {
   }
 
   .contact {
+    padding-bottom: 70px;
     color: #333;
     font-size: 15px;
     font-weight: bold;
