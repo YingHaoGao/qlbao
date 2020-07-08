@@ -267,7 +267,8 @@ export default {
         TOOL.setShare(
           CONFIG.SHARE + "sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id,
           that.company.replace(/<br\/>/g,''),
-          '请您填写手机号，开通视频彩铃'
+          '请您填写手机号，开通视频彩铃',
+          CONFIG.SHARE + 'wxshare.png'
         );
       })
   	},
