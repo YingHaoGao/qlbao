@@ -2,12 +2,12 @@
   <div
     id="home"
     :autoresize="true"
-    v-lazy:background-image="background"
     style="height: none !important;"
     ref="home"
     :class="{full: size > 3.2}"
     v-loading="loading"
   >
+    <!-- v-lazy:background-image="background" -->
     <img style="width: 100%" src="../assets/img/background1.png" alt />
     <!-- <div class="background_top"></div> -->
     <!-- <div class="background_center"></div> -->
@@ -576,6 +576,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#home {
+  background: #DFFAFF;
+}
 .thumbnail {
   position: absolute;
   top: 7.7rem;
@@ -648,6 +651,8 @@ export default {
 
   .infoBox {
     padding-top: 20px;
+    background: url(../assets/img/bg.png) no-repeat center;
+    background-size: cover;
 
     .van-swipe-item .box-item {
       width: 14.4rem;

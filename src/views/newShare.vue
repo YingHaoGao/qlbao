@@ -83,7 +83,7 @@ export default {
       company_id: 0,
       order_id: 0,
       marke: [
-      	'长按二维码保存到相册或分享链接，\r\n分享给员',
+      	'长按二维码保存到相册或分享链接，\r\n分享给员工填写信息。',
       	'邀请您开通企业视频彩铃'
       ],
       painting: false,
@@ -159,7 +159,7 @@ export default {
 			      css: {
 			        top: '37px',
 			        left: '87px',
-			        color: '#1529762',
+			        color: '#79D4E4',
 			        fontWeight: '400',
           		fontSize: '46px',
           		textShadow: '0px 1px 0px rgba(23,87,162,1)'

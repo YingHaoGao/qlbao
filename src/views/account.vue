@@ -223,7 +223,6 @@ TOOL.alert(' 根据临时用户ID查询订单 上传 = ' + JSON.stringify(params
             }
             return false;
           });
-TOOL.alert(' 根据临时用户ID查询订单 = ' + JSON.stringify(data))
         }
       });
     },

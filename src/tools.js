@@ -92,6 +92,7 @@ const tools = {
     // 设置分享
     setShare(link, title, desc) {
         let share = {
+            debug: true,
             imgUrl: './assets/img/weixin.png',
             title: title,
             desc: desc,

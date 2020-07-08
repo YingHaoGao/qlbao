@@ -77,22 +77,22 @@ html{
   #account {
     .number>input::-webkit-input-placeholder {
       font-size: 0.5rem;
-      line-height: 0.5rem;
+      line-height: 1.5rem;
     }
 
     .number>input::-moz-placeholder {
       font-size: 0.5rem;
-      line-height: 0.5rem;
+      line-height: 1.5rem;
     }
 
     .number>input:-ms-input-placeholder {
       font-size: 0.5rem;
-      line-height: 0.5rem;
+      line-height: 1.5rem;
     }
 
     .number>input:-moz-placeholder {
       font-size: 0.5rem;
-      line-height: 0.5rem;
+      line-height: 1.5rem;
     }
   }
   #share {

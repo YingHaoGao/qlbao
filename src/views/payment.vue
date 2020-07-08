@@ -8,9 +8,8 @@
       <el-popover
         placement="bottom"
         width="200"
-        v-model="visible"
         trigger="click">
-        <div class="www" @click="copy(www)">{{www}}</div>
+        <div class="www" @click="copy(www)">公司管理员可登陆 {{www}} 统一添加号码</div>
         <div slot="reference" class="ba">查看管理网址 <img src="../../static/icon/back.png"></div>
       </el-popover>
       <!-- <div class="status-img-right">
@@ -44,7 +43,7 @@
         <el-table-column
           class-name="phone"
           header-align="center"
-          align="center"
+          align="left"
           prop="telephone"
           label="手机号"
           min-width="104">
@@ -53,12 +52,12 @@
           header-align="center"
           prop="level_name"
           label="开通时长"
-          align="center"
+          align="left"
           min-width="66">
         </el-table-column>
         <el-table-column
           header-align="right"
-          align="right"
+          align="left"
           prop="telephoneNc"
           label="运营商"
           min-width="70">
@@ -117,16 +116,12 @@ export default {
   },
   mounted () {
     localStorage.setItem('payInfo', null)
-    this.$nextTick(() => {
-      this.visible = true;
-    })
   },
   data () {
     return {
       phone: '010-88447940',
       weixin: 'z13521561449',
-      visible: false,
-      www: '公司管理员可登陆 http://cailing.meisheapp.com 统一添加号码',
+      www: 'http://cailing.meisheapp.com',
       list: [],
       type: 0,
       width: 0,
@@ -445,11 +440,11 @@ export default {
     .title {
       width: 90%;
       height: 1.4rem;
-      background:rgba(242,242,242,1);
+      border: solid 1px rgba(242,242,242,1);
       border-radius: 0.2rem;
       font-size: 0.6rem;
       font-weight: 600;
-      color: rgba(153,153,153,1);
+      color: #999999;
       line-height: 1.4rem;
       margin: auto;
       text-align: center;
@@ -482,6 +477,7 @@ export default {
     background:rgba(121,212,228,1);
     border-radius:4px;
     overflow: hidden;
+    z-index: 10;
 
     .fixItem {
       width: calc( 50% - 1px );

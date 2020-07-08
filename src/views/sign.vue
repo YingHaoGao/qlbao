@@ -173,7 +173,6 @@ export default {
           type: 1
         }, that)
         .then(res => {
-          console.log(res, that.isBack)
           if (res.errNo == 0) {
             this.$message({
               message: '验证码已发送',
@@ -183,6 +182,11 @@ export default {
             that.codeInterval = setInterval(() => {
               that.codeTime -= 1
             }, 1000)
+          } else {
+            this.$message({
+              message: res.message,
+              type: 'error'
+            });
           }
         })
       })
