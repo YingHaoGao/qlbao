@@ -92,7 +92,7 @@ const tools = {
     // 设置分享
     setShare(link, title, desc) {
         let share = {
-            imgUrl: './assets/img/weixin.png',
+            imgUrl: require('./assets/img/weixin.png'),
             title: title,
             desc: desc,
             link: link || location.href.split('#')[0]
