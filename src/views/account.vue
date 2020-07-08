@@ -218,7 +218,7 @@ TOOL.alert(' 根据临时用户ID查询订单 上传 = ' + JSON.stringify(params
         if (res.errNo == 0 && res.data && res.data.length > 0) {
           res.data.some((order) => {
             if (order.state == 0) {
-              payOrder(order);
+              that.payOrder(order);
               return true;
             }
             return false;
