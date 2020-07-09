@@ -111,7 +111,7 @@ export default {
     TOOL.setShare(that)
 
     var clientWidth = document.documentElement.clientWidth;
-    this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
+    this.height = this.clientHeight - 40;
     this.footerShow = true;
     this.$nextTick(() => {
       document.documentElement.scrollTop = 0;

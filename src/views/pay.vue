@@ -2,17 +2,13 @@
   <div id="pay" :style="{ height: clientHeight + 'px' }">
     <div class="footer" :style="{ height: height + 'px' }">
       <div class="text">请选择支付方式</div>
-      <div class="item" @click="onWeiXin">
-        <img v-if="form.pay_mode == 2" class="payBtn" src="../../static/icon/编组备份.png" alt="">
-        <img v-if="form.pay_mode != 2" class="payBtn" src="../../static/icon/weixin.png" alt="">
-      </div>
-      <div class="item" v-if="isAliPay" @click="onAliPay">
-        <img v-if="form.pay_mode == 1" class="payBtn" src="../../static/icon/编组2备份.png" alt="">
-        <img v-if="form.pay_mode != 1" class="payBtn" src="../../static/icon/alipay.png" alt="">
+      <div class="item" style="margin-bottom: 1rem;" @click="onWeiXin">
+        <img class="payBtn" src="../../static/icon/weixin.png" alt="">
+        <span>微信支付</span>
       </div>
       <div class="item" @click="onDuiGong">
-        <img v-if="form.pay_mode == 3" class="payBtn" src="../../static/icon/编组3备份.png" alt="">
-        <img v-if="form.pay_mode != 3" class="payBtn" src="../../static/icon/accounts.png" alt="">
+        <img class="payBtn" src="../../static/icon/accounts.png" alt="">
+        <span>对公转账</span>
       </div>
       <div class="infoBox">
         <div v-for="item in bank" :key="item.id" class="duigong" v-show="form.pay_mode == 3">
@@ -330,7 +326,21 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
   // justify-content: center;
   // align-items: center;
   // flex-wrap: wrap;
+  .item {
+      background: #F2F2F2;
+      height: 2.6rem;
+      border-radius:4px;
 
+
+      span {
+        font-size:0.9rem;
+        font-family:PingFang-SC-Regular,PingFang-SC;
+        font-weight:400;
+        color:rgba(51,51,51,1);
+        line-height: 2.6rem;
+        vertical-align: middle;
+      }
+    }
   .text {
     font-size: 0.8rem;
     padding: 1.5rem 0rem;
@@ -368,15 +378,10 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
     }
   }
   .payBtn {
-    font-size: 0.9rem;
-    margin-bottom: 1.03rem;
-    width: 240px;
-    // height: 2.6rem;
-    box-sizing: border-box;
-    position: relative;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+    width: 1.7rem;
+    height: 1.7rem;
+    vertical-align: middle;
+    margin-right: 0.3rem;
   }
   .footer {
     width: 100%;
