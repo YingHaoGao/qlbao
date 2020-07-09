@@ -201,10 +201,8 @@ export default {
       that.$http.fetch('User/getUserInfo', { phone: that.form.phone })
         .then(res => {
           if(res.errNo == 0) {
-            that.$root.company_pid = res.data.company_id;
-            that.$root.tmp_uid = res.data.user_id;
-            that.company_id = res.data.company_id;
-            that.tmp_uid = res.data.user_id;
+            that.$root.company_pid = that.company_id = res.data.company_id;
+            that.$root.tmp_uid = that.tmp_uid = res.data.user_id;
 
             if (fn) {
               fn()
@@ -263,7 +261,7 @@ export default {
 
       form.company_pid = that.$root.agent_id || 0;
       form.isRingtone = form.ringtone.length > 0;
-      console.log('that.$root.tmp_uid = ' + (that.$root.tmp_uid || that.$route.query.tmp_uid))
+      var tmp_uid = (that.$root.tmp_uid || that.$route.query.tmp_uid);
 
       TOOL.alert('上传参数：')
       TOOL.alert('contact_telephone: ' + Number(form.phone))
@@ -272,7 +270,7 @@ export default {
       TOOL.alert('contact_name: ' + form.contacts)
       TOOL.alert('open_user: ' + (form.isRingtone ? 1 : 0))
       TOOL.alert('company_pid: ' + form.company_pid)
-      TOOL.alert('tmp_uid: ' + (that.$root.tmp_uid || that.$route.query.tmp_uid))
+      TOOL.alert('tmp_uid: ' + tmp_uid)
 
       this.$http.post('/company/register', {
         contact_telephone: Number(form.phone),
@@ -281,24 +279,23 @@ export default {
         contact_name: form.contacts,
         open_user: form.isRingtone ? 1 : 0,
         company_pid: form.company_pid,
-        tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid
+        tmp_uid: tmp_uid
       }, that).then(res => {
           if (res.errNo == 0) {
-            this.$root.company_pid = res.data.company_id;
-            this.company_id = res.data.company_id;
-            
+            that.$root.company_pid = that.company_id = res.data.company_id;
+
             /*this.$message({
               message: '提交成功！',
               type: 'success'
             });*/
             this.$router.replace({path: '/account', query: {
               company_id: res.data.company_id,
-              tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid
+              tmp_uid: tmp_uid
             }});
           } else if (res.errNo == 400 && res.data && res.data.company_id !== null) {
             that.$root.company_pid = that.company_id = res.data.company_id;
             that.orderStatus({
-              tmp_uid: that.$root.tmp_uid || that.$route.query.tmp_uid,
+              tmp_uid: tmp_uid,
               company_id: res.data.company_id
             }, (data) => {
               let page = {
@@ -322,7 +319,7 @@ export default {
                   callback() {
                     that.$router.replace({path: page.url, query: {
                       company_id: that.company_id,
-                      tmp_uid: that.tmp_uid
+                      tmp_uid: tmp_uid
                     }});
                   }
                 });
