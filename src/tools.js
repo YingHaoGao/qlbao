@@ -90,12 +90,12 @@ const tools = {
         }
     },
     // 设置分享
-    setShare(link, title, desc) {
+    setShare(link, title, desc, img) {
         let share = {
-            imgUrl: require('./assets/img/weixin.png'),
+            imgUrl: img,
             title: title,
             desc: desc,
-            link: link || location.href.split('#')[0]
+            link: link
         };
         console.log(share)
         wx.ready(function () {
