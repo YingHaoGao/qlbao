@@ -325,7 +325,7 @@ export default {
       .then(res => {
         if (res.errNo == 0) {
           let company = res.data.company_name;
-          company = '公司公司公司公司公司公司公司公司'
+
           that.company = company;
           that.name = res.data.contact_name;
 
