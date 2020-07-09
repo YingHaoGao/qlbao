@@ -17,8 +17,8 @@ export default{
 			let openid = this.getUrlKey("openid");
 			TOOL.alert('load - openid = ' + openid)
       if(openid){
-        this.$root.parm = openid;
-        this.$root.browser = 'openid';
+        this.$global.parm = openid;
+        this.$global.browser = 'openid';
 				this.$router.replace({ path: '/home' + '?openid=' + openid })
       } else {
 				this.getAccessToken();
@@ -37,8 +37,8 @@ export default{
       let that = this;
 
       that.$http.fetch('/accessToken', {
-        client_id: that.$root.client_id,
-        secret: that.$root.secret
+        client_id: that.$global.client_id,
+        secret: that.$global.secret
       }, that, true).then(res => {
         if (res.errNo == 0) {
           localStorage.setItem('access_token', res.access_token);

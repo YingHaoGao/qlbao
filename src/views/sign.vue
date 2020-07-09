@@ -201,8 +201,8 @@ export default {
       that.$http.fetch('User/getUserInfo', { phone: that.form.phone })
         .then(res => {
           if(res.errNo == 0) {
-            that.$root.company_pid = that.company_id = res.data.company_id;
-            that.$root.tmp_uid = that.tmp_uid = res.data.user_id;
+            that.$global.company_id = that.company_id = res.data.company_id;
+            that.$global.tmp_uid = that.tmp_uid = res.data.user_id;
 
             if (fn) {
               fn()
@@ -222,8 +222,6 @@ export default {
     onSubmit() {
       let that = this;
       let form = this.form;
-      let company_pid = this.$root.company_pid;
-      console.log(form)
 
       // 企业名称
       if (form.name == '' || !form.name || form.name.length > 16) {
@@ -259,9 +257,9 @@ export default {
         if (this.messageEvent) this.messageEvent.close();
       }
 
-      form.company_pid = that.$root.agent_id || 0;
+      form.company_pid = that.$global.agent_id || 0;
       form.isRingtone = form.ringtone.length > 0;
-      var tmp_uid = (that.$root.tmp_uid || that.$route.query.tmp_uid);
+      var tmp_uid = (that.$global.tmp_uid || that.$route.query.tmp_uid);
 
       TOOL.alert('上传参数：')
       TOOL.alert('contact_telephone: ' + Number(form.phone))
@@ -282,7 +280,7 @@ export default {
         tmp_uid: tmp_uid
       }, that).then(res => {
           if (res.errNo == 0) {
-            that.$root.company_pid = that.company_id = res.data.company_id;
+            that.$global.company_id = that.company_id = res.data.company_id;
 
             /*this.$message({
               message: '提交成功！',
@@ -293,7 +291,7 @@ export default {
               tmp_uid: tmp_uid
             }});
           } else if (res.errNo == 400 && res.data && res.data.company_id !== null) {
-            that.$root.company_pid = that.company_id = res.data.company_id;
+            that.$global.company_id = that.company_id = res.data.company_id;
             that.orderStatus({
               tmp_uid: tmp_uid,
               company_id: res.data.company_id
