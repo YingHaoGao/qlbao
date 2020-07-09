@@ -10,7 +10,7 @@
         width="200"
         trigger="click">
         <div class="www" @click="copy(www)">公司管理员可登陆 {{www}} 统一添加号码</div>
-        <div slot="reference" class="ba">查看管理网址 <img src="../../static/icon/back.png"></div>
+        <div slot="reference" class="ba">查看管理网址 <img src="../../static/icon/you.png"></div>
       </el-popover>
     </div>
     <div class="buttons-outer">
@@ -39,21 +39,21 @@
         </el-table-column>
         <el-table-column
           class-name="phone"
-          header-align="center"
+          header-align="left"
           align="left"
           prop="telephone"
           label="手机号"
           min-width="104">
         </el-table-column>
         <el-table-column
-          header-align="center"
+          header-align="left"
           prop="level_name"
           label="开通时长"
           align="left"
           min-width="66">
         </el-table-column>
         <el-table-column
-          header-align="right"
+          header-align="left"
           align="left"
           prop="telephoneNc"
           label="运营商"
@@ -471,10 +471,10 @@ export default {
     color: #757575;
 
     img {
-      transform: rotate(180deg);
-      width: 1rem;
-      height: 1rem;
-      vertical-align: middle;
+      width: 0.6rem;
+      height: 0.6rem;
+      position: relative;
+      top: 0.06rem;
     }
   }
   .fixBtn {

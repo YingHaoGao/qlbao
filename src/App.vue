@@ -25,12 +25,6 @@ canvas.canvas {
   top: 0px !important;
 }
 
-* {
-  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
-  border-color:transparent !important;
-  box-shadow: none !important;
-}
-
 .ba {
   user-select: none;
  -webkit-user-select: none;
@@ -96,22 +90,22 @@ html{
 
   #account {
     .number>input::-webkit-input-placeholder {
-      font-size: 0.5rem;
+      font-size: 0.7rem;
       line-height: 1rem;
     }
 
     .number>input::-moz-placeholder {
-      font-size: 0.5rem;
+      font-size: 0.7rem;
       line-height: 1rem;
     }
 
     .number>input:-ms-input-placeholder {
-      font-size: 0.5rem;
+      font-size: 0.7rem;
       line-height: 1rem;
     }
 
     .number>input:-moz-placeholder {
-      font-size: 0.5rem;
+      font-size: 0.7rem;
       line-height: 1rem;
     }
   }

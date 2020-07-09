@@ -39,7 +39,7 @@ export default {
     this.orderStatus();
 
     var clientWidth = document.documentElement.clientWidth;
-    this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
+    this.height = this.clientHeight - 40;
     this.$nextTick(() => {
       document.documentElement.scrollTop = 0;
     })

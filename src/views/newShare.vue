@@ -205,8 +205,8 @@ export default {
 			      text: that.company,
 			      css: {
 			        top: '170px',
-			        width: '231px',
-			        left: '40px',
+			        width: '297px',
+			        left: '7px',
 			        textAlign: 'center',
 			        color: '#212121',
 			        fontWeight: '400',
@@ -325,7 +325,7 @@ export default {
       .then(res => {
         if (res.errNo == 0) {
           let company = res.data.company_name;
-
+          company = '公司公司公司公司公司公司公司公司'
           that.company = company;
           that.name = res.data.contact_name;
 
