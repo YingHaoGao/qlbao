@@ -24,6 +24,26 @@ canvas.canvas {
   position: relative !important;
   top: 0px !important;
 }
+
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  border-color:transparent !important;
+  box-shadow: none !important;
+}
+
+.ba {
+  user-select: none;
+ -webkit-user-select: none;
+ -webkit-tap-highlight-color: transparent; 
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  border-color:transparent !important;
+  }
+.ba:before, .ba:after {
+  display: none;
+}
+.ba:focus {
+  outline:0;
+}
 .www {
   font-size: 0.7rem;
   font-family:PingFangSC-Regular,PingFang SC;

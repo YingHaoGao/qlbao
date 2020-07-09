@@ -157,6 +157,18 @@ export default {
 			      type: 'text',
 			      text: '邀请卡',
 			      css: {
+			        top: '39px',
+			        left: '87px',
+			        color: '#1757A2',
+			        fontWeight: '400',
+          		fontSize: '46px',
+          		textShadow: '0px 1px 0px rgba(23,87,162,1)'
+			      }
+          },
+          {
+			      type: 'text',
+			      text: '邀请卡',
+			      css: {
 			        top: '37px',
 			        left: '87px',
 			        color: '#79D4E4',

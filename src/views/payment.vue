@@ -12,9 +12,6 @@
         <div class="www" @click="copy(www)">公司管理员可登陆 {{www}} 统一添加号码</div>
         <div slot="reference" class="ba">查看管理网址 <img src="../../static/icon/back.png"></div>
       </el-popover>
-      <!-- <div class="status-img-right">
-        <img src="../../static/icon/book.png">
-      </div> -->
     </div>
     <div class="buttons-outer">
       <div class="buttons">
@@ -298,6 +295,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ba {
+  user-select: none;
+ -webkit-user-select: none;
+ -webkit-tap-highlight-color: transparent; 
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  border-color:transparent !important;
+  box-shadow: none !important;
+}
+.ba:before, .ba:after {
+  display: none;
+}
+.el-table:before {
+  display: none;
+}
 #payment {
   box-sizing: border-box;
   padding: 2rem 0rem 0rem 0rem;
@@ -485,7 +496,7 @@ export default {
       box-sizing: border-box;
       padding: 0px 0.8rem;
       color: #fff;
-      font-size: 0.5rem;
+      font-size: 0.6rem;
       float: left;
       text-align: center;
 

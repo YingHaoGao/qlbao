@@ -40,7 +40,9 @@ export default {
 
     var clientWidth = document.documentElement.clientWidth;
     this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
-    
+    this.$nextTick(() => {
+      document.documentElement.scrollTop = 0;
+    })
     TOOL.setShare(that)
   },
   data() {
