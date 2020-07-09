@@ -269,8 +269,7 @@ export default {
     });
   },
   created() {
-    let agent_id = this.getUrlKey("id");
-    this.$root.agent_id = agent_id;
+    this.$global.agent_id = this.getUrlKey("id");
 
     this.noBtn = this.getUrlKey("no_btn");
     if (this.noBtn) return;
@@ -287,8 +286,8 @@ export default {
       // let openid = 'olWi6wv5MGVNfYTHb-dj86bFkqF8';
       TOOL.alert("url openid = " + openid);
       if (openid) {
-        this.$root.parm = openid;
-        this.$root.browser = "openid";
+        this.$global.parm = openid;
+        this.$global.browser = "openid";
         localStorage.setItem("openid", openid);
         // TOOL.alert('openid = ' + openid)
         this.getId(openid, "openid");
@@ -326,8 +325,8 @@ export default {
         params = {};
       this.$http.fetch("TmpUser/getip").then(res => {
         this.userIp = res.data.ip;
-        that.$root.parm = res.data.ip;
-        that.$root.browser = "ip";
+        that.$global.parm = res.data.ip;
+        that.$global.browser = "ip";
         this.getId(res.data.ip, "ip");
       });
     },
@@ -344,7 +343,7 @@ export default {
         .fetch("TmpUser/getTmpUserId", params)
         .then(res => {
           if (res.errNo == 0) {
-            that.$root.tmp_uid = res.data.tmp_uid;
+            that.$global.tmp_uid = res.data.tmp_uid;
             that.tmp_uid = res.data.tmp_uid;
             TOOL.alert(
               "根据 " +
@@ -360,9 +359,9 @@ export default {
             if (res.data && res.data.company_id != null) {
               that.btnType = 1;
               this.userId = res.data.tmp_uid;
-              that.$root.company_id = res.data.company_id;
+              that.$global.company_id = res.data.company_id;
               this.company_id = res.data.company_id;
-              // TOOL.alert('tmp_uid = ' + that.$root.tmp_uid + ', company_id = ' + res.data.company_id)
+              // TOOL.alert('tmp_uid = ' + that.$global.tmp_uid + ', company_id = ' + res.data.company_id)
               that.orderStatus();
             } else {
               // 初次开通
@@ -380,19 +379,19 @@ export default {
     // 查询用户注册状态
     inquireSign(fn) {
       let that = this;
-      // TOOL.alert('根据 ' + that.$root.browser + ' = ' + that.$root.parm + ' 查询用户注册状态')
+      // TOOL.alert('根据 ' + that.$global.browser + ' = ' + that.$global.parm + ' 查询用户注册状态')
       that.$http
         .fetch("TmpUser/getTmpUserId", {
-          parm: that.$root.parm,
-          type: that.$root.browser
+          parm: that.$global.parm,
+          type: that.$global.browser
         })
         .then(res => {
           if (res.errNo == 0) {
             if (res.data && !!fn && res.data.company_id != null) {
               that.btnType = 1;
-              that.$root.tmp_uid = res.data.tmp_uid;
+              that.$global.tmp_uid = res.data.tmp_uid;
               that.tmp_uid = res.data.tmp_uid;
-              that.$root.company_id = res.data.company_id;
+              that.$global.company_id = res.data.company_id;
               that.company_id = res.data.company_id;
               TOOL.alert("company_id = " + res.data.company_id);
               fn();
@@ -436,8 +435,8 @@ export default {
         .fetch(
           "/accessToken",
           {
-            client_id: that.$root.client_id,
-            secret: that.$root.secret
+            client_id: that.$global.client_id,
+            secret: that.$global.secret
           },
           that,
           true

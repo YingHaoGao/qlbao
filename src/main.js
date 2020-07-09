@@ -28,25 +28,48 @@ Vue.use(VueCanvasPoster)
 Vue.prototype.$wx = wx;
 Vue.prototype.$http = http;
 Vue.prototype.$config = CONFIG;
+Vue.prototype.$global = {
+  get agent_id () {
+    return sessionStorage.getItem('global_variables_agent_id');
+  },
+  set agent_id (val) {
+    sessionStorage.setItem('global_variables_agent_id', val);
+  },
+  get company_id () {
+    return sessionStorage.getItem('global_variables_company_id');
+  },
+  set company_id (val) {
+    sessionStorage.setItem('global_variables_company_id', val);
+  },
+  get tmp_uid () {
+    return sessionStorage.getItem('global_variables_tmp_uid');
+  },
+  set tmp_uid (val) {
+    sessionStorage.setItem('global_variables_tmp_uid', val);
+  },
+  get browser () {
+    return sessionStorage.getItem('global_variables_browser');
+  },
+  set browser (val) {
+    sessionStorage.setItem('global_variables_browser', val);
+  },
+  get parm () {
+    return sessionStorage.getItem('global_variables_parm');
+  },
+  set parm (val) {
+    sessionStorage.setItem('global_variables_parm', val);
+  },
+
+  // 账号id
+  client_id: 'msd0c28f00413d6c95',
+  // 账号密码
+  secret: 'a89c4996d0c28f00413d6c95ff6e4a2a',
+};
 
 new Vue({
   router,
   data() {
   	return {
-      // 代理商id
-      agent_id: 0,
-      // 企业id
-      company_pid: false,
-      // 临时用户id
-      tmp_uid: false,
-      // 账号id
-      client_id: 'msd0c28f00413d6c95',
-      // 账号密码
-      secret: 'a89c4996d0c28f00413d6c95ff6e4a2a',
-      // token
-      access_token: false,
-      browser: '',
-      parm: ''
   	}
   },
   render: h => h(App)

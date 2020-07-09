@@ -105,7 +105,7 @@ export default {
     getBank () {
       let that = this;
       this.$http.fetch('BankAccount/getList', {
-        company_pid: that.$root.agent_id || 0,
+        company_pid: that.$global.agent_id || 0,
         type: 1
       })
         .then(res => {
@@ -270,7 +270,7 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
           //   data: {
           //     order: that.order_id,
           //     money: that.form.price,
-          //     // openid: that.$root.parm,
+          //     // openid: that.$global.parm,
           //     openid: 'ov9BB0hesTEk61cSnFi60LdHF2E4',
           //     attach: "from:qlb"
           //   },

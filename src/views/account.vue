@@ -107,15 +107,10 @@ export default {
     // 查询价格档位
     getPrices() {
       let that = this,
-          agent_id = this.$root.agent_id,
           params = {
             type: 'selling',
-            company_pid: 0
+            company_pid: this.$global.agent_id || 0
           }
-
-      if (agent_id) {
-        params.company_pid = agent_id;
-      }
 
       this.$http.fetch('prices/getPrice', params)
         .then(res => {
