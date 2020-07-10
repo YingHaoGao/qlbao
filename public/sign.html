@@ -226,6 +226,22 @@
     		padding: .4rem;
             font-size: 0.8rem;
     	}
+        .alert {
+            max-width: 100%;
+            min-width: 180px;
+            text-align: center;
+            background:rgba(0,0,0,0.75);
+            border-radius:4px;
+            padding: 7px 10px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size:14px;
+            font-family:PingFangSC-Regular,PingFang SC;
+            font-weight:400;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -292,6 +308,14 @@ $(function() {
     $('html').css('height', clientHeight + 'px');
     $('.box').css('height',  clientHeight - ( 10 * 10*(clientWidth / 320) ) + 'px');
     $('.btn').css('width', 'calc( (100% - 1rem) / 3 )')
+
+    function zAlert(msg) {
+        let a = $("<div class='alert'>"+msg+"</div>");
+        $('body').append(a)
+        setTimeout(function(){
+            a.remove();
+        }, 2000);
+    };
 
     // 返回
     $('#tabHead .back').on('click', function() {
@@ -369,7 +393,7 @@ $(function() {
                             $('.sendCode.time').attr("data-time", time - 1).text(time - 1 + 's');
                         }
                     }, 1000)
-                    alert('验证码已发送')
+                    zAlert('验证码已发送')
                 } else {
                     alert(res.message)
                 }
