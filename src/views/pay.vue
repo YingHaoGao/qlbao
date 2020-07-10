@@ -2,11 +2,11 @@
   <div id="pay" :style="{ height: clientHeight + 'px' }">
     <div class="footer" :style="{ height: height + 'px' }">
       <div class="text">请选择支付方式</div>
-      <div class="item" style="margin-bottom: 1rem;" @click="onWeiXin">
+      <div class="item" @click="onWeiXin">
         <img class="payBtn" src="../../static/icon/weixin.png" alt="">
         <span>微信支付</span>
       </div>
-      <div class="item" @click="onDuiGong">
+      <div class="item" :class="{'active': form.pay_mode == 3}" @click="onDuiGong">
         <img class="payBtn" src="../../static/icon/accounts.png" alt="">
         <span>对公转账</span>
       </div>
@@ -18,6 +18,16 @@
           <p>税<i></i>号：<span>{{item.address}}</span></p>
           <p>地<i></i>址：<span>{{item.address}}</span></p>
         </div>
+      </div>
+    </div>
+    <div class="fixBtn">
+      <div class="fixItem" @click="copy(phone)">
+        <img src="../assets/img/phone-icon.png"/>
+        <span>{{phone}}</span>
+      </div>
+      <div class="fixItem" @click="copy(weixin)">
+        <img src="../assets/img/weixin-icon.png"/>
+        <span>{{weixin}}</span>
       </div>
     </div>
   </div>
@@ -61,6 +71,8 @@ export default {
   },
   data() {
     return {
+      phone: '010-88447940',
+      weixin: 'z13521561449',
       isAliPay: true,
       ICONdg: ICONdg,
       active: 0,
@@ -92,6 +104,19 @@ export default {
     }
   },
   methods: {
+    // 复制
+    copy(msg){
+      var input = document.createElement("input");  
+      input.value = msg;
+      document.body.appendChild(input);
+      input.select(); 
+      document.execCommand("Copy");  
+      document.body.removeChild(input); 
+      this.$message({
+        message: '复制成功',
+        type: 'success'
+      })
+    },
     GetQueryValue1(name) {
        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
       if(window.location.hash.indexOf("?") < 0){
@@ -327,10 +352,24 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
   // align-items: center;
   // flex-wrap: wrap;
   .item {
-      background: #F2F2F2;
       height: 2.6rem;
       border-radius:4px;
+      margin-bottom: 1rem;
+      border:1px solid rgba(121,212,228,1);
+      position: relative;
 
+      &.active::after {
+        content: '';
+        width: 0.5rem;
+        height: 0.5rem;
+        border-right: 1px solid rgba(121,212,228,1);
+        border-bottom: 1px solid rgba(121,212,228,1);
+        background: #fff;
+        position: absolute;
+        left: 50%;
+        bottom: -0.3rem;
+        transform: translate(-50%, 0) rotate(45deg);
+      }
 
       span {
         font-size:0.9rem;
@@ -358,7 +397,7 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
       text-align: left;
       // font-family: 'PingFang-SC-Bold','PingFang-SC';
       color: #757575;
-      font-weight: 600;
+      font-weight: 400;
       line-height: 1rem;
 
       p{
@@ -394,6 +433,45 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
     button {
       margin-top: 0.5rem;
       width: 100%;
+    }
+  }
+  .fixBtn {
+    position: fixed;
+    bottom: 10px;
+    left: 15px;
+    right: 15px;
+    box-sizing: border-box;
+    padding: 10px 0px;
+    height:40px;
+    background:rgba(121,212,228,1);
+    border-radius:4px;
+    overflow: hidden;
+    z-index: 10;
+
+    .fixItem {
+      width: calc( 50% - 1px );
+      height: 100%;
+      box-sizing: border-box;
+      padding: 0px 0.8rem;
+      color: #fff;
+      font-size: 0.6rem;
+      float: left;
+      text-align: center;
+
+      img{
+        width: 26px;
+        height: 22px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 0.2rem;
+      }
+      span{ 
+        vertical-align: middle;
+      }
+
+      &:first-child{
+        border-right: solid 1px #fff;
+      }
     }
   }
 }

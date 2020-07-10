@@ -326,14 +326,14 @@ $(function() {
     });
 
     // 手机号验证
-    $('#phone').on('change', function() {
-        let val = $(this).val();
-        let is = detection(0, val);
+    // $('#phone').on('change', function() {
+    //     let val = $(this).val();
+    //     let is = detection(0, val);
 
-        if (!is) {
-            alert('请重新输入手机号')
-        }
-    });
+    //     if (!is) {
+    //         alert('请重新输入手机号')
+    //     }
+    // });
 
     // 发送验证码
     $('.sendCode.send').on('click', function() {
@@ -358,14 +358,15 @@ $(function() {
 
                     codeInterval = setInterval(function() {
                         let time = $('.sendCode.time').attr('data-time');
-                        console.log(time)
-                        if (time < 0) {
+                        
+                        if (time <= 0) {
                             clearInterval(codeInterval);
                             $('.sendCode.send').removeClass('hide');
                             $('.sendCode.time').addClass('hide');
+                            $('.sendCode.time').attr("data-time", 60).text(60+ 's');
                         }
                         else {
-                            $('.sendCode.time').attr("data-time", time - 1).text(time - 1);
+                            $('.sendCode.time').attr("data-time", time - 1).text(time - 1 + 's');
                         }
                     }, 1000)
                     alert('验证码已发送')

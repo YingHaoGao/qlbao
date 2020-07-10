@@ -32,9 +32,6 @@ canvas.canvas {
   -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
   border-color:transparent !important;
   }
-.ba:before, .ba:after {
-  display: none;
-}
 .ba:focus {
   outline:0;
 }
