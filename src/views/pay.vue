@@ -130,7 +130,8 @@ export default {
     getBank () {
       let that = this;
       this.$http.fetch('BankAccount/getList', {
-        company_pid: that.$global.agent_id || 0,
+        // company_pid: that.$global.agent_id || 0,
+        company_pid: 0,
         type: 1
       })
         .then(res => {
