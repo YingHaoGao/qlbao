@@ -269,9 +269,22 @@ export default {
     });
   },
   created() {
-    this.$global.agent_id = this.getUrlKey("id");
+    // this.$global.agent_id = this.getUrlKey("id");
+    let id = this.GetQueryValue1('id');
 
-    this.noBtn = this.getUrlKey("no_btn");
+    if(id != null && id != '') {
+      this.$global.agent_id = id;
+    }else {
+      this.$global.agent_id = parseInt(this.getQueryStringByName('id'));
+    }
+    // this.noBtn = this.getUrlKey("no_btn");
+    let no_btn = this.GetQueryValue1('no_btn');
+
+    if(no_btn != null && no_btn != '') {
+      this.no_btn = no_btn;
+    }else {
+      this.no_btn = parseInt(this.getQueryStringByName('no_btn'));
+    }
     if (this.noBtn) return;
 
     this.load = this.$loading({
@@ -309,6 +322,15 @@ export default {
     this.$refs.infoBox.style.paddingRight = (offsetWidth - 288) / 2 + "px";
   },
   methods: {
+    GetQueryValue1(name) {
+       let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      if(window.location.hash.indexOf("?") < 0){
+              return null;
+      }
+      let r = window.location.hash.split("?")[1].match(reg); 　　
+      if (r != null) return decodeURIComponent(r[2]); 
+  　　    return null;
+    },
     //获取url参数
     getUrlKey(name) {
       return (
@@ -318,6 +340,13 @@ export default {
           ) || [, ""])[1].replace(/\+/g, "%20")
         ) || null
       );
+    },
+    getQueryStringByName(name) {
+      var result = location.href.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"));
+      if (result == null || result.length < 1) {
+          return "";
+      }
+      return result[1];
     },
     //获取IP
     getIp() {
