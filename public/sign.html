@@ -105,6 +105,7 @@
           box-sizing: border-box;
           margin: auto;
           padding: 1.5rem 1.6rem;
+          position: relative;
     	}
     	.box .btns {
     		width: 100%;
@@ -210,7 +211,11 @@
         }
     	.box .footer {
             width: 100%;
-            margin-top: 8rem;
+            /* margin-top: 6rem; */
+            position: absolute;
+            left: 50%;
+            bottom: 1rem;
+            transform: translate(-50%, 0);
     	}
     	.box .footer .text {
     		margin-bottom: 1rem;
@@ -306,7 +311,7 @@ $(function() {
 
     // 解决底部定位上升
     $('html').css('height', clientHeight + 'px');
-    $('.box').css('height',  clientHeight - ( 10 * 10*(clientWidth / 320) ) + 'px');
+    $('.box').css('height',  clientHeight - 40 + 'px');
     $('.btn').css('width', 'calc( (100% - 1rem) / 3 )')
 
     function zAlert(msg) {
