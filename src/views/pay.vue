@@ -130,6 +130,7 @@ export default {
     getBank () {
       let that = this;
       this.$http.fetch('BankAccount/getList', {
+        // company_pid: that.$global.agent_id || 0,
         company_pid: 0, // 目前付款统一打入云美摄账号，参数只能传0
         type: 1
       })
