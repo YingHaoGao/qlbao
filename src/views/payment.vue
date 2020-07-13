@@ -316,7 +316,11 @@ export default {
           order_id: that.order_users.order_id
         };
 
-        this.$http.post('/user/add', data);
+        this.$http.post('/user/add', data).then(res => {
+          if (res.errNo != 0) {
+            this.$alert("注册失败，请通过邀请卡重新注册");
+          }
+        })
       }
     },
 
