@@ -296,7 +296,6 @@ $(function() {
     var codeInterval;
 
     var code = '',
-        isSubmit = localStorage.getItem('submitted_my_phone'),
         operator = $('.btn.active').attr('name'),
         company_id = getUrlParam('company_id'),
         order_id = getUrlParam('order_id'),
@@ -408,10 +407,6 @@ $(function() {
 
     // 提交
     $('.submit').on('click', function() {
-        if(isSubmit) {
-            alert('已提交')
-            return;
-        }
         var data = {
             user_name: $('#name').val(),
             telephone: $('#phone').val(),
@@ -445,8 +440,6 @@ $(function() {
             success(res) {
                 if (res.errNo == 0) {
                     alert('已提交')
-                    isSubmit = true;
-                    localStorage.setItem('submitted_my_phone', 'true');
                     location.href = location.origin + location.pathname.replace('sign.html', '?no_btn=1#/home');
                 } else {
                     alert(res.message)
