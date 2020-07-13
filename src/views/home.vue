@@ -578,7 +578,7 @@ export default {
       //  this.$router.push({ path: "/payment" ,query:{
       //   company_id: this.company_id
       // } });
-      window.location.href = `${CONFIG.SHARE}#/payment?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
+      window.location.href = `${CONFIG.SHARE}#/payment?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&form=home`;
     },
     openNow() {
       let that = this;
