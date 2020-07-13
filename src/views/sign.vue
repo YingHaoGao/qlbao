@@ -271,7 +271,7 @@ export default {
         tmp_uid: tmp_uid
       };
 
-      localStorage.setItem('isRingtone', form.isRingtone);
+      sessionStorage.setItem('isRingtone', form.isRingtone);
 
       TOOL.alert('上传参数：')
       TOOL.alert('contact_telephone: ' + Number(form.phone))
@@ -291,7 +291,7 @@ export default {
               type: 'success'
             });*/
             data.verification_code = res.data.verification_code;
-            localStorage.setItem('signInfo', JSON.stringify(data));
+            sessionStorage.setItem('signInfo', JSON.stringify(data));
             this.$router.replace({path: '/account', query: {
               company_id: res.data.company_id,
               tmp_uid: tmp_uid

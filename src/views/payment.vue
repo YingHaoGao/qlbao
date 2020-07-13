@@ -278,7 +278,7 @@ export default {
         });
     },
     checkPhone() {
-      let signInfo = localStorage.getItem('signInfo');
+      let signInfo = sessionStorage.getItem('signInfo');
 
       if(signInfo && that.surplusAdd > 0 && that.form != 'home') {
         signInfo = JSON.parse(signInfo);
@@ -301,8 +301,8 @@ export default {
     },
     userAdd(telephone_type) {
       let that = this;
-      let signInfo = localStorage.getItem('signInfo');
-      let isRingtone = localStorage.getItem('isRingtone');
+      let signInfo = sessionStorage.getItem('signInfo');
+      let isRingtone = sessionStorage.getItem('isRingtone');
 
       if(signInfo && isRingtone && that.surplusAdd > 0) {
         signInfo = JSON.parse(signInfo);
