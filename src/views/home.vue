@@ -122,10 +122,7 @@ export default {
       tmp_uid: false,
       loading: true,
       background: Background,
-      banner: ["1", "2", "3"],
-      paystate: "",
       thumbnailShow: true,
-      usertype: "",
       playerOptions: [
         {
           playbackRates: false, //播放速度
