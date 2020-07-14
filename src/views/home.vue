@@ -59,7 +59,6 @@
       </div>
       <div></div>
     </div>
-    <!-- <iframe :src="src" frameborder="0" sandbox="allow-scripts allow-top-navigation allow-same-origin"></iframe> -->
     <div class="info certificate">
       <img src="../assets/img/证书.png" alt />
       <div class="info-inner">
@@ -225,11 +224,8 @@ export default {
       ],
       load: false,
       size: false,
-      // ip or openid
-      codeType: "ip",
       // 显示按钮
       btnType: 0,
-      src: "",
       noBtn: false,
 
       // Boxin Star
@@ -278,7 +274,6 @@ export default {
 
     if (TOOL.getFacility() == "Weixin") {
       let openid = this.getUrlKey("openid");
-      // let openid = 'olWi6wv5MGVNfYTHb-dj86bFkqF8';
       TOOL.alert("url openid = " + openid);
       if (openid) {
         this.$global.parm = openid;
@@ -287,7 +282,6 @@ export default {
         // TOOL.alert('openid = ' + openid)
         this.getId(openid, "openid");
       } else {
-        // this.accredit();
         alert("openid获取失败，请刷新重试");
       }
     } else {
@@ -443,15 +437,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    },
-    // 微信授权
-    accredit() {
-      let that = this;
-
-      that.src = `http://api.meisheapp.com/v1/weixin/authorize?access_token=${localStorage.getItem(
-        "access_token"
-      )}&redirect=${encodeURIComponent(location.href.split("#")[0])}`;
-      TOOL.alert(that.src);
     },
 
     onTouchStart(e) {
