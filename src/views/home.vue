@@ -122,12 +122,7 @@ export default {
       tmp_uid: false,
       loading: true,
       background: Background,
-      banner: ["1", "2", "3"],
-      paystate: "",
-      userIp: "",
-      userId: "",
       thumbnailShow: true,
-      usertype: "",
       playerOptions: [
         {
           playbackRates: false, //播放速度
@@ -324,7 +319,6 @@ export default {
       let that = this,
         params = {};
       this.$http.fetch("TmpUser/getip").then(res => {
-        this.userIp = res.data.ip;
         that.$global.parm = res.data.ip;
         that.$global.browser = "ip";
         this.getId(res.data.ip, "ip");
@@ -358,7 +352,6 @@ export default {
             }
             if (res.data && res.data.company_id != null) {
               that.btnType = 1;
-              this.userId = res.data.tmp_uid;
               that.$global.company_id = res.data.company_id;
               this.company_id = res.data.company_id;
               // TOOL.alert('tmp_uid = ' + that.$global.tmp_uid + ', company_id = ' + res.data.company_id)
@@ -406,7 +399,7 @@ export default {
     orderStatus() {
       let that = this,
         params = {
-          tmp_uid: that.userId,
+          tmp_uid: that.tmp_uid,
           company_id: that.company_id
         };
 
