@@ -89,13 +89,7 @@ export default {
     let that = this;
     let company_id = this.GetQueryValue1('company_id');
     let tmp_uid = this.GetQueryValue1('tmp_uid');
-    let form = this.GetQueryValue1('form');
 
-    if(form != null && form != '') {
-      this.form = form;
-    }else {
-      this.form = parseInt(that.getQueryStringByName('form'));
-    }
     if(company_id != null && company_id != '') {
       this.company_id = company_id;
     }else {
@@ -124,7 +118,6 @@ export default {
   },
   data () {
     return {
-      form: '',
       phone: '010-88447940',
       weixin: 'z13521561449',
       www: 'http://cailing.meisheapp.com',
