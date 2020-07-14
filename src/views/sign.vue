@@ -271,8 +271,6 @@ export default {
         tmp_uid: tmp_uid
       };
 
-      sessionStorage.setItem('isRingtone', form.isRingtone);
-
       TOOL.alert('上传参数：')
       TOOL.alert('contact_telephone: ' + Number(form.phone))
       TOOL.alert('verification_code: ' + Number(form.code))
@@ -290,8 +288,12 @@ export default {
               message: '提交成功！',
               type: 'success'
             });*/
-            data.verification_code = res.data.verification_code;
-            sessionStorage.setItem('signInfo', JSON.stringify(data));
+            if (form.isRingtone) {
+              data.verification_code = res.data.verification_code;
+              sessionStorage.setItem('signInfo', JSON.stringify(data));
+            } else {
+              sessionStorage.removeItem('signInfo');
+            }
             this.$router.replace({path: '/account', query: {
               company_id: res.data.company_id,
               tmp_uid: tmp_uid

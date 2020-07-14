@@ -280,7 +280,7 @@ export default {
     checkPhone() {
       let signInfo = sessionStorage.getItem('signInfo');
 
-      if(signInfo && that.surplusAdd > 0 && that.form != 'home') {
+      if(signInfo && that.surplusAdd > 0) {
         signInfo = JSON.parse(signInfo);
         let phone = signInfo.contact_telephone;
         if (!(telStr.test(phone))) {
@@ -302,9 +302,8 @@ export default {
     userAdd(telephone_type) {
       let that = this;
       let signInfo = sessionStorage.getItem('signInfo');
-      let isRingtone = sessionStorage.getItem('isRingtone');
 
-      if(signInfo && isRingtone && that.surplusAdd > 0) {
+      if(signInfo && that.surplusAdd > 0) {
         signInfo = JSON.parse(signInfo);
 
         var data = {
