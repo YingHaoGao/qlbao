@@ -7,9 +7,12 @@
       </div>
       <el-popover
         placement="bottom"
-        width="200"
         trigger="click">
-        <div class="www" @click="copy(www)">公司管理员可登陆 {{www}} 统一添加号码</div>
+        <div class="www" @click="copy(www)">
+          公司管理员可登陆<br/>
+          <span>{{www}}</span><br/>
+          统一添加号码
+        </div>
         <div slot="reference" class="ba">查看管理网址 <img src="../../static/icon/you.png"></div>
       </el-popover>
     </div>
@@ -104,7 +107,7 @@ export default {
     this.getOrder(() => {
       this.getInfo();
     });
-    TOOL.setShare(that);
+    TOOL.setDefaultShare();
     this.getSurpulsAdd();
 
     var clientWidth = document.documentElement.clientWidth;
@@ -114,7 +117,7 @@ export default {
     this.intervalGet();
   },
   mounted () {
-    localStorage.setItem('payInfo', null)
+    localStorage.removeItem('payInfo');
   },
   data () {
     return {
@@ -146,7 +149,10 @@ export default {
     intervalGet() {
       let that = this;
       this.interval = setInterval(() => {
-        that.getInfo()
+        that.getOrder(() => {
+          that.getInfo();
+        });
+        that.getSurpulsAdd();
       }, 5000)
     },
     // 复制
@@ -274,7 +280,7 @@ export default {
     onCreate () {
       let that = this;
       if (that.order_users.order_id != '')
-        window.location.href = `${CONFIG.SHARE}#/share?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&order_id=${that.order_users.order_id}`
+        window.location.href = `${CONFIG.ROOT}#/share?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}&order_id=${that.order_users.order_id}`
       else
         this.$alert("目前可添加手机号数量已满，请追加开通新号码");
     },
@@ -323,6 +329,11 @@ export default {
 }
 .el-table:before {
   display: none;
+}
+.www {
+  span {
+    white-space: nowrap;
+  }
 }
 #payment {
   box-sizing: border-box;

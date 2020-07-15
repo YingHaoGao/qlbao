@@ -63,8 +63,8 @@ export default {
 
     console.log(JSON.stringify(this.form));
 
-    this.getBank()
-    TOOL.setShare(that)
+    this.getBank();
+    TOOL.setDefaultShare();
 
     var clientWidth = document.documentElement.clientWidth;
     this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );

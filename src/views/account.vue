@@ -43,7 +43,7 @@ export default {
     this.$nextTick(() => {
       document.documentElement.scrollTop = 0;
     })
-    TOOL.setShare(that)
+    TOOL.setDefaultShare();
   },
   data() {
     return {
@@ -194,8 +194,8 @@ export default {
         TOOL.alert(' 删除订单 order_id = ' + order.id);
         this.$http.fetch('Order/delOrderId',{ order_id: order.id}).then(res => {
           TOOL.alert(' 删除订单回调 = ' + JSON.stringify(res));
-          localStorage.setItem('payInfo', null);
-          window.location.href = CONFIG.SHARE;
+          localStorage.removeItem('payInfo');
+          window.location.href = CONFIG.SHARE_LINK;
         });
       });
     },

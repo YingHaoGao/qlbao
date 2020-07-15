@@ -144,7 +144,7 @@ export default {
           },
           {
 			      type: 'qrcode',
-			      content: CONFIG.SHARE + "sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id,
+			      content: CONFIG.ROOT + "sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id,
 			      css: {
 			        top: '222px',
 			        left: '66px',
@@ -257,7 +257,6 @@ export default {
         url: location.href.split('#')[0],
         type: 2
       };
-// alert(location.href.split('#')[0])
       TOOL.alert('分享 = ' + JSON.stringify(shareDate))
       that.$http.fetch('/v1/weixin/getShareInfo/', shareDate, that, true).then(res => {
       	// alert(JSON.stringify(res.data))
@@ -277,10 +276,10 @@ export default {
         });
 
         TOOL.setShare(
-          CONFIG.SHARE + "sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id,
+          CONFIG.ROOT + "sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id,
           that.company.replace(/<br\/>/g,''),
           '请您填写手机号，开通视频彩铃',
-          CONFIG.SHARE + 'wxshare.png'
+          CONFIG.ROOT + 'wxshare.png'
         );
       })
   	},
@@ -294,7 +293,7 @@ export default {
       let qrcode = new QRCode("QRCodeNone", {
           width: width, // 二维码宽度，单位像素
           height: width, // 二维码高度，单位像素
-          text: CONFIG.SHARE + "sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id
+          text: CONFIG.ROOT + "sign.html?company_id=" + that.company_id + "&order_id=" + that.order_id
         });
       var myCanvas = document.getElementsByTagName('canvas')[0];
       var qrcodeNode = document.getElementById('qrcode');
