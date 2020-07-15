@@ -5,8 +5,7 @@
     style="height: none !important;"
     ref="home"
     :class="{full: size > 3.2}"
-    v-loading="loading"
-  >
+   >
     <!-- v-lazy:background-image="background" -->
     <img style="width: 100%" src="../assets/img/background1.png" alt />
     <!-- <div class="background_top"></div> -->
@@ -47,7 +46,7 @@
     </div>
     <!-- </div> -->
 
-    <div class="footer" v-if="!noBtn">
+    <div class="footer" v-if="btnType >= 0">
       <div class="item">
         <div class="view" @click="viewNumber" v-if="btnType == 2">查看号码</div>
       </div>
@@ -119,7 +118,6 @@ export default {
     return {
       company_id: false,
       tmp_uid: false,
-      loading: true,
       background: Background,
       thumbnailShow: true,
       playerOptions: [
@@ -222,11 +220,8 @@ export default {
           }
         }
       ],
-      load: false,
-      size: false,
       // 显示按钮
-      btnType: 0,
-      noBtn: false,
+      btnType: -1,
 
       // Boxin Star
       seiperIndex: 0,
@@ -254,46 +249,15 @@ export default {
       ]
     };
   },
-  beforeRouteEnter(to, from, next) {
-    next(_this => {
-      _this.getAccessToken();
-    });
-  },
   created() {
-    this.$global.agent_id = this.getUrlKey("id");
-
-    this.noBtn = this.getUrlKey("no_btn");
-    if (this.noBtn) return;
-
-    this.load = this.$loading({
-      lock: true,
-      text: "Loading",
-      spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 0.7)"
-    });
-
-    if (TOOL.getFacility() == "Weixin") {
-      let openid = this.getUrlKey("openid");
-      TOOL.alert("url openid = " + openid);
-      if (openid) {
-        this.$global.parm = openid;
-        this.$global.browser = "openid";
-        localStorage.setItem("openid", openid);
-        // TOOL.alert('openid = ' + openid)
-        this.getId(openid, "openid");
-      } else {
-        alert("openid获取失败，请刷新重试");
-      }
-    } else {
-      // TOOL.alert('ip')
-      this.getIp();
-    }
+    this.btnType = this.getUrlKey('btn_type') || -1;
+    this.company_id = this.$global.company_id;
+    this.tmp_uid = this.$global.tmp_uid;
   },
   mounted() {
     let offsetHeight = this.$refs.home.offsetHeight;
     let offsetWidth = this.$refs.home.offsetWidth;
     console.log(offsetHeight, offsetWidth);
-    this.size = offsetHeight / offsetWidth;
     this.$refs.infoBox.style.paddingLeft = (offsetWidth - 288) / 2 + "px";
     this.$refs.infoBox.style.paddingRight = (offsetWidth - 288) / 2 + "px";
   },
@@ -308,139 +272,8 @@ export default {
         ) || null
       );
     },
-    //获取IP
-    getIp() {
-      let that = this,
-        params = {};
-      this.$http.fetch("TmpUser/getip").then(res => {
-        that.$global.parm = res.data.ip;
-        that.$global.browser = "ip";
-        this.getId(res.data.ip, "ip");
-      });
-    },
-    //获取id
-    getId(parm, type) {
-      let that = this,
-        params = {
-          parm: parm,
-          type: type
-        };
-      // TOOL.alert('根据 ' + type + ' = ' + parm + ' 开始获取tmp_uid')
-
-      this.$http
-        .fetch("TmpUser/getTmpUserId", params)
-        .then(res => {
-          if (res.errNo == 0) {
-            that.$global.tmp_uid = res.data.tmp_uid;
-            that.tmp_uid = res.data.tmp_uid;
-            TOOL.alert(
-              "根据 " +
-                type +
-                " = " +
-                parm +
-                " 获取到company_id = " +
-                res.data.company_id
-            );
-            if (that.load) {
-              that.load.close();
-            }
-            if (res.data && res.data.company_id != null) {
-              that.btnType = 1;
-              that.$global.company_id = res.data.company_id;
-              this.company_id = res.data.company_id;
-              // TOOL.alert('tmp_uid = ' + that.$global.tmp_uid + ', company_id = ' + res.data.company_id)
-              that.orderStatus();
-            } else {
-              // 初次开通
-              this.btnType = 0;
-            }
-          }
-        })
-        .catch(() => {
-          if (that.load) {
-            that.load.close();
-          }
-        });
-    },
-
-    // 查询用户注册状态
-    inquireSign(fn) {
-      let that = this;
-      // TOOL.alert('根据 ' + that.$global.browser + ' = ' + that.$global.parm + ' 查询用户注册状态')
-      that.$http
-        .fetch("TmpUser/getTmpUserId", {
-          parm: that.$global.parm,
-          type: that.$global.browser
-        })
-        .then(res => {
-          if (res.errNo == 0) {
-            if (res.data && !!fn && res.data.company_id != null) {
-              that.btnType = 1;
-              that.$global.tmp_uid = res.data.tmp_uid;
-              that.tmp_uid = res.data.tmp_uid;
-              that.$global.company_id = res.data.company_id;
-              that.company_id = res.data.company_id;
-              TOOL.alert("company_id = " + res.data.company_id);
-              fn();
-            } else {
-              // 初次开通
-              this.btnType = 0;
-            }
-          }
-        });
-    },
-    //根据临时用户ID查询订单
-    orderStatus() {
-      let that = this,
-        params = {
-          tmp_uid: that.tmp_uid,
-          company_id: that.company_id
-        };
-
-      TOOL.alert("tmp_uid = " + params.tmp_uid);
-      this.$http.fetch("Order/stateus", params).then(res => {
-        if (res.errNo == 0 && res.data && res.data.length > 0) {
-          TOOL.alert("订单id = " + JSON.stringify(res.data));
-
-          this.btnType = 2;
-          res.data.some(order => {
-            if (order.state == 0) {
-              // 未支付
-              this.btnType = 1;
-              return true;
-            }
-            return false;
-          });
-        }
-      });
-    },
-    // 获取access_token
-    getAccessToken(fn) {
-      let that = this;
-
-      that.$http
-        .fetch(
-          "/accessToken",
-          {
-            client_id: that.$global.client_id,
-            secret: that.$global.secret
-          },
-          that,
-          true
-        )
-        .then(res => {
-          if (res.errNo == 0) {
-            localStorage.setItem("access_token", res.access_token);
-            // that.custom();
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
 
     onTouchStart(e) {
-      // this.clickIndex = 0; // 为了兼容安卓部分情况而加，如果不需要可忽略
       this.clickFlag = false;
     },
     // 用于判断滑动还是点击
@@ -524,29 +357,15 @@ export default {
     },
     viewNumber() {
       let that = this;
-      //  this.$router.push({ path: "/payment" ,query:{
-      //   company_id: this.company_id
-      // } });
       window.location.href = `${CONFIG.SHARE}#/payment?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
     },
     openNow() {
       let that = this;
-      // this.$router.push({ path: "/sign", query: {
-      //  tmp_uid: that.tmp_uid,
-      //   company_id: that.company_id
-      // } });
       window.location.href = `${CONFIG.SHARE}#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
     },
     continueOpen() {
       let that = this;
-
-      // this.$router.push({ path: window.location.href.split('?')[0] + "/account", query: {
-      //    company_id: that.company_id
-      // } });
       window.location.href = `${CONFIG.SHARE}#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
-      // window.location.href = `${
-      //   window.location.href.split("?")[0]
-      // }#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-	<div id="loader-wrapper">
+  <div id="loader-wrapper">
     <div id="loader"></div>
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
@@ -10,50 +10,134 @@
 
 <script>
 import TOOL from '../tools.js'
+import CONFIG from "../../config/index.js";
 
 export default{
-	created() {
-		if (TOOL.getFacility() == 'Weixin') {
-			let openid = this.getUrlKey("openid");
-			TOOL.alert('load - openid = ' + openid)
+  data() {
+    return {
+      company_id: false,
+      tmp_uid: false,
+      noHome: false
+    }
+  },
+  created() {
+    this.$global.agent_id = this.getUrlKey("id");
+    this.noHome = this.getUrlKey("no_home");
+    this.noBtn = this.getUrlKey("no_btn");
+
+    if (TOOL.getFacility() == 'Weixin') {
+      let openid = this.getUrlKey("openid");
       if(openid){
         this.$global.parm = openid;
         this.$global.browser = 'openid';
-				this.$router.replace({ path: '/home' + '?openid=' + openid })
+        localStorage.setItem("openid", openid);
+        this.getId(openid, "openid");
       } else {
-				this.getAccessToken();
+        this.getAccessToken();
       }
-		} else {
-			this.$router.replace({ path: '/home' })
-		}
-	},
-	methods: {
+    } else {
+      this.getIp();
+    }
+  },
+  methods: {
     //获取url参数
     getUrlKey(name){   
        return decodeURIComponent((new RegExp('[?|&]'+name+'='+'([^&;]+?)(&|#|;|$)').exec(location.href)||[,""])[1].replace(/\+/g,'%20'))||null;
     },
     // 获取access_token
-    getAccessToken (fn) {
-      let that = this;
-
-      that.$http.fetch('/accessToken', {
-        client_id: that.$global.client_id,
-        secret: that.$global.secret
-      }, that, true).then(res => {
+    getAccessToken () {
+      this.$http.fetch('/accessToken', {
+        client_id: this.$global.client_id,
+        secret: this.$global.secret
+      }, this, true).then(res => {
         if (res.errNo == 0) {
           localStorage.setItem('access_token', res.access_token);
-          that.accredit();
+          this.accredit(res.access_token);
         }
       }).catch(err => {
-        console.log(err)
+        alert(JSON.stringify(err));
       })
     },
-    // 微信授权
-    accredit () {
-			TOOL.alert('load - access_token = ' + localStorage.getItem('access_token'))
-      location.href = `http://api.meisheapp.com/v1/weixin/authorize?access_token=${localStorage.getItem('access_token')}&redirect=${encodeURIComponent(location.href.split('#')[0])}`;
+    // 获取openid
+    accredit (accessToken) {
+      location.href = `http://api.meisheapp.com/v1/weixin/authorize?access_token=${accessToken}&redirect=${encodeURIComponent(location.href.split('#')[0])}`;
     },
-	}
+    //获取IP
+    getIp() {
+      this.$http.fetch("TmpUser/getip").then(res => {
+        this.$global.parm = res.data.ip;
+        this.$global.browser = "ip";
+        this.getId(res.data.ip, "ip");
+      }).catch(err => {
+        alert(JSON.stringify(err));
+      });
+    },
+    //获取id
+    getId(parm, type) {
+      this.$http.fetch("TmpUser/getTmpUserId", {
+        parm: parm,
+        type: type
+      }).then(res => {
+        if (res.errNo == 0) {
+          this.$global.tmp_uid = this.tmp_uid = res.data.tmp_uid;
+          if (res.data && res.data.company_id != null) {
+            this.$global.company_id = this.company_id = res.data.company_id;
+            this.orderStatus();
+          } else {
+            // 初次开通
+            this.gotoPage(0);
+          }
+        }
+      }).catch(err => {
+        alert(JSON.stringify(err));
+      })
+    },
+    //根据临时用户ID查询订单
+    orderStatus() {
+      let params = {
+        tmp_uid: this.tmp_uid,
+        company_id: this.company_id
+      };
+
+      this.$http.fetch("Order/stateus", params).then(res => {
+        let unpaid = true;
+
+        if (res.errNo == 0 && res.data && res.data.length > 0) {
+          unpaid = false;
+          res.data.some(order => {
+            if (order.state == 0) {
+              // 未支付
+              unpaid = true;
+              return true;
+            }
+            return false;
+          });
+        }
+
+        this.gotoPage(unpaid ? 1 : 2);
+      }).catch(err => {
+        this.gotoPage(0);
+      });
+    },
+    gotoPage(btnType) {
+      let pagePath = ['/sign', '/account', '/payment'];
+
+      if (this.noHome) {
+        this.$router.replace({
+          path: pagePath[btnType], query: {
+            company_id: this.company_id,
+            tmp_uid: this.tmp_uid
+          }
+        });
+      } else {
+        this.$router.replace({
+          path: '/home', query: {
+            btn_type: this.noBtn ? btnType : -1
+          }
+        });
+      }
+    },
+  }
 }
 </script>
 
