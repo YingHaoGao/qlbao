@@ -110,6 +110,8 @@ export default {
     var clientWidth = document.documentElement.clientWidth;
     this.width = 13 * 10*(clientWidth / 320);
     this.btnWidth =  (clientWidth - 55) / 2 + 'px';
+
+    this.intervalGet();
   },
   mounted () {
     localStorage.setItem('payInfo', null)
@@ -129,7 +131,9 @@ export default {
         order_id: ''
       },
       //剩余可添加
-      surplusAdd:0
+      surplusAdd:0,
+      // 轮询
+      interval: false
     }
   },
   computed: {
@@ -139,6 +143,12 @@ export default {
     }
   },
   methods: {
+    intervalGet() {
+      let that = this;
+      this.interval = setInterval(() => {
+        that.getInfo()
+      }, 5000)
+    },
     // 复制
     copy(msg){
       var input = document.createElement("input");  
@@ -289,6 +299,11 @@ export default {
         return 'gray-row';
       }
       return '';
+    }
+  },
+  beforeDestroy() {
+    if(this.interval) {
+      clearInterval(this.interval);
     }
   }
 }
