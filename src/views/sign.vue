@@ -45,7 +45,7 @@
         round>提交</el-button>
     </div>
     <el-dialog
-      title="云美摄直客协议"
+      title="用户服务协议"
       :visible.sync="centerDialogVisible"
       width="100%"
       center>
