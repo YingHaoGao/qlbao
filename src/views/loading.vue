@@ -17,7 +17,8 @@ export default{
     return {
       company_id: false,
       tmp_uid: false,
-      noHome: false
+      noHome: false,
+      noBtn: false
     }
   },
   created() {
@@ -132,7 +133,7 @@ export default{
       } else {
         this.$router.replace({
           path: '/home', query: {
-            btn_type: this.noBtn ? btnType : -1
+            btn_type: this.noBtn ? -1 : btnType
           }
         });
       }

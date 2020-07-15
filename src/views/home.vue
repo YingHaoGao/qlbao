@@ -250,7 +250,9 @@ export default {
     };
   },
   created() {
-    this.btnType = this.getUrlKey('btn_type') || -1;
+    let btnType = this.getUrlKey('btn_type');
+    if (btnType >= 0) this.btnType = btnType;
+
     this.company_id = this.$global.company_id;
     this.tmp_uid = this.$global.tmp_uid;
   },
@@ -269,7 +271,7 @@ export default {
           (new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(
             location.href
           ) || [, ""])[1].replace(/\+/g, "%20")
-        ) || null
+        ) || ''
       );
     },
 
