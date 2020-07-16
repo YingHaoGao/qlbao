@@ -12,7 +12,7 @@
       </div>
       <div class="infoBox">
         <div v-for="item in bank" :key="item.id" class="duigong" v-show="form.pay_mode == 3">
-          <p>开户行：<span>{{item.bank_name}}</span></p>
+          <p>开户行：<span>{{item.bank}}</span></p>
           <p>账<i></i>号：<span>{{item.card_number}}</span></p>
           <p>名<i></i>称：<span>{{item.account_name}}</span></p>
           <p>税<i></i>号：<span>{{item.tax_num}}</span></p>

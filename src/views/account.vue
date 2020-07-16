@@ -169,6 +169,7 @@ export default {
       this.$router.replace({path: '/pay', query: payInfo});
     },
     payOrder(order) {
+      let that = this;
       this.$confirm('存在未支付的订单, 是否去支付?', {
         showClose: false,
         closeOnClickModal: false,
@@ -176,8 +177,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let company_id = this.GetQueryValue1('company_id')
-        let tmp_uid = this.GetQueryValue1('tmp_uid')
+        let company_id = that.GetQueryValue1('company_id')
+        let tmp_uid = that.GetQueryValue1('tmp_uid')
         let payInfo = {
           price_id: order.price_id,
           level_name: order.level_name,
@@ -190,9 +191,10 @@ export default {
         }
         localStorage.setItem('payInfo', JSON.stringify(payInfo));
         that.$router.replace({path: '/pay', query: payInfo});
-      }).catch(() => {
+      }).catch((err) => {
+        console.log(err);
         TOOL.alert(' 删除订单 order_id = ' + order.id);
-        this.$http.fetch('Order/delOrderId',{ order_id: order.id}).then(res => {
+        that.$http.fetch('Order/delOrderId',{ order_id: order.id}).then(res => {
           TOOL.alert(' 删除订单回调 = ' + JSON.stringify(res));
           localStorage.removeItem('payInfo');
           window.location.href = CONFIG.SHARE_LINK;
