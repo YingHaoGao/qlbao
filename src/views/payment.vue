@@ -273,7 +273,53 @@ export default {
       this.$http.fetch('/Company/getUserNum',params)
         .then(function(res){
           that.surplusAdd = res.data.buy_max - res.data.use_max;
+          that.checkPhone();
         });
+    },
+    checkPhone() {
+      let signInfo = sessionStorage.getItem('signInfo');
+
+      if(signInfo && that.surplusAdd > 0) {
+        signInfo = JSON.parse(signInfo);
+        let phone = signInfo.contact_telephone;
+        if (!(telStr.test(phone))) {
+          return false;
+        } else {
+          this.$http.fetch("/taobao-tcc/cc/json/mobile_tel_segment.htm",{tel:phone}).then(res => {
+            var obj = eval(res);
+              if (obj.catName == "中国电信") {
+                this.userAdd(3)
+              } else if (obj.catName == "中国联通") {
+                this.userAdd(2)
+              } else {
+                this.userAdd(1)
+              }
+          })
+        }
+      }
+    },
+    userAdd(telephone_type) {
+      let that = this;
+      let signInfo = sessionStorage.getItem('signInfo');
+
+      if(signInfo && that.surplusAdd > 0) {
+        signInfo = JSON.parse(signInfo);
+
+        var data = {
+          user_name: signInfo.contacts,
+          telephone: signInfo.phone,
+          verification_code: signInfo.verification_code,
+          telephone_type: telephone_type,
+          company_id: that.company_id,
+          order_id: that.order_users.order_id
+        };
+
+        this.$http.post('/user/add', data).then(res => {
+          if (res.errNo != 0) {
+            this.$alert("注册失败，请通过邀请卡重新注册");
+          }
+        })
+      }
     },
 
     // 生成我的邀请卡

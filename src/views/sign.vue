@@ -261,6 +261,16 @@ export default {
       form.isRingtone = form.ringtone.length > 0;
       var tmp_uid = (that.$global.tmp_uid || that.$route.query.tmp_uid);
 
+      let data = {
+        contact_telephone: Number(form.phone),
+        verification_code: Number(form.code),
+        company_name: form.name,
+        contact_name: form.contacts,
+        // open_user: form.isRingtone ? 1 : 0,
+        company_pid: form.company_pid,
+        tmp_uid: tmp_uid
+      };
+
       TOOL.alert('上传参数：')
       TOOL.alert('contact_telephone: ' + Number(form.phone))
       TOOL.alert('verification_code: ' + Number(form.code))
@@ -270,15 +280,7 @@ export default {
       TOOL.alert('company_pid: ' + form.company_pid)
       TOOL.alert('tmp_uid: ' + tmp_uid)
 
-      this.$http.post('/company/register', {
-        contact_telephone: Number(form.phone),
-        verification_code: Number(form.code),
-        company_name: form.name,
-        contact_name: form.contacts,
-        open_user: form.isRingtone ? 1 : 0,
-        company_pid: form.company_pid,
-        tmp_uid: tmp_uid
-      }, that).then(res => {
+      this.$http.post('/company/register', data, that).then(res => {
           if (res.errNo == 0) {
             that.$global.company_id = that.company_id = res.data.company_id;
 
@@ -286,6 +288,12 @@ export default {
               message: '提交成功！',
               type: 'success'
             });*/
+            if (form.isRingtone) {
+              data.verification_code = res.data.verification_code;
+              sessionStorage.setItem('signInfo', JSON.stringify(data));
+            } else {
+              sessionStorage.removeItem('signInfo');
+            }
             this.$router.replace({path: '/account', query: {
               company_id: res.data.company_id,
               tmp_uid: tmp_uid
