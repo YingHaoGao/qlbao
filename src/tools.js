@@ -1,4 +1,5 @@
 const wx = require("weixin-js-sdk");
+import CONFIG from "../config/index.js";
 
 const tools = {
 	// 检测运行环境
@@ -102,6 +103,12 @@ const tools = {
           wx.onMenuShareAppMessage(share) // 分享给好友
           wx.onMenuShareTimeline(share) // 分享到朋友圈
         })
+    },
+    setDefaultShare() {
+        CONFIG.SHARE_LINK,
+        '5G视频彩铃，正在呼叫你的企业',
+        '5G视频彩铃，让企业名片“有声有色”，让每一次等待都产生更大价值。',
+        CONFIG.ROOT + 'wxshare.png'
     }
 }
 

@@ -12,10 +12,10 @@
       </div>
       <div class="infoBox">
         <div v-for="item in bank" :key="item.id" class="duigong" v-show="form.pay_mode == 3">
-          <p>开户行：<span>{{item.bank_name}}</span></p>
+          <p>开户行：<span>{{item.bank}}</span></p>
           <p>账<i></i>号：<span>{{item.card_number}}</span></p>
           <p>名<i></i>称：<span>{{item.account_name}}</span></p>
-          <p>税<i></i>号：<span>{{item.address}}</span></p>
+          <p>税<i></i>号：<span>{{item.tax_num}}</span></p>
           <p>地<i></i>址：<span>{{item.address}}</span></p>
         </div>
       </div>
@@ -63,8 +63,8 @@ export default {
 
     console.log(JSON.stringify(this.form));
 
-    this.getBank()
-    TOOL.setShare(that)
+    this.getBank();
+    TOOL.setDefaultShare();
 
     var clientWidth = document.documentElement.clientWidth;
     this.height = this.clientHeight - ( 10 * 10*(clientWidth / 320) );
@@ -287,7 +287,7 @@ TOOL.alert(' 修改订单 上传数据 = ' + JSON.stringify({
       if(that.form.pay_mode == 2) {
           let openid = localStorage.getItem('openid');
           // if(TOOL.getFacility() == 'Weixin') {
-          var payUrl = `http://cailing.meisheapp.com/wxpay/example/wxpay.php?openid=${openid}&orderid=${that.order_code}&money=${that.form.total_price * 100}&level_name=${encodeURIComponent(that.form.level_name)}&remarks=${encodeURIComponent(that.form.remarks) || '暂无'}#path=/payment,order_id=${that.order_id},company_id=${company_id}&tmp_uid=${tmp_uid}`;
+          var payUrl = `http://cailing.meisheapp.com/wxpay/controller/wxpay.php?openid=${openid}&orderid=${that.order_code}&money=${that.form.total_price * 100}&level_name=${encodeURIComponent(that.form.level_name)}&remarks=${encodeURIComponent(that.form.remarks) || '暂无'}#path=/payment,order_id=${that.order_id},company_id=${company_id}&tmp_uid=${tmp_uid}`;
           TOOL.alert(' 跳转支付 = ' + payUrl)
           window.location.href = payUrl;
 

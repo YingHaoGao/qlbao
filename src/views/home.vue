@@ -255,6 +255,7 @@ export default {
 
     this.company_id = this.$global.company_id;
     this.tmp_uid = this.$global.tmp_uid;
+    TOOL.setDefaultShare();
   },
   mounted() {
     let offsetHeight = this.$refs.home.offsetHeight;
@@ -359,15 +360,15 @@ export default {
     },
     viewNumber() {
       let that = this;
-      window.location.href = `${CONFIG.SHARE}#/payment?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
+      window.location.href = `${CONFIG.ROOT}#/payment?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
     },
     openNow() {
       let that = this;
-      window.location.href = `${CONFIG.SHARE}#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
+      window.location.href = `${CONFIG.ROOT}#/sign?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
     },
     continueOpen() {
       let that = this;
-      window.location.href = `${CONFIG.SHARE}#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
+      window.location.href = `${CONFIG.ROOT}#/account?company_id=${that.company_id}&tmp_uid=${that.tmp_uid}`;
     }
   }
 };

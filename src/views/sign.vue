@@ -37,7 +37,7 @@
     <div class="footer" v-if="footerShow">
       <el-checkbox v-model="form.deal" class="check">
         请勾选
-        <el-link @click="centerDialogVisible = true" style="font-size: 0.6rem" :style="{ color: form.deal?'#333':'#999' }">《云美摄直客协议》</el-link>
+        <el-link @click="centerDialogVisible = true" style="font-size: 0.6rem" :style="{ color: form.deal?'#333':'#999' }">《用户服务协议》</el-link>
         ，否则无法提交
       </el-checkbox>
       <el-button type="primary but" @click="onSubmit"
@@ -108,7 +108,7 @@ export default {
   created() {
     let that = this;
 
-    TOOL.setShare(that)
+    TOOL.setDefaultShare();
 
     var clientWidth = document.documentElement.clientWidth;
     this.height = this.clientHeight - 40;
