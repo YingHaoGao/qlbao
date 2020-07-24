@@ -341,7 +341,7 @@ export default {
 	background:linear-gradient(180deg,rgba(2,68,92,1) 0%,rgba(2,15,23,1) 100%);
 	height: calc( 100vh - 2rem );
 	padding: 1rem 0;
-	padding-top: 2rem;
+	/* padding-top: 2rem; */
 	width: 100%;
 	position: relative;
   -webkit-user-select:none;

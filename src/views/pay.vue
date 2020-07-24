@@ -2,7 +2,7 @@
   <div id="pay" :style="{ height: clientHeight + 'px' }">
     <div class="footer" :style="{ height: height + 'px' }">
       <div class="text">请选择支付方式</div>
-      <div class="item" @click="onWeiXin">
+      <div v-if="isWxPay" class="item" @click="onWeiXin">
         <img class="payBtn" src="../../static/icon/weixin.png" alt="">
         <span>微信支付</span>
       </div>
@@ -47,8 +47,10 @@ export default {
   created() {
     if (TOOL.getFacility() == "Weixin") {
       this.isAliPay = false;
+      this.isWxPay = true;
     } else {
       this.isAliPay = true;
+      this.isWxPay = false;
     }
   },
   mounted() {
@@ -73,7 +75,8 @@ export default {
     return {
       phone: '010-88447940',
       weixin: 'z13521561449',
-      isAliPay: true,
+      isAliPay: false,
+      isWxPay: false,
       ICONdg: ICONdg,
       active: 0,
       order_id: '',

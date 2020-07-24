@@ -411,7 +411,7 @@ export default {
   margin: 0 auto;
   position: relative;
   background-size: cover;
-  top: 2rem;
+  /* top: 2rem; */
   overflow: hidden;
 
   &.full {

@@ -1,16 +1,16 @@
 <template>
   <div id="tabHead" v-if="isShow">
   	<div class="left">
-  		<div class="back" @click="toBack">
+  		<div class="back" v-if="hasBack" @click="toBack">
 	  		<img :src="ICONback"/>
 	  	</div>
-	  	<div class="close" v-if="isClose" @click="toClose">
+	  	<div class="close" v-if="hasClose" @click="toClose">
 	  		<img :src="ICONcha"/>
 	  	</div>
   	</div>
   	<div class="title">{{title}}</div>
   	<div class="right">
-  		<div v-if="isShare" class="share" @click="toShare">
+  		<div v-if="hasShare" class="share" @click="toShare">
 	  		<img :src="ICONshare">
 	  	</div>
   	</div>
@@ -27,25 +27,15 @@ import CONFIG from "../../config/index.js"
 
 export default {
   name: 'tabHead',
-  created() {
-  	this.isShare = this.$route.meta.isShare;
-
-  	if (TOOL.getFacility() == "Weixin") {
-  		this.isClose = false;
-  		this.isShare = false;
-  	} else {
-  		this.isShare = true;
-  	}
-  },
   data () {
   	var title = this.$route.meta.title
-  	var isShow = !this.$route.meta.notHead
 
   	return {
   		title: title,
-  		isShow: true,
-  		isShare: false,
-  		isClose: true,
+  		isShow: false,
+  		hasShare: false,
+  		hasBack: false,
+  		hasClose: false,
   		ICONback: ICONback,
   		ICONcha: ICONcha,
   		ICONshare: ICONshare
@@ -55,8 +45,6 @@ export default {
 	  $route: {
 	    handler: function(val, oldVal){
 	      this.title = val.meta.title;
-	      this.isShare = this.$route.meta.isShare;
-	      this.isBack = this.$route.meta.isBack;
 	    },
 	    deep: true
 	  }

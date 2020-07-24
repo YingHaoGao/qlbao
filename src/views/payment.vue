@@ -337,7 +337,7 @@ export default {
 }
 #payment {
   box-sizing: border-box;
-  padding: 2rem 0rem 0rem 0rem;
+  padding: 0;
   // background-color: #F2F2F2;
 
   .el-table {

@@ -37,7 +37,7 @@ export default new Router({
       name: 'Sign',
       component: Sign,
       meta: {
-        title: '注册企业信息'
+        title: '开通您的企业视频彩铃'
       }
     },
     {

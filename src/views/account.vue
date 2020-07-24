@@ -245,7 +245,7 @@ TOOL.alert(' 根据临时用户ID查询订单 上传 = ' + JSON.stringify(params
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding-top: 3.5rem;
+  /* padding-top: 3.5rem; */
 
   .box {
 
