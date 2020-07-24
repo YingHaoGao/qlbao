@@ -20,7 +20,7 @@ export default new Router({
       name: 'Loading',
       component: Loading,
       meta: {
-        title: '开通您的企业视频彩铃',
+        title: '自助开通企业视频彩铃',
         notHead: true
       }
     },
@@ -29,7 +29,7 @@ export default new Router({
       name: 'Home',
       component: Home,
       meta: {
-        title: '开通您的企业视频彩铃'
+        title: '自助开通企业视频彩铃'
       }
     },
     {
@@ -37,7 +37,7 @@ export default new Router({
       name: 'Sign',
       component: Sign,
       meta: {
-        title: '开通您的企业视频彩铃'
+        title: '自助开通企业视频彩铃'
       }
     },
     {
@@ -53,7 +53,7 @@ export default new Router({
       name: 'Payment',
       component: Payment,
       meta: {
-        title: '查看号码',
+        title: '查看拟开通手机号',
         // isShare: true
       }
     },
@@ -70,7 +70,7 @@ export default new Router({
       name: 'Share',
       component: newShare,
       meta: {
-        title: '邀请员工添加手机号',
+        title: '邀请员工登记手机号',
         // isShare: true
       }
     }
